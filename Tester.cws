@@ -1,24 +1,23 @@
 [Workspace Header]
 Version = 1501
-Pathname Line0001 = "/z/gsnider On My Mac/Programming/switch matrix/Switch Matrix controller/Tester.c"
-Pathname Line0002 = "ws"
-CVI Dir = "/c/program files/national instruments/cvi2015"
-CVI Shared Dir = "/C/Program Files/National Instruments/Shared/CVI"
+Pathname = "/c/Users/user/Desktop/switch matrix wip/Tester.cws"
+CVI Dir = "/c/program files (x86)/national instruments/cvi2015"
+CVI Shared Dir = "/C/Program Files (x86)/National Instruments/Shared/CVI"
 CVI Pub Local Dir = "/C/ProgramData/National Instruments/CVI2015"
 CVI Pub Global Dir = "/C/ProgramData/National Instruments/CVI"
-IVI Standard Root Dir = "/C/Program Files/IVI Foundation/IVI"
+IVI Standard Root Dir = "/C/Program Files (x86)/IVI Foundation/IVI"
 IVI Standard Root 64-bit Dir = "/C/Program Files/IVI Foundation/IVI"
-VXIplug&play Framework Dir = "/C/Program Files/IVI Foundation/VISA/winnt"
+VXIplug&play Framework Dir = "/C/Program Files (x86)/IVI Foundation/VISA/winnt"
 VXIplug&play Framework 64-bit Dir = "/C/Program Files/IVI Foundation/VISA/win64"
 Number of Projects = 1
 Active Project = 1
 Project 0001 = "Tester.prj"
-Drag Bar Left = 201
+Drag Bar Left = 292
 Window Top = 30
-Window Left = 55
-Window Bottom = 994
-Window Right = 1278
-Maximized = False
+Window Left = 166
+Window Bottom = 532
+Window Right = 956
+Maximized = True
 Maximized Children = True
 Max32 Number Of Errors = 20
 Track Include File Dependencies = True
@@ -31,9 +30,9 @@ Save Changes Before Compiling = "Always"
 Hide Windows = False
 Break At First Statement = False
 Sort Type = "File Name"
-Number of Opened Files = 4
+Number of Opened Files = 5
 Window Confinement Region Enabled = True
-MainColumnWidth = 184
+MainColumnWidth = 275
 FileDateColumnWidth = 70
 FileSizeColumnWidth = 70
 
@@ -47,59 +46,62 @@ Batch Build Release = False
 Batch Build Debug = False
 
 [File 0001]
-Path Line0001 = "/z/gsnider On My Mac/Programming/switch matrix/Switch Matrix controller/Tester.u"
-Path Line0002 = "ir"
+Path = "/c/Users/user/Desktop/switch matrix wip/Tester.uir"
 File Type = "User Interface Resource"
-Disk Date = 3565955224
+Disk Date = 3573581202
 In Projects = "1,"
 Window Top = 32
 Window Left = 10
 Window Height = 349
 Window Width = 683
-Window Z-Order = 3
+Window Z-Order = 2
 
 [File 0002]
-Path = "/z/gsnider On My Mac/Programming/switch matrix/Switch Matrix controller/Tester.c"
+Path = "/c/Users/user/Desktop/switch matrix wip/Tester.c"
 File Type = "CSource"
-Disk Date = 3566572882
+Disk Date = 3573582464
 In Projects = "1,"
 Window Top = 62
 Window Left = 26
-Window Z-Order = 2
-Source Window State = "1,109,109,109,20,34,20,0,0,72,0,0,0,0,0,25,83,0,118,12,349,619,1,0,"
-Breakpoint 0001 = "110,0,enabled,"
-Breakpoint 0002 = "143,0,enabled,"
+Window Z-Order = 1
+Source Window State = "1,81,81,81,35,52,52,0,0,169,0,63,0,0,0,49,63,0,84,21,349,619,1,15,"
 
 [File 0003]
-Path Line0001 = "/z/gsnider On My Mac/Programming/switch matrix/Switch Matrix controller/SwitchMa"
-Path Line0002 = "trixControl.c"
+Path = "/c/Users/user/Desktop/switch matrix wip/SwitchMatrixControl.c"
 File Type = "CSource"
-Disk Date = 3566412542
+Disk Date = 3566416142
 In Projects = "1,"
 Window Top = 182
 Window Left = 90
-Window Z-Order = 1
-Source Window State = "1,358,358,358,16,18,16,0,0,123,0,0,0,0,0,53,330,0,305,8,349,683,1,0,"
+Window Z-Order = 3
+Source Window State = "1,358,358,358,16,18,16,0,0,80,0,278,0,0,0,25,278,0,307,54,349,683,1,15,"
 
 [File 0004]
-Path Line0001 = "/z/gsnider On My Mac/Programming/switch matrix/Switch Matrix controller/SwitchMa"
-Path Line0002 = "trixControl.h"
+Path = "/c/Users/user/Desktop/switch matrix wip/SwitchMatrixControl.h"
 File Type = "Include"
-Disk Date = 3566409248
+Disk Date = 3566412848
 In Projects = "1,"
 Window Top = 32
 Window Left = 10
-Window Z-Order = 4
+Window Z-Order = 5
 Source Window State = "1,9,9,9,18,20,20,0,0,80,0,0,0,0,0,25,0,0,9,20,349,683,1,0,"
 
+[File 0005]
+Path = "/c/Program Files (x86)/National Instruments/CVI2015/include/gpib.h"
+File Type = "Include"
+Disk Date = 3562639200
+In Projects = ""
+Window Top = 122
+Window Left = 58
+Window Z-Order = 4
+Source Window State = "1,143,143,143,17,29,29,0,0,80,0,0,0,0,0,25,462,0,486,9,349,683,1,0,"
+
 [Tab Order]
-Tab 0001 Line0001 = "/z/gsnider On My Mac/Programming/switch matrix/Switch Matrix controller/Tester.u"
-Tab 0001 Line0002 = "ir"
-Tab 0002 = "/z/gsnider On My Mac/Programming/switch matrix/Switch Matrix controller/Tester.c"
-Tab 0003 Line0001 = "/z/gsnider On My Mac/Programming/switch matrix/Switch Matrix controller/SwitchMa"
-Tab 0003 Line0002 = "trixControl.h"
-Tab 0004 Line0001 = "/z/gsnider On My Mac/Programming/switch matrix/Switch Matrix controller/SwitchMa"
-Tab 0004 Line0002 = "trixControl.c"
+Tab 0001 = "/c/Users/user/Desktop/switch matrix wip/SwitchMatrixControl.h"
+Tab 0002 = "/c/Users/user/Desktop/switch matrix wip/Tester.uir"
+Tab 0003 = "/c/Users/user/Desktop/switch matrix wip/Tester.c"
+Tab 0004 = "/c/Users/user/Desktop/switch matrix wip/SwitchMatrixControl.c"
+Tab 0005 = "/c/Program Files (x86)/National Instruments/CVI2015/include/gpib.h"
 
 [Default Build Config 0001 Debug]
 Generate Browse Info = True

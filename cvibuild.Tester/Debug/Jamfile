@@ -1,49 +1,49 @@
 CCFLAGS = -g ;
-HDRS = 	"c:\\program files\\national instruments\\cvi2015\\toolslib\\activex\\word"
-	"c:\\program files\\national instruments\\cvi2015\\toolslib\\activex\\excel"
-	"c:\\program files\\national instruments\\cvi2015\\toolslib\\custctrl"
-	"c:\\program files\\national instruments\\cvi2015\\toolslib\\custctrl\\custsupp"
-	"c:\\program files\\national instruments\\cvi2015\\toolslib\\cvirtsup"
-	"c:\\program files\\national instruments\\cvi2015\\toolslib\\datasock"
-	"c:\\program files\\national instruments\\cvi2015\\toolslib\\daqUtil"
-	"c:\\program files\\national instruments\\cvi2015\\toolslib\\printing"
-	"c:\\program files\\national instruments\\cvi2015\\toolslib\\toolbox"
-	"c:\\program files\\national instruments\\cvi2015\\toolslib\\reportgen"
-	"c:\\program files\\national instruments\\cvi2015\\toolslib\\localui"
-	"c:\\program files\\national instruments\\cvi2015\\instr"
-	"C:\\Program Files\\National Instruments\\Shared\\CVI\\toolslib\\custctrl"
-	"C:\\Program Files\\National Instruments\\Shared\\CVI\\toolslib\\custctrl\\custsupp"
-	"C:\\Program Files\\National Instruments\\Shared\\CVI\\instr"
+HDRS = 	"c:\\program files (x86)\\national instruments\\cvi2015\\toolslib\\activex\\word"
+	"c:\\program files (x86)\\national instruments\\cvi2015\\toolslib\\activex\\excel"
+	"c:\\program files (x86)\\national instruments\\cvi2015\\toolslib\\custctrl"
+	"c:\\program files (x86)\\national instruments\\cvi2015\\toolslib\\custctrl\\custsupp"
+	"c:\\program files (x86)\\national instruments\\cvi2015\\toolslib\\cvirtsup"
+	"c:\\program files (x86)\\national instruments\\cvi2015\\toolslib\\datasock"
+	"c:\\program files (x86)\\national instruments\\cvi2015\\toolslib\\daqUtil"
+	"c:\\program files (x86)\\national instruments\\cvi2015\\toolslib\\printing"
+	"c:\\program files (x86)\\national instruments\\cvi2015\\toolslib\\toolbox"
+	"c:\\program files (x86)\\national instruments\\cvi2015\\toolslib\\reportgen"
+	"c:\\program files (x86)\\national instruments\\cvi2015\\toolslib\\localui"
+	"c:\\program files (x86)\\national instruments\\cvi2015\\instr"
+	"C:\\Program Files (x86)\\National Instruments\\Shared\\CVI\\toolslib\\custctrl"
+	"C:\\Program Files (x86)\\National Instruments\\Shared\\CVI\\toolslib\\custctrl\\custsupp"
+	"C:\\Program Files (x86)\\National Instruments\\Shared\\CVI\\instr"
 	"C:\\ProgramData\\National Instruments\\CVI2015\\instr"
-	"c:\\program files\\national instruments\\cvi2015\\include"
-	"C:\\Program Files\\National Instruments\\Shared\\CVI\\include"
+	"c:\\program files (x86)\\national instruments\\cvi2015\\include"
+	"C:\\Program Files (x86)\\National Instruments\\Shared\\CVI\\include"
 	"C:\\ProgramData\\National Instruments\\CVI2015\\include"
 	"C:\\ProgramData\\National Instruments\\CVI\\include"
-	"c:\\program files\\national instruments\\cvi2015\\include\\ansi"
-	"c:\\program files\\national instruments\\cvi2015\\include\\clang\\3.3"
-	"C:\\Program Files\\IVI Foundation\\IVI\\Include"
-	"C:\\Program Files\\IVI Foundation\\VISA\\winnt\\include"
-	"C:\\Program Files\\National Instruments\\Shared\\MSDTRedistributables\\SDKHeaderFiles\\8.1"
-	"c:\\Program Files\\National Instruments\\CVI2015\\bin"
+	"c:\\program files (x86)\\national instruments\\cvi2015\\include\\ansi"
+	"c:\\program files (x86)\\national instruments\\cvi2015\\include\\clang\\3.3"
+	"C:\\Program Files (x86)\\IVI Foundation\\IVI\\Include"
+	"C:\\Program Files (x86)\\IVI Foundation\\VISA\\winnt\\include"
+	"C:\\Program Files (x86)\\National Instruments\\Shared\\MSDTRedistributables\\SDKHeaderFiles\\8.1"
+	"c:\\Program Files (x86)\\National Instruments\\CVI2015\\bin"
 	"c:\\ProgramData\\National Instruments\\CVI2015\\bin"
-	"c:\\Program Files\\National Instruments\\Shared\\CVI\\Bin"
+	"c:\\Program Files (x86)\\National Instruments\\Shared\\CVI\\Bin"
 	;
 include Jamfile_instr ;
-LOCATE on "SwitchMatrixControl.c" = "z:\\gsnider On My Mac\\Programming\\switch matrix\\Switch Matrix controller" ;
-LOCATE on "SwitchMatrixControl.h" = "z:\\gsnider On My Mac\\Programming\\switch matrix\\Switch Matrix controller" ;
-LOCATE on "Tester.c" = "z:\\gsnider On My Mac\\Programming\\switch matrix\\Switch Matrix controller" ;
-Object "z:\\gsnider On My Mac\\Programming\\switch matrix\\Switch Matrix controller\\cvibuild.Tester\\Debug\\SwitchMatrixControl.obj" : "z:\\gsnider On My Mac\\Programming\\switch matrix\\Switch Matrix controller\\SwitchMatrixControl.c" ;
-FILENUM on "z:\\gsnider On My Mac\\Programming\\switch matrix\\Switch Matrix controller\\cvibuild.Tester\\Debug\\SwitchMatrixControl.obj" = 1 ;
-DEFPROTS on "z:\\gsnider On My Mac\\Programming\\switch matrix\\Switch Matrix controller\\cvibuild.Tester\\Debug\\SwitchMatrixControl.obj" = "z:\\gsnider On My Mac\\Programming\\switch matrix\\Switch Matrix controller\\cvibuild.Tester\\Debug\\SwitchMatrixControl.obj.cvidefprots" ;
-OUTFILE on "z:\\gsnider On My Mac\\Programming\\switch matrix\\Switch Matrix controller\\cvibuild.Tester\\Debug\\SwitchMatrixControl.obj" = "z:\\gsnider On My Mac\\Programming\\switch matrix\\Switch Matrix controller\\cvibuild.Tester\\Debug\\SwitchMatrixControl.obj.out" ;
-PrjObjects += "z:\\gsnider On My Mac\\Programming\\switch matrix\\Switch Matrix controller\\cvibuild.Tester\\Debug\\SwitchMatrixControl.obj" ;
-Object "z:\\gsnider On My Mac\\Programming\\switch matrix\\Switch Matrix controller\\cvibuild.Tester\\Debug\\Tester.obj" : "z:\\gsnider On My Mac\\Programming\\switch matrix\\Switch Matrix controller\\Tester.c" ;
-FILENUM on "z:\\gsnider On My Mac\\Programming\\switch matrix\\Switch Matrix controller\\cvibuild.Tester\\Debug\\Tester.obj" = 2 ;
-DEFPROTS on "z:\\gsnider On My Mac\\Programming\\switch matrix\\Switch Matrix controller\\cvibuild.Tester\\Debug\\Tester.obj" = "z:\\gsnider On My Mac\\Programming\\switch matrix\\Switch Matrix controller\\cvibuild.Tester\\Debug\\Tester.obj.cvidefprots" ;
-OUTFILE on "z:\\gsnider On My Mac\\Programming\\switch matrix\\Switch Matrix controller\\cvibuild.Tester\\Debug\\Tester.obj" = "z:\\gsnider On My Mac\\Programming\\switch matrix\\Switch Matrix controller\\cvibuild.Tester\\Debug\\Tester.obj.out" ;
-PrjObjects += "z:\\gsnider On My Mac\\Programming\\switch matrix\\Switch Matrix controller\\cvibuild.Tester\\Debug\\Tester.obj" ;
-Object "z:\\gsnider On My Mac\\Programming\\switch matrix\\Switch Matrix controller\\cvibuild.Tester\\Debug\\resources.res" : "z:\\gsnider On My Mac\\Programming\\switch matrix\\Switch Matrix controller\\cvibuild.Tester\\Debug\\resources.in.rc" ;
-MainFromObjects "z:\\gsnider On My Mac\\Programming\\switch matrix\\Switch Matrix controller\\cvibuild.Tester\\Debug\\Tester.exe" : $(PrjObjects) $(InstrObjects) ;
-Depends "z:\\gsnider On My Mac\\Programming\\switch matrix\\Switch Matrix controller\\cvibuild.Tester\\Debug\\Tester.exe" : "z:\\gsnider On My Mac\\Programming\\switch matrix\\Switch Matrix controller\\cvibuild.Tester\\Debug\\link_options.txt" ;
-Depends "z:\\gsnider On My Mac\\Programming\\switch matrix\\Switch Matrix controller\\cvibuild.Tester\\Debug\\Tester.exe" : "z:\\gsnider On My Mac\\Programming\\switch matrix\\Switch Matrix controller\\cvibuild.Tester\\Debug\\resources.res" ;
-Depends all : "z:\\gsnider On My Mac\\Programming\\switch matrix\\Switch Matrix controller\\cvibuild.Tester\\Debug\\Tester.exe" ;
+LOCATE on "SwitchMatrixControl.c" = "c:\\Users\\user\\Desktop\\switch matrix wip" ;
+LOCATE on "SwitchMatrixControl.h" = "c:\\Users\\user\\Desktop\\switch matrix wip" ;
+LOCATE on "Tester.c" = "c:\\Users\\user\\Desktop\\switch matrix wip" ;
+Object "c:\\Users\\user\\Desktop\\switch matrix wip\\cvibuild.Tester\\Debug\\SwitchMatrixControl.obj" : "c:\\Users\\user\\Desktop\\switch matrix wip\\SwitchMatrixControl.c" ;
+FILENUM on "c:\\Users\\user\\Desktop\\switch matrix wip\\cvibuild.Tester\\Debug\\SwitchMatrixControl.obj" = 1 ;
+DEFPROTS on "c:\\Users\\user\\Desktop\\switch matrix wip\\cvibuild.Tester\\Debug\\SwitchMatrixControl.obj" = "c:\\Users\\user\\Desktop\\switch matrix wip\\cvibuild.Tester\\Debug\\SwitchMatrixControl.obj.cvidefprots" ;
+OUTFILE on "c:\\Users\\user\\Desktop\\switch matrix wip\\cvibuild.Tester\\Debug\\SwitchMatrixControl.obj" = "c:\\Users\\user\\Desktop\\switch matrix wip\\cvibuild.Tester\\Debug\\SwitchMatrixControl.obj.out" ;
+PrjObjects += "c:\\Users\\user\\Desktop\\switch matrix wip\\cvibuild.Tester\\Debug\\SwitchMatrixControl.obj" ;
+Object "c:\\Users\\user\\Desktop\\switch matrix wip\\cvibuild.Tester\\Debug\\Tester.obj" : "c:\\Users\\user\\Desktop\\switch matrix wip\\Tester.c" ;
+FILENUM on "c:\\Users\\user\\Desktop\\switch matrix wip\\cvibuild.Tester\\Debug\\Tester.obj" = 2 ;
+DEFPROTS on "c:\\Users\\user\\Desktop\\switch matrix wip\\cvibuild.Tester\\Debug\\Tester.obj" = "c:\\Users\\user\\Desktop\\switch matrix wip\\cvibuild.Tester\\Debug\\Tester.obj.cvidefprots" ;
+OUTFILE on "c:\\Users\\user\\Desktop\\switch matrix wip\\cvibuild.Tester\\Debug\\Tester.obj" = "c:\\Users\\user\\Desktop\\switch matrix wip\\cvibuild.Tester\\Debug\\Tester.obj.out" ;
+PrjObjects += "c:\\Users\\user\\Desktop\\switch matrix wip\\cvibuild.Tester\\Debug\\Tester.obj" ;
+Object "c:\\Users\\user\\Desktop\\switch matrix wip\\cvibuild.Tester\\Debug\\resources.res" : "c:\\Users\\user\\Desktop\\switch matrix wip\\cvibuild.Tester\\Debug\\resources.in.rc" ;
+MainFromObjects "c:\\Users\\user\\Desktop\\switch matrix wip\\cvibuild.Tester\\Debug\\Tester.exe" : $(PrjObjects) $(InstrObjects) ;
+Depends "c:\\Users\\user\\Desktop\\switch matrix wip\\cvibuild.Tester\\Debug\\Tester.exe" : "c:\\Users\\user\\Desktop\\switch matrix wip\\cvibuild.Tester\\Debug\\link_options.txt" ;
+Depends "c:\\Users\\user\\Desktop\\switch matrix wip\\cvibuild.Tester\\Debug\\Tester.exe" : "c:\\Users\\user\\Desktop\\switch matrix wip\\cvibuild.Tester\\Debug\\resources.res" ;
+Depends all : "c:\\Users\\user\\Desktop\\switch matrix wip\\cvibuild.Tester\\Debug\\Tester.exe" ;

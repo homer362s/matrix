@@ -15,6 +15,7 @@
 
 #define  PANEL                            1       /* callback function: panelCB */
 #define  PANEL_RunButton                  2       /* control type: command, callback function: Run */
+#define  PANEL_COMMANDBUTTON              3       /* control type: command, callback function: SendGPIB */
 
 
      /* Control Arrays: */
@@ -31,6 +32,7 @@
 
 int  CVICALLBACK panelCB(int panel, int event, void *callbackData, int eventData1, int eventData2);
 int  CVICALLBACK Run(int panel, int control, int event, void *callbackData, int eventData1, int eventData2);
+int  CVICALLBACK SendGPIB(int panel, int control, int event, void *callbackData, int eventData1, int eventData2);
 
 
 #ifdef __cplusplus

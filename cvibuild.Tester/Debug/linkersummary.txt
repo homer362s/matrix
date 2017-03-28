@@ -1,6 +1,7 @@
 SwitchMatrixControl.obj
 Tester.obj
 cvi.lib
+gpib.lib
 cvistart.lib
 kernel32.lib
 user32.lib

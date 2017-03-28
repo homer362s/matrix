@@ -14,6 +14,7 @@
 #include <ansi_c.h>
 #include <cvirte.h>		
 #include <userint.h>
+#include <gpib.h>
 #include "Tester.h"
 #include "toolbox.h"
 #include "SwitchMatrixControl.h"
@@ -72,10 +73,25 @@ int CVICALLBACK panelCB (int panel, int event, void *callbackData,
 	return 0;
 }
 
+int CVICALLBACK SendGPIB (int panel, int control, int event,
+						  void *callbackData, int eventData1, int eventData2)
+{
+	switch (event)
+	{
+		case EVENT_COMMIT:
+			int Dev = ibdev(0, 24, 0,
+                T10s, 1, 0);
+			
+			ibclr(Dev);
+	}
+	
+	return 0;
+}
+
 int CVICALLBACK Run (int panel, int control, int event,
 					 void *callbackData, int eventData1, int eventData2)
 {
-	int i,error;
+	int error;
 	switch (event)
 	{
 		case EVENT_COMMIT:
