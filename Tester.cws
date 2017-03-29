@@ -30,7 +30,7 @@ Save Changes Before Compiling = "Always"
 Hide Windows = False
 Break At First Statement = False
 Sort Type = "File Name"
-Number of Opened Files = 5
+Number of Opened Files = 9
 Window Confinement Region Enabled = True
 MainColumnWidth = 275
 FileDateColumnWidth = 70
@@ -48,23 +48,23 @@ Batch Build Debug = False
 [File 0001]
 Path = "/c/Users/user/Desktop/switch matrix wip/Tester.uir"
 File Type = "User Interface Resource"
-Disk Date = 3573581202
+Disk Date = 3573645515
 In Projects = "1,"
 Window Top = 32
 Window Left = 10
 Window Height = 349
 Window Width = 683
-Window Z-Order = 2
+Window Z-Order = 3
 
 [File 0002]
 Path = "/c/Users/user/Desktop/switch matrix wip/Tester.c"
 File Type = "CSource"
-Disk Date = 3573582464
+Disk Date = 3573645992
 In Projects = "1,"
 Window Top = 62
 Window Left = 26
 Window Z-Order = 1
-Source Window State = "1,81,81,81,35,52,52,0,0,169,0,63,0,0,0,49,63,0,84,21,349,619,1,15,"
+Source Window State = "1,60,60,60,0,16,16,0,0,169,0,63,0,0,0,32,47,0,54,15,349,619,1,0,"
 
 [File 0003]
 Path = "/c/Users/user/Desktop/switch matrix wip/SwitchMatrixControl.c"
@@ -73,8 +73,8 @@ Disk Date = 3566416142
 In Projects = "1,"
 Window Top = 182
 Window Left = 90
-Window Z-Order = 3
-Source Window State = "1,358,358,358,16,18,16,0,0,80,0,278,0,0,0,25,278,0,307,54,349,683,1,15,"
+Window Z-Order = 6
+Source Window State = "1,358,358,358,16,18,16,0,0,80,0,278,0,0,0,25,237,0,303,55,349,683,1,15,"
 
 [File 0004]
 Path = "/c/Users/user/Desktop/switch matrix wip/SwitchMatrixControl.h"
@@ -93,15 +93,59 @@ Disk Date = 3562639200
 In Projects = ""
 Window Top = 122
 Window Left = 58
-Window Z-Order = 4
+Window Z-Order = 9
 Source Window State = "1,143,143,143,17,29,29,0,0,80,0,0,0,0,0,25,462,0,486,9,349,683,1,0,"
+
+[File 0006]
+Path = "/c/Users/user/Desktop/switch matrix wip/Interface.c"
+File Type = "CSource"
+Disk Date = 3573643377
+In Projects = "1,"
+Window Top = 122
+Window Left = 58
+Window Z-Order = 8
+Source Window State = "1,5,5,5,0,8,8,0,0,80,0,18,0,18,0,25,0,0,13,12,349,683,1,0,"
+
+[File 0007]
+Path = "/c/Users/user/Desktop/switch matrix wip/Interface.h"
+File Type = "Include"
+Disk Date = 3573643310
+In Projects = "1,"
+Window Top = 152
+Window Left = 74
+Window Z-Order = 7
+Source Window State = "1,0,0,0,4,22,22,0,0,80,0,0,0,0,0,25,0,0,1,51,349,683,1,0,"
+
+[File 0008]
+Path = "/c/Users/user/Desktop/switch matrix wip/Tester.h"
+File Type = "Include"
+Disk Date = 3573645515
+In Projects = ""
+Window Top = 362
+Window Left = 186
+Window Z-Order = 4
+Source Window State = "1,0,0,0,0,0,0,0,0,80,0,0,0,0,0,25,5,0,36,17,349,683,1,0,"
+
+[File 0009]
+Path = "/c/Program Files (x86)/National Instruments/CVI2015/include/userint.h"
+File Type = "Include"
+Disk Date = 3562639200
+In Projects = ""
+Window Top = 92
+Window Left = 42
+Window Z-Order = 2
+Source Window State = "1,1673,1673,1673,8,19,19,0,0,80,0,0,0,0,0,25,1622,0,1677,62,349,683,1,0,"
 
 [Tab Order]
 Tab 0001 = "/c/Users/user/Desktop/switch matrix wip/SwitchMatrixControl.h"
 Tab 0002 = "/c/Users/user/Desktop/switch matrix wip/Tester.uir"
 Tab 0003 = "/c/Users/user/Desktop/switch matrix wip/Tester.c"
-Tab 0004 = "/c/Users/user/Desktop/switch matrix wip/SwitchMatrixControl.c"
-Tab 0005 = "/c/Program Files (x86)/National Instruments/CVI2015/include/gpib.h"
+Tab 0004 = "/c/Users/user/Desktop/switch matrix wip/Tester.h"
+Tab 0005 = "/c/Users/user/Desktop/switch matrix wip/SwitchMatrixControl.c"
+Tab 0006 = "/c/Program Files (x86)/National Instruments/CVI2015/include/gpib.h"
+Tab 0007 = "/c/Users/user/Desktop/switch matrix wip/Interface.c"
+Tab 0008 = "/c/Users/user/Desktop/switch matrix wip/Interface.h"
+Tab 0009 = "/c/Program Files (x86)/National Instruments/CVI2015/include/userint.h"
 
 [Default Build Config 0001 Debug]
 Generate Browse Info = True

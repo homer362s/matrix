@@ -13,6 +13,7 @@
 -browsedeps:c:\Users\user\Desktop\switch matrix wip\cvibuild.Tester\Debug\moduledependencies.txt
 -stackreserve:1048576
 -stackcommit:4096
+-in:c:\Users\user\Desktop\switch matrix wip\cvibuild.Tester\Debug\Interface.obj
 -in:c:\Users\user\Desktop\switch matrix wip\cvibuild.Tester\Debug\SwitchMatrixControl.obj
 -in:c:\Users\user\Desktop\switch matrix wip\cvibuild.Tester\Debug\Tester.obj
 -more:c:\program files (x86)\national instruments\cvi2015\bin\msvc\cvistart.lib

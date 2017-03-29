@@ -18,6 +18,10 @@
 #include "Tester.h"
 #include "toolbox.h"
 #include "SwitchMatrixControl.h"
+#include "Interface.h"
+
+
+void GPIBScan();
 
 //==============================================================================
 // Constants
@@ -47,7 +51,8 @@ int main (int argc, char *argv[])
 	
 	/* initialize and load resources */
 	nullChk (InitCVIRTE (0, argv, 0));
-	errChk (panelHandle = LoadPanel (0, "Tester.uir", PANEL));
+	errChk (panelHandle = LoadPanel (0, "Tester.uir", MAINPANEL));
+	GPIBScan();
 	SwitchMatrixConfig = (struct SwitchMatrixConfig_type *) malloc(sizeof (struct SwitchMatrixConfig_type));
 	
 	/* display the panel and run the user interface */
@@ -65,25 +70,56 @@ Error:
 // UI callback function prototypes
 
 /// HIFN Exit when the user dismisses the panel.
-int CVICALLBACK panelCB (int panel, int event, void *callbackData,
-		int eventData1, int eventData2)
+int CVICALLBACK panelCB (int panel, int event, void *callbackData, int eventData1, int eventData2)
 {
-	if (event == EVENT_CLOSE)
-		QuitUserInterface (0);
+	switch(event) {
+		case EVENT_CLOSE:
+			QuitUserInterface(0);
+	}
+
 	return 0;
 }
+
+int CVICALLBACK GPIBScan_CB(int panel, int control, int event, void *callbackData, int eventData1, int eventData2)
+{	
+	switch(event)
+	{
+		case EVENT_COMMIT:
+			GPIBScan();
+	}
+	return 0;
+}
+
+void GPIBScan()
+{
+	// Delete all existing items in the dropdown menu
+	DeleteListItem(panelHandle, MAINPANEL_GPIBADDRESSRING, 0, -1);
+
+	// Replace those items with the newly discovered ones
+	Addr4882_t AttachedDevices[30];
+	int devCount = ScanForGPIBDevices(AttachedDevices);
+
+	char tmpstr[3];
+	for(int i = 0; i < devCount; i++) {
+		sprintf(tmpstr, "%d", AttachedDevices[i]);
+		InsertListItem(panelHandle, MAINPANEL_GPIBADDRESSRING, 0, tmpstr, AttachedDevices[i]);
+	}
+
+}
+
+
 
 int CVICALLBACK SendGPIB (int panel, int control, int event,
 						  void *callbackData, int eventData1, int eventData2)
 {
-	switch (event)
-	{
-		case EVENT_COMMIT:
-			int Dev = ibdev(0, 24, 0,
-                T10s, 1, 0);
-			
-			ibclr(Dev);
-	}
+	//switch (event)
+	//{
+		//case EVENT_COMMIT:
+			//int Dev = ibdev(0, 24, 0,
+            //    T10s, 1, 0);
+			//
+			//ibclr(Dev);
+	//}
 	
 	return 0;
 }

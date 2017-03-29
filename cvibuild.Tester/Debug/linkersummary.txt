@@ -1,3 +1,4 @@
+Interface.obj
 SwitchMatrixControl.obj
 Tester.obj
 cvi.lib

@@ -6,6 +6,14 @@ Prototype="int main(int argc, char **argv);"
 Class="Function"
 Prototype="int panelCB(int panel, int event, void *callbackData, int eventData1, int eventData2);"
 
+[GPIBScan_CB]
+Class="Function"
+Prototype="int GPIBScan_CB(int panel, int control, int event, void *callbackData, int eventData1, int eventData2);"
+
+[GPIBScan]
+Class="Function"
+Prototype="void GPIBScan();"
+
 [SendGPIB]
 Class="Function"
 Prototype="int SendGPIB(int panel, int control, int event, void *callbackData, int eventData1, int eventData2);"

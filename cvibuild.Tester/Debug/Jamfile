@@ -29,16 +29,23 @@ HDRS = 	"c:\\program files (x86)\\national instruments\\cvi2015\\toolslib\\activ
 	"c:\\Program Files (x86)\\National Instruments\\Shared\\CVI\\Bin"
 	;
 include Jamfile_instr ;
+LOCATE on "Interface.c" = "c:\\Users\\user\\Desktop\\switch matrix wip" ;
+LOCATE on "Interface.h" = "c:\\Users\\user\\Desktop\\switch matrix wip" ;
 LOCATE on "SwitchMatrixControl.c" = "c:\\Users\\user\\Desktop\\switch matrix wip" ;
 LOCATE on "SwitchMatrixControl.h" = "c:\\Users\\user\\Desktop\\switch matrix wip" ;
 LOCATE on "Tester.c" = "c:\\Users\\user\\Desktop\\switch matrix wip" ;
+Object "c:\\Users\\user\\Desktop\\switch matrix wip\\cvibuild.Tester\\Debug\\Interface.obj" : "c:\\Users\\user\\Desktop\\switch matrix wip\\Interface.c" ;
+FILENUM on "c:\\Users\\user\\Desktop\\switch matrix wip\\cvibuild.Tester\\Debug\\Interface.obj" = 1 ;
+DEFPROTS on "c:\\Users\\user\\Desktop\\switch matrix wip\\cvibuild.Tester\\Debug\\Interface.obj" = "c:\\Users\\user\\Desktop\\switch matrix wip\\cvibuild.Tester\\Debug\\Interface.obj.cvidefprots" ;
+OUTFILE on "c:\\Users\\user\\Desktop\\switch matrix wip\\cvibuild.Tester\\Debug\\Interface.obj" = "c:\\Users\\user\\Desktop\\switch matrix wip\\cvibuild.Tester\\Debug\\Interface.obj.out" ;
+PrjObjects += "c:\\Users\\user\\Desktop\\switch matrix wip\\cvibuild.Tester\\Debug\\Interface.obj" ;
 Object "c:\\Users\\user\\Desktop\\switch matrix wip\\cvibuild.Tester\\Debug\\SwitchMatrixControl.obj" : "c:\\Users\\user\\Desktop\\switch matrix wip\\SwitchMatrixControl.c" ;
-FILENUM on "c:\\Users\\user\\Desktop\\switch matrix wip\\cvibuild.Tester\\Debug\\SwitchMatrixControl.obj" = 1 ;
+FILENUM on "c:\\Users\\user\\Desktop\\switch matrix wip\\cvibuild.Tester\\Debug\\SwitchMatrixControl.obj" = 2 ;
 DEFPROTS on "c:\\Users\\user\\Desktop\\switch matrix wip\\cvibuild.Tester\\Debug\\SwitchMatrixControl.obj" = "c:\\Users\\user\\Desktop\\switch matrix wip\\cvibuild.Tester\\Debug\\SwitchMatrixControl.obj.cvidefprots" ;
 OUTFILE on "c:\\Users\\user\\Desktop\\switch matrix wip\\cvibuild.Tester\\Debug\\SwitchMatrixControl.obj" = "c:\\Users\\user\\Desktop\\switch matrix wip\\cvibuild.Tester\\Debug\\SwitchMatrixControl.obj.out" ;
 PrjObjects += "c:\\Users\\user\\Desktop\\switch matrix wip\\cvibuild.Tester\\Debug\\SwitchMatrixControl.obj" ;
 Object "c:\\Users\\user\\Desktop\\switch matrix wip\\cvibuild.Tester\\Debug\\Tester.obj" : "c:\\Users\\user\\Desktop\\switch matrix wip\\Tester.c" ;
-FILENUM on "c:\\Users\\user\\Desktop\\switch matrix wip\\cvibuild.Tester\\Debug\\Tester.obj" = 2 ;
+FILENUM on "c:\\Users\\user\\Desktop\\switch matrix wip\\cvibuild.Tester\\Debug\\Tester.obj" = 3 ;
 DEFPROTS on "c:\\Users\\user\\Desktop\\switch matrix wip\\cvibuild.Tester\\Debug\\Tester.obj" = "c:\\Users\\user\\Desktop\\switch matrix wip\\cvibuild.Tester\\Debug\\Tester.obj.cvidefprots" ;
 OUTFILE on "c:\\Users\\user\\Desktop\\switch matrix wip\\cvibuild.Tester\\Debug\\Tester.obj" = "c:\\Users\\user\\Desktop\\switch matrix wip\\cvibuild.Tester\\Debug\\Tester.obj.out" ;
 PrjObjects += "c:\\Users\\user\\Desktop\\switch matrix wip\\cvibuild.Tester\\Debug\\Tester.obj" ;
