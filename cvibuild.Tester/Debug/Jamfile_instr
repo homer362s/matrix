@@ -1,4 +1,5 @@
 Depends "c:\\Users\\user\\Desktop\\switch matrix wip\\cvibuild.Tester\\Debug\\Tester.exe" : "c:\\Users\\user\\Desktop\\switch matrix wip\\cvibuild.Tester\\Debug\\Interface.obj" ;
+Depends "c:\\Users\\user\\Desktop\\switch matrix wip\\cvibuild.Tester\\Debug\\Tester.exe" : "c:\\Users\\user\\Desktop\\switch matrix wip\\cvibuild.Tester\\Debug\\Keithley2400.obj" ;
 Depends "c:\\Users\\user\\Desktop\\switch matrix wip\\cvibuild.Tester\\Debug\\Tester.exe" : "c:\\Users\\user\\Desktop\\switch matrix wip\\cvibuild.Tester\\Debug\\SwitchMatrixControl.obj" ;
 Depends "c:\\Users\\user\\Desktop\\switch matrix wip\\cvibuild.Tester\\Debug\\Tester.exe" : "c:\\Users\\user\\Desktop\\switch matrix wip\\cvibuild.Tester\\Debug\\Tester.obj" ;
 Depends "c:\\Users\\user\\Desktop\\switch matrix wip\\cvibuild.Tester\\Debug\\Tester.exe" : "C:\\Program Files (x86)\\Windows Kits\\8.1\\Lib\\winv6.3\\um\\x86\\advapi32.lib" ;

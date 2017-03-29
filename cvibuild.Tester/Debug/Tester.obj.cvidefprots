@@ -14,6 +14,42 @@ Prototype="int GPIBScan_CB(int panel, int control, int event, void *callbackData
 Class="Function"
 Prototype="void GPIBScan();"
 
+[LoadProbeCard_CB]
+Class="Function"
+Prototype="int LoadProbeCard_CB(int panel, int control, int event, void *callbackData, int eventData1, int eventData2);"
+
+[ManConnectionChanged_CB]
+Class="Function"
+Prototype="int ManConnectionChanged_CB(int panel, int control, int event, void *callbackData, int eventData1, int eventData2);"
+
+[updateManualControls]
+Class="Function"
+Prototype="void updateManualControls();"
+
+[updateRelays]
+Class="Function"
+Prototype="void updateRelays();"
+
+[ManualMeasure_CB]
+Class="Function"
+Prototype="int ManualMeasure_CB(int panel, int control, int event, void *callbackData, int eventData1, int eventData2);"
+
+[takeCurrentMeasurement]
+Class="Function"
+Prototype="void takeCurrentMeasurement(short addr, float vbias, double *data);"
+
+[takeVoltageMeasurement]
+Class="Function"
+Prototype="void takeVoltageMeasurement(short addr, float ibias, double *data);"
+
+[getVBias]
+Class="Function"
+Prototype="float getVBias();"
+
+[getIBias]
+Class="Function"
+Prototype="float getIBias();"
+
 [SendGPIB]
 Class="Function"
 Prototype="int SendGPIB(int panel, int control, int event, void *callbackData, int eventData1, int eventData2);"

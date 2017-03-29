@@ -29,6 +29,10 @@ int initSwitchMatrix (struct SwitchMatrixConfig_type *SwitchMatrixConfig, char P
     char *record = NULL, access[3], *line = NULL, *InputFile=NULL, probeCardInitPins[MaxRelays][3];
     char fileName[1024];
     int i, counter, filepointer, MatrixRelays[MaxRelays],numProbecardConnections,lineLength;
+	
+	for (int i = 0;i < MaxRelays; i++) {
+		probeCardInitPins[i][0] = "\0";
+	}
     
     for (counter=0; counter<MaxRelays; counter++) {  //Initialize arrays to the unused values
         SwitchMatrixConfig->ProbeCard[counter] = Unused;

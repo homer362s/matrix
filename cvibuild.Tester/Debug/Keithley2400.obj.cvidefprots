@@ -1,0 +1,48 @@
+[reset]
+Class="Function"
+Prototype="void reset(short addr);"
+
+[setVoltage]
+Class="Function"
+Prototype="void setVoltage(short addr, double voltage);"
+
+[setCurrent]
+Class="Function"
+Prototype="void setCurrent(short addr, double current);"
+
+[sourceOn]
+Class="Function"
+Prototype="void sourceOn(short addr);"
+
+[sourceOff]
+Class="Function"
+Prototype="void sourceOff(short addr);"
+
+[disableDisplay]
+Class="Function"
+Prototype="void disableDisplay(short addr);"
+
+[enableDisplay]
+Class="Function"
+Prototype="void enableDisplay(short addr);"
+
+[readDisplay]
+Class="Function"
+Prototype="void readDisplay(short addr, char *msg);"
+
+[sendCommand]
+Class="Function"
+Prototype="void sendCommand(short addr, char *cmd);"
+
+[setDelay]
+Class="Function"
+Prototype="void setDelay(short addr, float delay);"
+
+[setAutoOff]
+Class="Function"
+Prototype="void setAutoOff(short addr, int toggle);"
+
+[measure]
+Class="Function"
+Prototype="double measure(short addr, double *data);"
+

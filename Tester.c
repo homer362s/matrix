@@ -11,6 +11,7 @@
 //==============================================================================
 // Include files
 
+#include <formatio.h>
 #include <ansi_c.h>
 #include <cvirte.h>		
 #include <userint.h>
@@ -19,9 +20,17 @@
 #include "toolbox.h"
 #include "SwitchMatrixControl.h"
 #include "Interface.h"
+#include "Keithley2400.h"
 
 
 void GPIBScan();
+void updateManualControls();
+void updateRelays();
+float getRequestedBias();
+float getVBias();
+float getIBias();
+void takeCurrentMeasurement(Addr4882_t addr, float bias, double* data);
+void takeVoltageMeasurement(Addr4882_t addr, float bias, double* data);
 
 //==============================================================================
 // Constants
@@ -33,6 +42,7 @@ void GPIBScan();
 // Static global variables
 
 static int panelHandle = 0;
+int manualTabHandle;
 
 //==============================================================================
 // Static functions
@@ -57,6 +67,7 @@ int main (int argc, char *argv[])
 	
 	/* display the panel and run the user interface */
 	errChk (DisplayPanel (panelHandle));
+	GetPanelHandleFromTabPage(panelHandle, MAINPANEL_TABS, 1, &manualTabHandle);
 	errChk (RunUserInterface ());
 
 Error:
@@ -82,7 +93,7 @@ int CVICALLBACK panelCB (int panel, int event, void *callbackData, int eventData
 
 int CVICALLBACK GPIBScan_CB(int panel, int control, int event, void *callbackData, int eventData1, int eventData2)
 {	
-	switch(event)
+	switch(event)											  
 	{
 		case EVENT_COMMIT:
 			GPIBScan();
@@ -107,19 +118,146 @@ void GPIBScan()
 
 }
 
+int CVICALLBACK LoadProbeCard_CB(int panel, int control, int event, void *callbackData, int eventData1, int eventData2)
+{
+	switch(event) {
+		case EVENT_COMMIT:
+			char pathName[512];
+			int success = FileSelectPopupEx("", "*.csv", "*.csv;*.*", "Select A Probe Card", VAL_LOAD_BUTTON, 0, 0, pathName);
+			if (success) {
+				int error = initSwitchMatrix(SwitchMatrixConfig, pathName);
+	
+				// Update the manual controls to reflect the available options
+				updateManualControls();
+			}
+	}
+	
+	return 0;
+}
+
+int CVICALLBACK ManConnectionChanged_CB(int panel, int control, int event, void *callbackData, int eventData1, int eventData2)
+{
+	return 0;
+}
+
+void updateManualControls()
+{
+	int count;
+	
+	int ctrlArrayHandle = GetCtrlArrayFromResourceID(manualTabHandle, MAN_CON_ARRAY);
+	
+	GetNumCtrlArrayItems(ctrlArrayHandle, &count);
+	char tmpstr[5];
+	for (int i=0; i<count; i++) {
+		int MenuHandle = GetCtrlArrayItem(ctrlArrayHandle, i);
+		
+		// Clear the menu
+		DeleteListItem(manualTabHandle, MenuHandle, 0, -1);
+		
+		// Fill in the menu
+		for(int j = SwitchMatrixConfig->numProbePins;j > 0;j--) {
+			sprintf(tmpstr, "%d", j); 
+			InsertListItem(manualTabHandle, MenuHandle, 0, tmpstr, j); 
+		}
+		SetCtrlIndex(manualTabHandle, MenuHandle, i);
+	}
+	
+	updateRelays();
+}
+
+void updateRelays()
+{
+}
+
+int CVICALLBACK ManualMeasure_CB(int panel, int control, int event, void *callbackData, int eventData1, int eventData2)
+{
+	switch(event) {
+		case EVENT_COMMIT:
+			setDelay(24, 1);
+			setAutoOff(24,1);
+			float bias;
+			double data[5];
+			switch(control) {
+				case TABPANEL_2_MEASURECURRENTBUTTON:
+					bias = getVBias();
+					takeCurrentMeasurement(24, bias, data);
+					break;
+				case TABPANEL_2_MEASUREVOLTAGEBUTTON:
+					bias = getIBias();
+					takeVoltageMeasurement(24, bias, data);
+					break;
+			}
+			
+			
+			// Add row to table
+			int error = InsertTableRows(manualTabHandle, TABPANEL_2_MANUALTABLE, -1, 1, VAL_CELL_NUMERIC);
+			
+			int row;
+			GetNumTableRows(manualTabHandle, TABPANEL_2_MANUALTABLE, &row); 
+			
+			SetTableCellVal(manualTabHandle, TABPANEL_2_MANUALTABLE, MakePoint(1,row), data[0]);
+			SetTableCellVal(manualTabHandle, TABPANEL_2_MANUALTABLE, MakePoint(2,row), data[1]);
+	}
+	
+	return 0;
+}
+
+void takeCurrentMeasurement(Addr4882_t addr, float vbias, double* data)
+{
+	setVoltage(addr, vbias);
+	sendCommand(addr, ":CONF:CURR");
+	measure(addr, data);
+}
+
+void takeVoltageMeasurement(Addr4882_t addr, float ibias, double* data)
+{
+	setCurrent(addr, ibias);
+	sendCommand(addr, ":CONF:VOLT");
+	measure(addr, data);
+}
+
+
+float getVBias()
+{
+	char strval[64];
+	GetCtrlVal(manualTabHandle, TABPANEL_2_VBIASBOX, strval);
+	
+	return atof(strval);
+}
+
+float getIBias()
+{
+	char strval[64];
+	GetCtrlVal(manualTabHandle, TABPANEL_2_IBIASBOX, strval);
+	
+	return atof(strval);
+}
+
+
 
 
 int CVICALLBACK SendGPIB (int panel, int control, int event,
 						  void *callbackData, int eventData1, int eventData2)
 {
-	//switch (event)
-	//{
-		//case EVENT_COMMIT:
+	switch (event)
+	{
+		case EVENT_COMMIT:
 			//int Dev = ibdev(0, 24, 0,
             //    T10s, 1, 0);
 			//
 			//ibclr(Dev);
-	//}
+			
+			//static char cmd[] = ":SOUR:VOLT 0";
+			//Send(0, 24, cmd, StringLength(cmd), NLend);
+			reset(24);
+			setVoltage(24, 1);
+			sourceOn(24);
+			double data[5];
+			measure(24, data);
+			sourceOff(24);
+			
+			int tmp;
+	}
 	
 	return 0;
 }
