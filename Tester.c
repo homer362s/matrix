@@ -109,7 +109,9 @@ void GPIBScan()
 
 	// Replace those items with the newly discovered ones
 	Addr4882_t AttachedDevices[30];
+	int oldErrorSetting = SetBreakOnLibraryErrors(0);
 	int devCount = gpib__scanForDevices(AttachedDevices);
+	SetBreakOnLibraryErrors(oldErrorSetting);
 
 	char tmpstr[3];
 	for(int i = 0; i < devCount; i++) {
@@ -281,12 +283,9 @@ int CVICALLBACK SendGPIB (int panel, int control, int event,
 // Chance the connection for the selected port from whatever it currently is to the specified probe pin 
 void changeConnection(int port, int pin) {
 	// Disconnect this port from any pins it is currently connected to
-	int boardAddress = SwitchMatrixConfig->BoardAddresses[port-1]; 
-	
-	for(int i = 0;i < SwitchMatrixConfig->numProbePins;i++) {
-		int pinBoardAddress = SwitchMatrixConfig->RelayStatus[i].boardAddress;
-		if (pinBoardAddress == boardAddress) {
-			switchMatrix(port, i + 1, DisConnect, SwitchMatrixConfig);
+	for (int i = 0;i < MaxRelays;i++) {
+		if (SwitchMatrixConfig->Connections[port-1][i]) {
+			switchMatrix(port, i+1, DisConnect, SwitchMatrixConfig);
 		}
 	}
 	

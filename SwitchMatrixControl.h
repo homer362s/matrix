@@ -8,6 +8,7 @@
 #define DisConnect 0 //Disconnect (open a relay
 #define Unused 0xFFFF //Code for an unused pin
 #define MaxRelays 48 //Maximum number of relays
+#define MaxInputs 5 //Maximum number of switch matrix inputs
 #define MatrixDim 8 //Switch matrix dimension
 
 struct RelayStatus_type{
@@ -21,6 +22,7 @@ struct SwitchMatrixConfig_type{
                         //Binary numbering for pin (starts at 0) and for relay number (starts at 0)
     struct RelayStatus_type RelayStatus[MaxRelays]; //Array containing the relay info (board, ID and state) connected to each pin (starts at 0)
                         //0xFFFF if unused (unknown)
+	unsigned char Connections[MaxInputs][MaxRelays];
     int BoardAddresses[MaxRelays]; //Array containing the addresses of installed cards
 	char CardConnectPins[MaxRelays][3]; //Card edge connector names
     int numProbePins; //Number of pins in the probe card

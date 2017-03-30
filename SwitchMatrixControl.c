@@ -38,6 +38,10 @@ int initSwitchMatrix (struct SwitchMatrixConfig_type *SwitchMatrixConfig, char P
         SwitchMatrixConfig->ProbeCard[counter] = Unused;
         SwitchMatrixConfig->RelayStatus[counter].status = Unused;
         SwitchMatrixConfig->BoardAddresses[counter] = Unused;
+		
+		for (int i = 0;i < MaxInputs; i++) {
+			SwitchMatrixConfig->Connections[i][counter] = (unsigned char) DisConnect;
+		}
     }
     
     //Start by reading in the switch matrix configuration
@@ -128,6 +132,14 @@ int initSwitchMatrix (struct SwitchMatrixConfig_type *SwitchMatrixConfig, char P
 }
 
 int switchMatrix(int inputNumber, int pinNumber, int action, struct SwitchMatrixConfig_type *SwitchMatrixConfig) {
+	switch(action) {
+		case Connect:
+			printf("Connecting input %d to pin %d\n", inputNumber, pinNumber);
+			break;
+		case DisConnect:
+			printf("Disconnecting input %d from pin %d\n", inputNumber, pinNumber);
+			break;
+	}
     int error;
     
     //Perform the desired action on the switch matrix
@@ -136,6 +148,7 @@ int switchMatrix(int inputNumber, int pinNumber, int action, struct SwitchMatrix
         SwitchMatrixConfig->RelayStatus[pinNumber-1].boardAddress = SwitchMatrixConfig->BoardAddresses[inputNumber-1];
         SwitchMatrixConfig->RelayStatus[pinNumber-1].relayAddress = SwitchMatrixConfig->ProbeCard[pinNumber-1];
         SwitchMatrixConfig->RelayStatus[pinNumber-1].status = action; //store card adress, relay address, and relay status
+		SwitchMatrixConfig->Connections[inputNumber-1][pinNumber-1] = action;
     }
     return 0;
     
@@ -153,11 +166,18 @@ int resetUsedRelays(struct SwitchMatrixConfig_type *SwitchMatrixConfig) {
 			SwitchMatrixConfig->RelayStatus[i].status = Unused; //Update status of that pin to unused
         }
     }
+	
+	for(int i = 0;i < MaxInputs;i++) {
+		for (int j = 0;j < MaxRelays;j++) {
+			SwitchMatrixConfig->Connections[i][j] = (unsigned char) DisConnect;
+		}
+	}
     return 0;
 }
 
 int resetAllRelays(struct SwitchMatrixConfig_type *SwitchMatrixConfig) {
 // Open all relays
+	printf("Resetting all relays\n");
     int i, j, error;
     
     for (i=0; i<SwitchMatrixConfig->numBoards; i++) {
@@ -168,6 +188,10 @@ int resetAllRelays(struct SwitchMatrixConfig_type *SwitchMatrixConfig) {
     }
     for (i=0; i<MaxRelays; i++) {  //Initialize relay status array to the unused values
         SwitchMatrixConfig->RelayStatus[i].status = Unused;
+		
+		for (int j = 0;j < MaxInputs;j++) {
+			SwitchMatrixConfig->Connections[j][i] = DisConnect;
+		}
     }
 	return 0;
 }
