@@ -26,10 +26,6 @@ Prototype="int ManConnectionChanged_CB(int panel, int control, int event, void *
 Class="Function"
 Prototype="void updateManualControls();"
 
-[updateRelays]
-Class="Function"
-Prototype="void updateRelays();"
-
 [ManualMeasure_CB]
 Class="Function"
 Prototype="int ManualMeasure_CB(int panel, int control, int event, void *callbackData, int eventData1, int eventData2);"
@@ -53,6 +49,14 @@ Prototype="float getIBias();"
 [SendGPIB]
 Class="Function"
 Prototype="int SendGPIB(int panel, int control, int event, void *callbackData, int eventData1, int eventData2);"
+
+[changeConnection]
+Class="Function"
+Prototype="void changeConnection(int port, int pin);"
+
+[resetRelays_CB]
+Class="Function"
+Prototype="int resetRelays_CB(int panel, int control, int event, void *callbackData, int eventData1, int eventData2);"
 
 [Run]
 Class="Function"

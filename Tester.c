@@ -31,6 +31,7 @@ float getVBias();
 float getIBias();
 void takeCurrentMeasurement(Addr4882_t addr, float bias, double* data);
 void takeVoltageMeasurement(Addr4882_t addr, float bias, double* data);
+void changeConnection(int port, int pin);
 
 //==============================================================================
 // Constants
@@ -129,6 +130,11 @@ int CVICALLBACK LoadProbeCard_CB(int panel, int control, int event, void *callba
 	
 				// Update the manual controls to reflect the available options
 				updateManualControls();
+				
+				// Enable the currently disabled controls
+				SetCtrlAttribute(panelHandle, MAINPANEL_RUNBUTTON, ATTR_DIMMED, 0);
+				SetCtrlAttribute(panelHandle, MAINPANEL_SENDBUTTON, ATTR_DIMMED, 0);
+				SetCtrlAttribute(panelHandle, MAINPANEL_RESETRELAYSBUTTON, ATTR_DIMMED, 0);
 			}
 	}
 	
@@ -137,6 +143,24 @@ int CVICALLBACK LoadProbeCard_CB(int panel, int control, int event, void *callba
 
 int CVICALLBACK ManConnectionChanged_CB(int panel, int control, int event, void *callbackData, int eventData1, int eventData2)
 {
+	switch(event) {
+		case EVENT_COMMIT:
+			int port = 0;
+			switch(control) {
+				case TABPANEL_2_MAN_CON1_RING:
+					port = 1;
+					break;
+				case TABPANEL_2_MAN_CON2_RING:
+					port = 2;
+					break;
+			}
+			int pin;
+			GetCtrlIndex(manualTabHandle, control, &pin);
+			pin = pin + 1;
+			
+			changeConnection(port, pin);
+	}
+	
 	return 0;
 }
 
@@ -161,12 +185,6 @@ void updateManualControls()
 		}
 		SetCtrlIndex(manualTabHandle, MenuHandle, i);
 	}
-	
-	updateRelays();
-}
-
-void updateRelays()
-{
 }
 
 int CVICALLBACK ManualMeasure_CB(int panel, int control, int event, void *callbackData, int eventData1, int eventData2)
@@ -205,12 +223,6 @@ int CVICALLBACK ManualMeasure_CB(int panel, int control, int event, void *callba
 
 void takeCurrentMeasurement(Addr4882_t addr, float vbias, double* data)
 {
-	/* Old Version
-	setVoltage(addr, vbias);
-	sendCommand(addr, ":CONF:CURR");
-	measure(addr, data);
-	*/
-	
 	ke24__initializeVSource(addr);
 	ke24__setSourceAmplitude(addr, KE24__FUNC_VOLTAGE, vbias);
 	ke24__takeMeasurement(addr, data);
@@ -218,12 +230,6 @@ void takeCurrentMeasurement(Addr4882_t addr, float vbias, double* data)
 
 void takeVoltageMeasurement(Addr4882_t addr, float ibias, double* data)
 {
-	/* Old Version
-	setCurrent(addr, ibias);
-	sendCommand(addr, ":CONF:VOLT");
-	measure(addr, data);
-	*/
-	
 	ke24__initializeISource(addr);
 	ke24__setSourceAmplitude(addr, KE24__FUNC_CURRENT, ibias);
 	ke24__takeMeasurement(addr, data);
@@ -247,8 +253,6 @@ float getIBias()
 }
 
 
-
-
 int CVICALLBACK SendGPIB (int panel, int control, int event,
 						  void *callbackData, int eventData1, int eventData2)
 {
@@ -269,6 +273,33 @@ int CVICALLBACK SendGPIB (int panel, int control, int event,
 			ke24__takeMeasurement(24, data);
 			
 			int tmp;
+	}
+	
+	return 0;
+}
+
+// Chance the connection for the selected port from whatever it currently is to the specified probe pin 
+void changeConnection(int port, int pin) {
+	// Disconnect this port from any pins it is currently connected to
+	int boardAddress = SwitchMatrixConfig->BoardAddresses[port-1]; 
+	
+	for(int i = 0;i < SwitchMatrixConfig->numProbePins;i++) {
+		int pinBoardAddress = SwitchMatrixConfig->RelayStatus[i].boardAddress;
+		if (pinBoardAddress == boardAddress) {
+			switchMatrix(port, i + 1, DisConnect, SwitchMatrixConfig);
+		}
+	}
+	
+	// Connect the new pin
+	switchMatrix(port, pin, Connect, SwitchMatrixConfig);
+}
+
+int CVICALLBACK resetRelays_CB(int panel, int control, int event, void *callbackData, int eventData1, int eventData2)
+{
+	switch(event) {
+		case EVENT_COMMIT:
+			int error = resetAllRelays(SwitchMatrixConfig);
+			break;
 	}
 	
 	return 0;

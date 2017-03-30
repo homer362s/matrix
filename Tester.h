@@ -14,15 +14,15 @@
      /* Panels and Controls: */
 
 #define  MAINPANEL                        1       /* callback function: panelCB */
-#define  MAINPANEL_RunButton              2       /* control type: command, callback function: Run */
-#define  MAINPANEL_COMMANDBUTTON          3       /* control type: command, callback function: SendGPIB */
+#define  MAINPANEL_RUNBUTTON              2       /* control type: command, callback function: Run */
+#define  MAINPANEL_SENDBUTTON             3       /* control type: command, callback function: SendGPIB */
 #define  MAINPANEL_GPIBADDRESSRING        4       /* control type: ring, callback function: (none) */
 #define  MAINPANEL_GPIBDEVICERING         5       /* control type: ring, callback function: (none) */
 #define  MAINPANEL_GPIBSCANBUTTON         6       /* control type: command, callback function: GPIBScan_CB */
 #define  MAINPANEL_LOADPROBECARDBUTTON    7       /* control type: command, callback function: LoadProbeCard_CB */
 #define  MAINPANEL_TEXTMSG_2              8       /* control type: textMsg, callback function: (none) */
 #define  MAINPANEL_TABS                   9       /* control type: tab, callback function: (none) */
-#define  MAINPANEL_COMMANDBUTTON_2        10      /* control type: command, callback function: (none) */
+#define  MAINPANEL_RESETRELAYSBUTTON      10      /* control type: command, callback function: resetRelays_CB */
 #define  MAINPANEL_DECORATION             11      /* control type: deco, callback function: (none) */
 #define  MAINPANEL_TEXTMSG                12      /* control type: textMsg, callback function: (none) */
 
@@ -56,6 +56,7 @@ int  CVICALLBACK LoadProbeCard_CB(int panel, int control, int event, void *callb
 int  CVICALLBACK ManConnectionChanged_CB(int panel, int control, int event, void *callbackData, int eventData1, int eventData2);
 int  CVICALLBACK ManualMeasure_CB(int panel, int control, int event, void *callbackData, int eventData1, int eventData2);
 int  CVICALLBACK panelCB(int panel, int event, void *callbackData, int eventData1, int eventData2);
+int  CVICALLBACK resetRelays_CB(int panel, int control, int event, void *callbackData, int eventData1, int eventData2);
 int  CVICALLBACK Run(int panel, int control, int event, void *callbackData, int eventData1, int eventData2);
 int  CVICALLBACK SendGPIB(int panel, int control, int event, void *callbackData, int eventData1, int eventData2);
 
