@@ -1,4 +1,4 @@
-Interface.obj
+gpibTools.obj
 Keithley2400.obj
 SwitchMatrixControl.obj
 Tester.obj

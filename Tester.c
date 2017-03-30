@@ -19,8 +19,8 @@
 #include "Tester.h"
 #include "toolbox.h"
 #include "SwitchMatrixControl.h"
-#include "Interface.h"
 #include "Keithley2400.h"
+#include "gpibTools.h"
 
 
 void GPIBScan();
@@ -108,7 +108,7 @@ void GPIBScan()
 
 	// Replace those items with the newly discovered ones
 	Addr4882_t AttachedDevices[30];
-	int devCount = ScanForGPIBDevices(AttachedDevices);
+	int devCount = gpib__scanForDevices(AttachedDevices);
 
 	char tmpstr[3];
 	for(int i = 0; i < devCount; i++) {
@@ -173,8 +173,9 @@ int CVICALLBACK ManualMeasure_CB(int panel, int control, int event, void *callba
 {
 	switch(event) {
 		case EVENT_COMMIT:
-			setDelay(24, 1);
-			setAutoOff(24,1);
+			ke24__setSourceDelay(24,1);
+			ke24__setOutputAuto(24,KE24__AUTO_ON);
+			
 			float bias;
 			double data[5];
 			switch(control) {
@@ -204,16 +205,28 @@ int CVICALLBACK ManualMeasure_CB(int panel, int control, int event, void *callba
 
 void takeCurrentMeasurement(Addr4882_t addr, float vbias, double* data)
 {
+	/* Old Version
 	setVoltage(addr, vbias);
 	sendCommand(addr, ":CONF:CURR");
 	measure(addr, data);
+	*/
+	
+	ke24__initializeVSource(addr);
+	ke24__setSourceAmplitude(addr, KE24__FUNC_VOLTAGE, vbias);
+	ke24__takeMeasurement(addr, data);
 }
 
 void takeVoltageMeasurement(Addr4882_t addr, float ibias, double* data)
 {
+	/* Old Version
 	setCurrent(addr, ibias);
 	sendCommand(addr, ":CONF:VOLT");
 	measure(addr, data);
+	*/
+	
+	ke24__initializeISource(addr);
+	ke24__setSourceAmplitude(addr, KE24__FUNC_CURRENT, ibias);
+	ke24__takeMeasurement(addr, data);
 }
 
 
@@ -249,12 +262,11 @@ int CVICALLBACK SendGPIB (int panel, int control, int event,
 			
 			//static char cmd[] = ":SOUR:VOLT 0";
 			//Send(0, 24, cmd, StringLength(cmd), NLend);
-			reset(24);
-			setVoltage(24, 1);
-			sourceOn(24);
+			gpib__reset(24);
+			ke24__initializeVSource(24);
+			ke24__setSourceAmplitude(24, KE24__FUNC_VOLTAGE, 1);
 			double data[5];
-			measure(24, data);
-			sourceOff(24);
+			ke24__takeMeasurement(24, data);
 			
 			int tmp;
 	}

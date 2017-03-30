@@ -1,48 +1,76 @@
-[reset]
+[ke24__setSourceFunc]
 Class="Function"
-Prototype="void reset(short addr);"
+Prototype="void ke24__setSourceFunc(short addr, char *func);"
 
-[setVoltage]
+[ke24__setSourceMode]
 Class="Function"
-Prototype="void setVoltage(short addr, double voltage);"
+Prototype="void ke24__setSourceMode(short addr, char *func, char *mode);"
 
-[setCurrent]
+[ke24__setSourceRange]
 Class="Function"
-Prototype="void setCurrent(short addr, double current);"
+Prototype="void ke24__setSourceRange(short addr, char *func, float range);"
 
-[sourceOn]
+[ke24__setSourceRangeAuto]
 Class="Function"
-Prototype="void sourceOn(short addr);"
+Prototype="void ke24__setSourceRangeAuto(short addr, char *func, int autoRange);"
 
-[sourceOff]
+[ke24__setSourceAmplitude]
 Class="Function"
-Prototype="void sourceOff(short addr);"
+Prototype="void ke24__setSourceAmplitude(short addr, char *func, float amplitude);"
 
-[disableDisplay]
+[ke24__setSourceLimit]
 Class="Function"
-Prototype="void disableDisplay(short addr);"
+Prototype="void ke24__setSourceLimit(short addr, char *func, float level);"
 
-[enableDisplay]
+[ke24__setSourceDelay]
 Class="Function"
-Prototype="void enableDisplay(short addr);"
+Prototype="void ke24__setSourceDelay(short addr, float delay);"
 
-[readDisplay]
+[ke24__setSourceDelayAuto]
 Class="Function"
-Prototype="void readDisplay(short addr, char *msg);"
+Prototype="void ke24__setSourceDelayAuto(short addr, int autoDelay);"
 
-[sendCommand]
+[ke24__setSenseFunc]
 Class="Function"
-Prototype="void sendCommand(short addr, char *cmd);"
+Prototype="void ke24__setSenseFunc(short addr, char *func);"
 
-[setDelay]
+[ke24__setSenseRange]
 Class="Function"
-Prototype="void setDelay(short addr, float delay);"
+Prototype="void ke24__setSenseRange(short addr, char *func, float range);"
 
-[setAutoOff]
+[ke24__setSenseRangeAuto]
 Class="Function"
-Prototype="void setAutoOff(short addr, int toggle);"
+Prototype="void ke24__setSenseRangeAuto(short addr, char *func, int autoRange);"
 
-[measure]
+[ke24__setCompliance]
 Class="Function"
-Prototype="double measure(short addr, double *data);"
+Prototype="void ke24__setCompliance(short addr, char *func, float level);"
+
+[ke24__setMeasurementSpeed]
+Class="Function"
+Prototype="void ke24__setMeasurementSpeed(short addr, char *func, float cycles);"
+
+[ke24__setOutput]
+Class="Function"
+Prototype="void ke24__setOutput(short addr, int state);"
+
+[ke24__setOutputAuto]
+Class="Function"
+Prototype="void ke24__setOutputAuto(short addr, int autoSource);"
+
+[ke24__initialize]
+Class="Function"
+Prototype="void ke24__initialize(short addr, char *sourceFunc, char *senseFunc);"
+
+[ke24__initializeVSource]
+Class="Function"
+Prototype="void ke24__initializeVSource(short addr);"
+
+[ke24__initializeISource]
+Class="Function"
+Prototype="void ke24__initializeISource(short addr);"
+
+[ke24__takeMeasurement]
+Class="Function"
+Prototype="void ke24__takeMeasurement(short addr, double *data);"
 

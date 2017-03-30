@@ -3,86 +3,131 @@
 #include <gpib.h>
 
 #include "Keithley2400.h"
+#include "gpibTools.h"
 
+// Table 3-6 (pg 3-19) in the documentation has a good example
 
-void reset(Addr4882_t addr) {
-	Send(0, addr, "*RST", 4, NLend);
+void ke24__setSourceFunc(Addr4882_t addr, char* func) {
+	char cmd[64];
+	sprintf(cmd, ":SOUR:FUNC %s", func);
+	gpib__command(addr, cmd);
 }
 
-void setVoltage(Addr4882_t addr, double voltage) {
-	sendCommand(addr, ":SOUR:FUNC VOLT");
-	sendCommand(addr, ":SOUR:VOLT:MODE FIX");
-	sendCommand(addr, ":SOUR:VOLT:RANG:AUTO 1");
-	
-	static char cmd[256];
-	sprintf(cmd, ":SOUR:VOLT %e", voltage);
-	sendCommand(addr, cmd);
+void ke24__setSourceMode(Addr4882_t addr, char* func, char* mode) {
+	char cmd[64];
+	sprintf(cmd, ":SOUR:%s:MODE %s", func, mode);
+	gpib__command(addr, cmd);
 }
 
-void setCurrent(Addr4882_t addr, double current) {
-	sendCommand(addr, ":SOUR:FUNC CURR");
-	sendCommand(addr, ":SOUR:CURR:MODE FIX");
-	sendCommand(addr, ":SOUR:CURR:RANG:AUTO 1");
-	
-	static char cmd[256];
-	sprintf(cmd, ":SOUR:CURR %e", current);
-	sendCommand(addr, cmd);
+void ke24__setSourceRange(Addr4882_t addr, char* func, float range) {
+	char cmd[64];
+	sprintf(cmd, ":SOUR:%s:RANG %e", func, range);
+	gpib__command(addr, cmd);
 }
 
-void sourceOn(Addr4882_t addr) {
-	Send(0, addr, ":OUTP 1", 7, NLend);
+void ke24__setSourceRangeAuto(Addr4882_t addr, char* func, int autoRange) {
+	char cmd[64];
+	sprintf(cmd, ":SOUR:%s:RANG:AUTO %d", func, autoRange);
+	gpib__command(addr, cmd);
 }
 
-void sourceOff(Addr4882_t addr) {
-	Send(0, addr, ":OUTP 0", 7, NLend);
+void ke24__setSourceAmplitude(Addr4882_t addr, char* func, float amplitude) {
+	char cmd[64];
+	sprintf(cmd, ":SOUR:%s %e", func, amplitude);
+	gpib__command(addr, cmd);
 }
 
-void disableDisplay(Addr4882_t addr) {
-	Send(0, addr, ":DISP:ENAB 0", 12, NLend);
+void ke24__setSourceLimit(Addr4882_t addr, char* func, float level) {
+	char cmd[64];
+	sprintf(cmd, ":SOUR:%s:PROT %e", func, level);
+	gpib__command(addr, cmd);
 }
 
-void enableDisplay(Addr4882_t addr) {
-	Send(0, addr, ":DISP:ENAB 1", 12, NLend);
-}
-
-// Read the text of the display. There are better ways to get data.
-void readDisplay(Addr4882_t addr, char* msg) {
-	Send(0, addr, ":DISP:DATA?", 11, NLend);
-	Receive(0, addr, msg, 256, STOPend);
-}
-
-
-void sendCommand(Addr4882_t addr, char* cmd) {
-	Send(0, 24, cmd, StringLength(cmd), NLend);
-}
-
-void setDelay(Addr4882_t addr, float delay) {
+// Set the delay before a measurement can be taken in seconds. 0-999.9999
+void ke24__setSourceDelay(Addr4882_t addr, float delay) {
 	char cmd[64];
 	sprintf(cmd, ":SOUR:DEL %f", delay);
-	sendCommand(addr, cmd);
+	gpib__command(addr, cmd);
 }
 
-void setAutoOff(Addr4882_t addr, int toggle) {
+void ke24__setSourceDelayAuto(Addr4882_t addr, int autoDelay) {
 	char cmd[64];
-	sprintf(cmd, ":SOUR:CLE:AUTO %d", toggle);
-	sendCommand(addr, cmd);
+	sprintf(cmd, ":SOUR:DEL:AUTO %d", autoDelay);
+	gpib__command(addr, cmd);
+}
+
+
+void ke24__setSenseFunc(Addr4882_t addr, char* func) {
+	char cmd[64];
+	sprintf(cmd, ":SENS:FUNC \"%s\"", func);
+	gpib__command(addr, cmd);
+}
+
+void ke24__setSenseRange(Addr4882_t addr, char* func, float range) {
+	char cmd[64];
+	sprintf(cmd, ":%s:RANG %e", func, range);
+	gpib__command(addr, cmd);
+}
+
+void ke24__setSenseRangeAuto(Addr4882_t addr, char* func, int autoRange) {
+	char cmd[64];
+	sprintf(cmd, ":%s:RANG:AUTO %d", func, autoRange);
+	gpib__command(addr, cmd);
+}
+
+void ke24__setCompliance(Addr4882_t addr, char* func, float level) {
+	char cmd[64];
+	sprintf(cmd, ":%s:PROT %e", func, level);
+	gpib__command(addr, cmd);
+}
+
+void ke24__setMeasurementSpeed(Addr4882_t addr, char* func, float cycles) {
+	char cmd[64];
+	sprintf(cmd, ":%s:NPLC %f", func, cycles);
+	gpib__command(addr, cmd);
+}
+
+void ke24__setOutput(Addr4882_t addr, int state) {
+	char cmd[64];
+	sprintf(cmd, ":OUTP %d", state);
+	gpib__command(addr, cmd);
+}
+
+void ke24__setOutputAuto(Addr4882_t addr, int autoSource) {
+	char cmd[64];
+	sprintf(cmd, ":SOUR:CLE:AUTO %d", autoSource);
+	gpib__command(addr, cmd);
+}
+
+void ke24__initialize(Addr4882_t addr, char* sourceFunc, char* senseFunc) {
+	ke24__setSourceFunc(addr, sourceFunc);
+	ke24__setSenseFunc(addr, senseFunc);
+	ke24__setSourceMode(addr, sourceFunc, KE24__MODE_FIXED);
+	ke24__setSourceRangeAuto(addr, sourceFunc, KE24__AUTO_ON);
+	ke24__setOutputAuto(addr, KE24__AUTO_ON);
+	//ke24__setSourceDelayAuto(addr, KE24__AUTO_ON);
+	ke24__setSourceDelay(addr, 0.1);
+}
+
+void ke24__initializeVSource(Addr4882_t addr) {
+	ke24__initialize(addr, KE24__FUNC_VOLTAGE, KE24__FUNC_CURRENT);
+}
+
+void ke24__initializeISource(Addr4882_t addr) {
+	ke24__initialize(addr, KE24__FUNC_CURRENT, KE24__FUNC_VOLTAGE);
 }
 
 // data will be populated with the measured values:
 // data = [voltage, current, resistance, time, status]
 // Note. Resistance seems to give incorrect values.
 // It should probably not be used
-double measure(Addr4882_t addr, double* data) {
+void ke24__takeMeasurement(Addr4882_t addr, double* data) {
+	gpib__enableRemote(addr);
 	
-	Addr4882_t addrList[2];
-	addrList[0] = addr;
-	addrList[1] = -1;
-	EnableRemote(0, addrList);
-	
-	sendCommand(addr, ":MEAS?");
+	gpib__command(addr, ":MEAS?");
 	
 	char msg[256];
-	Receive(0, addr, msg, 256, STOPend);
+	gpib__receive(addr, msg, 256);
 	
 	char aval[14];
 	
@@ -92,6 +137,5 @@ double measure(Addr4882_t addr, double* data) {
 		aval[13] = 0;
 		data[i] = atof(aval);
 	}
-	
-	return 0;
 }
+

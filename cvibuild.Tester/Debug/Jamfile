@@ -29,18 +29,18 @@ HDRS = 	"c:\\program files (x86)\\national instruments\\cvi2015\\toolslib\\activ
 	"c:\\Program Files (x86)\\National Instruments\\Shared\\CVI\\Bin"
 	;
 include Jamfile_instr ;
-LOCATE on "Interface.c" = "c:\\Users\\user\\Desktop\\switch matrix wip" ;
-LOCATE on "Interface.h" = "c:\\Users\\user\\Desktop\\switch matrix wip" ;
+LOCATE on "gpibTools.c" = "c:\\Users\\user\\Desktop\\switch matrix wip" ;
+LOCATE on "gpibTools.h" = "c:\\Users\\user\\Desktop\\switch matrix wip" ;
 LOCATE on "Keithley2400.c" = "c:\\Users\\user\\Desktop\\switch matrix wip" ;
 LOCATE on "Keithley2400.h" = "c:\\Users\\user\\Desktop\\switch matrix wip" ;
 LOCATE on "SwitchMatrixControl.c" = "c:\\Users\\user\\Desktop\\switch matrix wip" ;
 LOCATE on "SwitchMatrixControl.h" = "c:\\Users\\user\\Desktop\\switch matrix wip" ;
 LOCATE on "Tester.c" = "c:\\Users\\user\\Desktop\\switch matrix wip" ;
-Object "c:\\Users\\user\\Desktop\\switch matrix wip\\cvibuild.Tester\\Debug\\Interface.obj" : "c:\\Users\\user\\Desktop\\switch matrix wip\\Interface.c" ;
-FILENUM on "c:\\Users\\user\\Desktop\\switch matrix wip\\cvibuild.Tester\\Debug\\Interface.obj" = 1 ;
-DEFPROTS on "c:\\Users\\user\\Desktop\\switch matrix wip\\cvibuild.Tester\\Debug\\Interface.obj" = "c:\\Users\\user\\Desktop\\switch matrix wip\\cvibuild.Tester\\Debug\\Interface.obj.cvidefprots" ;
-OUTFILE on "c:\\Users\\user\\Desktop\\switch matrix wip\\cvibuild.Tester\\Debug\\Interface.obj" = "c:\\Users\\user\\Desktop\\switch matrix wip\\cvibuild.Tester\\Debug\\Interface.obj.out" ;
-PrjObjects += "c:\\Users\\user\\Desktop\\switch matrix wip\\cvibuild.Tester\\Debug\\Interface.obj" ;
+Object "c:\\Users\\user\\Desktop\\switch matrix wip\\cvibuild.Tester\\Debug\\gpibTools.obj" : "c:\\Users\\user\\Desktop\\switch matrix wip\\gpibTools.c" ;
+FILENUM on "c:\\Users\\user\\Desktop\\switch matrix wip\\cvibuild.Tester\\Debug\\gpibTools.obj" = 1 ;
+DEFPROTS on "c:\\Users\\user\\Desktop\\switch matrix wip\\cvibuild.Tester\\Debug\\gpibTools.obj" = "c:\\Users\\user\\Desktop\\switch matrix wip\\cvibuild.Tester\\Debug\\gpibTools.obj.cvidefprots" ;
+OUTFILE on "c:\\Users\\user\\Desktop\\switch matrix wip\\cvibuild.Tester\\Debug\\gpibTools.obj" = "c:\\Users\\user\\Desktop\\switch matrix wip\\cvibuild.Tester\\Debug\\gpibTools.obj.out" ;
+PrjObjects += "c:\\Users\\user\\Desktop\\switch matrix wip\\cvibuild.Tester\\Debug\\gpibTools.obj" ;
 Object "c:\\Users\\user\\Desktop\\switch matrix wip\\cvibuild.Tester\\Debug\\Keithley2400.obj" : "c:\\Users\\user\\Desktop\\switch matrix wip\\Keithley2400.c" ;
 FILENUM on "c:\\Users\\user\\Desktop\\switch matrix wip\\cvibuild.Tester\\Debug\\Keithley2400.obj" = 2 ;
 DEFPROTS on "c:\\Users\\user\\Desktop\\switch matrix wip\\cvibuild.Tester\\Debug\\Keithley2400.obj" = "c:\\Users\\user\\Desktop\\switch matrix wip\\cvibuild.Tester\\Debug\\Keithley2400.obj.cvidefprots" ;
