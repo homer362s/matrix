@@ -74,6 +74,42 @@ Prototype="void setStatusBar(char *status);"
 Class="Function"
 Prototype="void setStatusDone();"
 
+[getCurrentTab]
+Class="Function"
+Prototype="int getCurrentTab();"
+
+[getTabCount]
+Class="Function"
+Prototype="int getTabCount();"
+
+[getNewFrameID]
+Class="Function"
+Prototype="void getNewFrameID(char *newID);"
+
+[newFrame_CB]
+Class="Function"
+Prototype="int newFrame_CB(int panel, int control, int event, void *callbackData, int eventData1, int eventData2);"
+
+[deleteFrame_CB]
+Class="Function"
+Prototype="int deleteFrame_CB(int panel, int control, int event, void *callbackData, int eventData1, int eventData2);"
+
+[saveFrame_CB]
+Class="Function"
+Prototype="int saveFrame_CB(int panel, int control, int event, void *callbackData, int eventData1, int eventData2);"
+
+[saveAllFrames_CB]
+Class="Function"
+Prototype="int saveAllFrames_CB(int panel, int control, int event, void *callbackData, int eventData1, int eventData2);"
+
+[renameFrame_CB]
+Class="Function"
+Prototype="int renameFrame_CB(int panel, int control, int event, void *callbackData, int eventData1, int eventData2);"
+
+[tabs_CB]
+Class="Function"
+Prototype="int tabs_CB(int panel, int control, int event, void *callbackData, int eventData1, int eventData2);"
+
 [startAutoMeasure_CB]
 Class="Function"
 Prototype="int startAutoMeasure_CB(int panel, int control, int event, void *callbackData, int eventData1, int eventData2);"

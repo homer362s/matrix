@@ -48,23 +48,23 @@ Batch Build Debug = False
 [File 0001]
 Path = "/c/Users/user/Desktop/switch matrix wip/Tester.uir"
 File Type = "User Interface Resource"
-Disk Date = 3573827688
+Disk Date = 3573836046
 In Projects = "1,"
 Window Top = 32
 Window Left = 10
 Window Height = 271
 Window Width = 523
-Window Z-Order = 1
+Window Z-Order = 2
 
 [File 0002]
 Path = "/c/Users/user/Desktop/switch matrix wip/Tester.c"
 File Type = "CSource"
-Disk Date = 3573827103
+Disk Date = 3573836280
 In Projects = "1,"
 Window Top = 62
 Window Left = 26
-Window Z-Order = 3
-Source Window State = "1,359,363,363,0,20,20,0,0,68,0,111,0,0,0,25,323,0,364,5,349,619,1,14,"
+Window Z-Order = 1
+Source Window State = "1,459,459,459,67,82,82,0,0,165,0,111,0,0,0,50,433,0,459,77,349,619,1,14,"
 
 [File 0003]
 Path = "/c/Users/user/Desktop/switch matrix wip/SwitchMatrixControl.c"
@@ -73,7 +73,7 @@ Disk Date = 3573825372
 In Projects = "1,"
 Window Top = 182
 Window Left = 90
-Window Z-Order = 5
+Window Z-Order = 6
 Source Window State = "1,33,33,33,34,38,38,0,0,76,0,278,0,0,0,25,21,0,33,35,349,683,1,15,"
 
 [File 0004]
@@ -83,7 +83,7 @@ Disk Date = 3573752482
 In Projects = "1,"
 Window Top = 32
 Window Left = 10
-Window Z-Order = 4
+Window Z-Order = 3
 Source Window State = "1,24,24,24,4,10,10,0,0,76,0,0,0,0,0,25,0,0,24,5,349,683,1,0,"
 
 [File 0005]
@@ -119,11 +119,11 @@ Source Window State = "1,0,0,0,0,27,27,0,0,76,0,0,0,0,0,25,0,0,0,0,349,683,1,0,"
 [File 0008]
 Path = "/c/Users/user/Desktop/switch matrix wip/Tester.h"
 File Type = "Include"
-Disk Date = 3573827688
+Disk Date = 3573836046
 In Projects = ""
 Window Top = 362
 Window Left = 186
-Window Z-Order = 2
+Window Z-Order = 4
 Source Window State = "1,37,37,37,9,28,28,0,0,76,0,0,0,0,0,25,8,0,23,19,349,683,1,0,"
 
 [File 0009]
@@ -133,7 +133,7 @@ Disk Date = 3562639200
 In Projects = ""
 Window Top = 92
 Window Left = 42
-Window Z-Order = 6
+Window Z-Order = 7
 Source Window State = "1,167,167,167,92,93,92,0,0,76,0,0,0,0,0,25,732,0,757,8,349,683,1,0,"
 
 [File 0010]
@@ -163,8 +163,8 @@ Disk Date = 3573736844
 In Projects = "1,"
 Window Top = 92
 Window Left = 42
-Window Z-Order = 7
-Source Window State = "1,23,23,23,0,50,0,0,0,76,0,2,0,2,0,25,13,0,33,4,349,683,1,0,"
+Window Z-Order = 5
+Source Window State = "1,23,23,23,0,50,0,0,0,76,0,2,0,2,0,25,0,0,4,4,349,683,1,0,"
 
 [File 0013]
 Path = "/c/Users/user/Desktop/switch matrix wip/gpibTools.h"

@@ -45,7 +45,7 @@ void setStatusDone();
 // Static global variables
 
 static int panelHandle = 0;
-int manualTabHandle;
+int currentTabHandle;
 
 //==============================================================================
 // Static functions
@@ -70,7 +70,7 @@ int main (int argc, char *argv[])
 	
 	/* display the panel and run the user interface */
 	errChk (DisplayPanel (panelHandle));
-	GetPanelHandleFromTabPage(panelHandle, MAINPANEL_TABS, 0, &manualTabHandle);
+	GetPanelHandleFromTabPage(panelHandle, MAINPANEL_TABS, 0, &currentTabHandle);
 	errChk (RunUserInterface ());
 
 Error:
@@ -241,20 +241,20 @@ int CVICALLBACK ManualMeasure_CB(int panel, int control, int event, void *callba
 			
 			
 			// Add row to table
-			InsertTableRows(manualTabHandle, TABPANEL_1_MANUALTABLE, -1, 1, VAL_CELL_NUMERIC);
+			InsertTableRows(currentTabHandle, TABPANEL_1_MANUALTABLE, -1, 1, VAL_CELL_NUMERIC);
 			
 			int row;
-			GetNumTableRows(manualTabHandle, TABPANEL_1_MANUALTABLE, &row); 
+			GetNumTableRows(currentTabHandle, TABPANEL_1_MANUALTABLE, &row); 
 			
-			SetTableCellVal(manualTabHandle, TABPANEL_1_MANUALTABLE, MakePoint(1,row), data[0]);
-			SetTableCellVal(manualTabHandle, TABPANEL_1_MANUALTABLE, MakePoint(2,row), data[1]);
-			SetTableCellVal(manualTabHandle, TABPANEL_1_MANUALTABLE, MakePoint(3,row), data[0]/data[1]);
+			SetTableCellVal(currentTabHandle, TABPANEL_1_MANUALTABLE, MakePoint(1,row), data[0]);
+			SetTableCellVal(currentTabHandle, TABPANEL_1_MANUALTABLE, MakePoint(2,row), data[1]);
+			SetTableCellVal(currentTabHandle, TABPANEL_1_MANUALTABLE, MakePoint(3,row), data[0]/data[1]);
 			
 			// Set row name
 			char label[16];
 			GetCtrlVal(panelHandle, MAINPANEL_DEVIDBOX, label);
-			SetTableRowAttribute(manualTabHandle, TABPANEL_1_MANUALTABLE, row, ATTR_USE_LABEL_TEXT, 1);
-			SetTableRowAttribute(manualTabHandle, TABPANEL_1_MANUALTABLE, row, ATTR_LABEL_TEXT, label);
+			SetTableRowAttribute(currentTabHandle, TABPANEL_1_MANUALTABLE, row, ATTR_USE_LABEL_TEXT, 1);
+			SetTableRowAttribute(currentTabHandle, TABPANEL_1_MANUALTABLE, row, ATTR_LABEL_TEXT, label);
 			
 			// Scroll table if necessary
 	}
@@ -351,6 +351,117 @@ void setStatusBar(char* status)
 void setStatusDone()
 {
 	setStatusBar("Done");
+}
+
+// Frame manipulation callbacks and helper functions
+int getCurrentTab()
+{
+	int currentTabIndex;
+	GetActiveTabPage(panelHandle, MAINPANEL_TABS, &currentTabIndex);
+	
+	return currentTabIndex;
+}
+
+int getTabCount()
+{
+	int tabCount;
+	GetNumTabPages(panelHandle, MAINPANEL_TABS, &tabCount);
+	
+	return tabCount;
+}
+
+void getNewFrameID(char* newID)
+{
+	GetCtrlVal(panelHandle, MAINPANEL_FRAMEIDBOX, newID);
+}
+
+int CVICALLBACK newFrame_CB(int panel, int control, int event, void *callbackData, int eventData1, int eventData2)
+{
+	switch (event) {
+		case EVENT_COMMIT:
+			// Make the tab
+			char newLabel[15];
+			getNewFrameID(newLabel);
+			int newTabIndex = InsertTabPage(panelHandle, MAINPANEL_TABS, getTabCount(), newLabel);
+			SetActiveTabPage(panelHandle, MAINPANEL_TABS, newTabIndex);
+			
+			// Update the current tab handle
+			GetPanelHandleFromTabPage(panelHandle, MAINPANEL_TABS, getCurrentTab(), &currentTabHandle);
+			
+			// Create the table in the new tab
+			int tableCtrlID = NewCtrl(currentTabHandle, CTRL_TABLE, 0, 0, 0);
+			SetCtrlAttribute(currentTabHandle, tableCtrlID, ATTR_WIDTH, 240);
+			SetCtrlAttribute(currentTabHandle, tableCtrlID, ATTR_HEIGHT, 350);
+			SetCtrlAttribute(currentTabHandle, tableCtrlID, ATTR_SCROLL_BARS, 2);
+			
+			InsertTableColumns(currentTabHandle, tableCtrlID, 1, 3, VAL_CELL_NUMERIC);
+
+			for (int i = 1;i <= 3;i++) {
+				SetTableColumnAttribute(currentTabHandle, tableCtrlID, i, ATTR_FORMAT, VAL_SCIENTIFIC_FORMAT);
+				SetTableColumnAttribute(currentTabHandle, tableCtrlID, i, ATTR_USE_LABEL_TEXT, 1);
+				SetTableColumnAttribute(currentTabHandle, tableCtrlID, i, ATTR_COLUMN_WIDTH, 60);
+			}
+			
+			SetTableColumnAttribute(currentTabHandle, tableCtrlID, 1, ATTR_LABEL_TEXT, "V [V]");
+			SetTableColumnAttribute(currentTabHandle, tableCtrlID, 2, ATTR_LABEL_TEXT, "I [A]");
+			SetTableColumnAttribute(currentTabHandle, tableCtrlID, 3, ATTR_LABEL_TEXT, "R [Ohm]");
+			
+			
+			break;
+	}
+	return 0;
+}
+
+int CVICALLBACK deleteFrame_CB(int panel, int control, int event, void *callbackData, int eventData1, int eventData2)
+{
+	switch (event) {
+		case EVENT_COMMIT:
+			int currentTab = getCurrentTab();
+			DeleteTabPage(panelHandle, MAINPANEL_TABS, currentTab, 1);
+			if (getTabCount() > 0)
+				SetActiveTabPage(panelHandle, MAINPANEL_TABS, currentTab == 0 ? 0 : currentTab - 1);
+			break;
+	}
+	return 0;
+}
+
+int CVICALLBACK saveFrame_CB(int panel, int control, int event, void *callbackData, int eventData1, int eventData2)
+{
+	switch (event) {
+		case EVENT_COMMIT:
+			break;
+	}
+	return 0;
+}
+
+int CVICALLBACK saveAllFrames_CB(int panel, int control, int event, void *callbackData, int eventData1, int eventData2)
+{
+	switch (event) {
+		case EVENT_COMMIT:
+			break;
+	}
+	return 0;
+}
+
+int CVICALLBACK renameFrame_CB(int panel, int control, int event, void *callbackData, int eventData1, int eventData2)
+{
+	switch (event) {
+		case EVENT_COMMIT:
+			break;
+	}
+	return 0;
+}
+
+int CVICALLBACK tabs_CB(int panel, int control, int event, void *callbackData, int eventData1, int eventData2)
+{
+	switch (event)
+	{
+		case EVENT_ACTIVE_TAB_CHANGE:
+			GetPanelHandleFromTabPage(panelHandle, MAINPANEL_TABS, eventData2, &currentTabHandle);
+			break;
+			
+	}
+	return 0;
 }
 
 int CVICALLBACK startAutoMeasure_CB(int panel, int control, int event, void *callbackData, int eventData1, int eventData2)
