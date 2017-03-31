@@ -32,6 +32,8 @@ float getIBias();
 void takeCurrentMeasurement(Addr4882_t addr, float bias, double* data);
 void takeVoltageMeasurement(Addr4882_t addr, float bias, double* data);
 void changeConnection(int port, int pin);
+void setStatusBar(char* status);
+void setStatusDone();
 
 //==============================================================================
 // Constants
@@ -68,7 +70,7 @@ int main (int argc, char *argv[])
 	
 	/* display the panel and run the user interface */
 	errChk (DisplayPanel (panelHandle));
-	GetPanelHandleFromTabPage(panelHandle, MAINPANEL_TABS, 1, &manualTabHandle);
+	GetPanelHandleFromTabPage(panelHandle, MAINPANEL_TABS, 0, &manualTabHandle);
 	errChk (RunUserInterface ());
 
 Error:
@@ -128,16 +130,19 @@ int CVICALLBACK LoadProbeCard_CB(int panel, int control, int event, void *callba
 			char pathName[512];
 			int success = FileSelectPopupEx("", "*.csv", "*.csv;*.*", "Select A Probe Card", VAL_LOAD_BUTTON, 0, 0, pathName);
 			if (success) {
-				int error = initSwitchMatrix(SwitchMatrixConfig, pathName);
+				initSwitchMatrix(SwitchMatrixConfig, pathName);
 	
 				// Update the manual controls to reflect the available options
 				updateManualControls();
 				
 				// Enable the currently disabled controls
-				SetCtrlAttribute(panelHandle, MAINPANEL_RUNBUTTON, ATTR_DIMMED, 0);
-				SetCtrlAttribute(panelHandle, MAINPANEL_SENDBUTTON, ATTR_DIMMED, 0);
 				SetCtrlAttribute(panelHandle, MAINPANEL_RESETRELAYSBUTTON, ATTR_DIMMED, 0);
 			}
+			
+			// Reset all relays
+			setStatusBar("Resetting Relays");
+			resetAllRelays(SwitchMatrixConfig);
+			setStatusDone();
 	}
 	
 	return 0;
@@ -149,16 +154,26 @@ int CVICALLBACK ManConnectionChanged_CB(int panel, int control, int event, void 
 		case EVENT_COMMIT:
 			int port = 0;
 			switch(control) {
-				case TABPANEL_2_MAN_CON1_RING:
+				case MAINPANEL_MAN_CON1_RING:
 					port = 1;
 					break;
-				case TABPANEL_2_MAN_CON2_RING:
+				case MAINPANEL_MAN_CON2_RING:
 					port = 2;
+					break;
+				// Note. At the time of writing this inputs 3-5 were inoperable.
+				// They are included here for ease of future expansion
+				case MAINPANEL_MAN_CON3_RING:
+					port = 3;
+					break;
+				case MAINPANEL_MAN_CON4_RING:
+					port = 4;
+					break;
+				case MAINPANEL_MAN_CON5_RING:
+					port = 5;
 					break;
 			}
 			int pin;
-			GetCtrlIndex(manualTabHandle, control, &pin);
-			pin = pin + 1;
+			GetCtrlIndex(panelHandle, control, &pin);
 			
 			changeConnection(port, pin);
 	}
@@ -170,7 +185,7 @@ void updateManualControls()
 {
 	int count;
 	
-	int ctrlArrayHandle = GetCtrlArrayFromResourceID(manualTabHandle, MAN_CON_ARRAY);
+	int ctrlArrayHandle = GetCtrlArrayFromResourceID(panelHandle, MAN_CON_ARRAY);
 	
 	GetNumCtrlArrayItems(ctrlArrayHandle, &count);
 	char tmpstr[5];
@@ -178,15 +193,26 @@ void updateManualControls()
 		int MenuHandle = GetCtrlArrayItem(ctrlArrayHandle, i);
 		
 		// Clear the menu
-		DeleteListItem(manualTabHandle, MenuHandle, 0, -1);
+		DeleteListItem(panelHandle, MenuHandle, 0, -1);
 		
 		// Fill in the menu
-		for(int j = SwitchMatrixConfig->numProbePins;j > 0;j--) {
-			sprintf(tmpstr, "%d", j); 
-			InsertListItem(manualTabHandle, MenuHandle, 0, tmpstr, j); 
-		}
-		SetCtrlIndex(manualTabHandle, MenuHandle, i);
+		for(int j = SwitchMatrixConfig->numProbePins+1;j > 1;j--) {
+			sprintf(tmpstr, "%d", j-1); 
+			InsertListItem(panelHandle, MenuHandle, 0, tmpstr, j); 
+		} 
+		InsertListItem(panelHandle, MenuHandle, 0, "None", 0);
+		SetCtrlIndex(panelHandle, MenuHandle, 0);
 	}
+}
+
+int CVICALLBACK LoadLayout_CB(int panel, int control, int event, void *callbackData, int eventData1, int eventData2)
+{
+	return 0;
+}
+
+int CVICALLBACK UpdateLabel_CB(int panel, int control, int event, void *callbackData, int eventData1, int eventData2)
+{
+	return 0;
 }
 
 int CVICALLBACK ManualMeasure_CB(int panel, int control, int event, void *callbackData, int eventData1, int eventData2)
@@ -199,25 +225,38 @@ int CVICALLBACK ManualMeasure_CB(int panel, int control, int event, void *callba
 			float bias;
 			double data[5];
 			switch(control) {
-				case TABPANEL_2_MEASURECURRENTBUTTON:
+				case MAINPANEL_MEASURECURRENTBUTTON:
 					bias = getVBias();
 					takeCurrentMeasurement(24, bias, data);
 					break;
-				case TABPANEL_2_MEASUREVOLTAGEBUTTON:
+				case MAINPANEL_MEASUREVOLTAGEBUTTON:
 					bias = getIBias();
 					takeVoltageMeasurement(24, bias, data);
+					break;
+				default:
+					data[0] = 0;
+					data[1] = 0;
 					break;
 			}
 			
 			
 			// Add row to table
-			int error = InsertTableRows(manualTabHandle, TABPANEL_2_MANUALTABLE, -1, 1, VAL_CELL_NUMERIC);
+			InsertTableRows(manualTabHandle, TABPANEL_1_MANUALTABLE, -1, 1, VAL_CELL_NUMERIC);
 			
 			int row;
-			GetNumTableRows(manualTabHandle, TABPANEL_2_MANUALTABLE, &row); 
+			GetNumTableRows(manualTabHandle, TABPANEL_1_MANUALTABLE, &row); 
 			
-			SetTableCellVal(manualTabHandle, TABPANEL_2_MANUALTABLE, MakePoint(1,row), data[0]);
-			SetTableCellVal(manualTabHandle, TABPANEL_2_MANUALTABLE, MakePoint(2,row), data[1]);
+			SetTableCellVal(manualTabHandle, TABPANEL_1_MANUALTABLE, MakePoint(1,row), data[0]);
+			SetTableCellVal(manualTabHandle, TABPANEL_1_MANUALTABLE, MakePoint(2,row), data[1]);
+			SetTableCellVal(manualTabHandle, TABPANEL_1_MANUALTABLE, MakePoint(3,row), data[0]/data[1]);
+			
+			// Set row name
+			char label[16];
+			GetCtrlVal(panelHandle, MAINPANEL_DEVIDBOX, label);
+			SetTableRowAttribute(manualTabHandle, TABPANEL_1_MANUALTABLE, row, ATTR_USE_LABEL_TEXT, 1);
+			SetTableRowAttribute(manualTabHandle, TABPANEL_1_MANUALTABLE, row, ATTR_LABEL_TEXT, label);
+			
+			// Scroll table if necessary
 	}
 	
 	return 0;
@@ -241,7 +280,7 @@ void takeVoltageMeasurement(Addr4882_t addr, float ibias, double* data)
 float getVBias()
 {
 	char strval[64];
-	GetCtrlVal(manualTabHandle, TABPANEL_2_VBIASBOX, strval);
+	GetCtrlVal(panelHandle, MAINPANEL_VBIASBOX, strval);
 	
 	return atof(strval);
 }
@@ -249,11 +288,10 @@ float getVBias()
 float getIBias()
 {
 	char strval[64];
-	GetCtrlVal(manualTabHandle, TABPANEL_2_IBIASBOX, strval);
+	GetCtrlVal(panelHandle, MAINPANEL_IBIASBOX, strval);
 	
 	return atof(strval);
 }
-
 
 int CVICALLBACK SendGPIB (int panel, int control, int event,
 						  void *callbackData, int eventData1, int eventData2)
@@ -273,8 +311,6 @@ int CVICALLBACK SendGPIB (int panel, int control, int event,
 			ke24__setSourceAmplitude(24, KE24__FUNC_VOLTAGE, 1);
 			double data[5];
 			ke24__takeMeasurement(24, data);
-			
-			int tmp;
 	}
 	
 	return 0;
@@ -290,17 +326,43 @@ void changeConnection(int port, int pin) {
 	}
 	
 	// Connect the new pin
-	switchMatrix(port, pin, Connect, SwitchMatrixConfig);
+	if (pin)
+		switchMatrix(port, pin, Connect, SwitchMatrixConfig);
 }
 
 int CVICALLBACK resetRelays_CB(int panel, int control, int event, void *callbackData, int eventData1, int eventData2)
 {
 	switch(event) {
 		case EVENT_COMMIT:
-			int error = resetAllRelays(SwitchMatrixConfig);
+			setStatusBar("Resetting Relays");
+			resetAllRelays(SwitchMatrixConfig);
+			setStatusDone();
 			break;
 	}
 	
+	return 0;
+}
+
+void setStatusBar(char* status)
+{
+	SetCtrlVal(panelHandle, MAINPANEL_STATUSBAR, status);
+}
+
+void setStatusDone()
+{
+	setStatusBar("Done");
+}
+
+int CVICALLBACK startAutoMeasure_CB(int panel, int control, int event, void *callbackData, int eventData1, int eventData2)
+{
+	switch(event) {
+		case EVENT_COMMIT:
+			setStatusBar("Measuring");
+	
+			// Do measurement in here
+	
+			setStatusDone();
+	}
 	return 0;
 }
 

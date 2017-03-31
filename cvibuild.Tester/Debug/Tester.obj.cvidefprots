@@ -26,6 +26,14 @@ Prototype="int ManConnectionChanged_CB(int panel, int control, int event, void *
 Class="Function"
 Prototype="void updateManualControls();"
 
+[LoadLayout_CB]
+Class="Function"
+Prototype="int LoadLayout_CB(int panel, int control, int event, void *callbackData, int eventData1, int eventData2);"
+
+[UpdateLabel_CB]
+Class="Function"
+Prototype="int UpdateLabel_CB(int panel, int control, int event, void *callbackData, int eventData1, int eventData2);"
+
 [ManualMeasure_CB]
 Class="Function"
 Prototype="int ManualMeasure_CB(int panel, int control, int event, void *callbackData, int eventData1, int eventData2);"
@@ -57,6 +65,18 @@ Prototype="void changeConnection(int port, int pin);"
 [resetRelays_CB]
 Class="Function"
 Prototype="int resetRelays_CB(int panel, int control, int event, void *callbackData, int eventData1, int eventData2);"
+
+[setStatusBar]
+Class="Function"
+Prototype="void setStatusBar(char *status);"
+
+[setStatusDone]
+Class="Function"
+Prototype="void setStatusDone();"
+
+[startAutoMeasure_CB]
+Class="Function"
+Prototype="int startAutoMeasure_CB(int panel, int control, int event, void *callbackData, int eventData1, int eventData2);"
 
 [Run]
 Class="Function"
