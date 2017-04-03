@@ -13,6 +13,7 @@
 -browsedeps:c:\Users\user\Desktop\switch matrix wip\cvibuild.Tester\Debug\moduledependencies.txt
 -stackreserve:1048576
 -stackcommit:4096
+-in:c:\Users\user\Desktop\switch matrix wip\cvibuild.Tester\Debug\autoConfigParse.obj
 -in:c:\Users\user\Desktop\switch matrix wip\cvibuild.Tester\Debug\gpibTools.obj
 -in:c:\Users\user\Desktop\switch matrix wip\cvibuild.Tester\Debug\Keithley2400.obj
 -in:c:\Users\user\Desktop\switch matrix wip\cvibuild.Tester\Debug\SwitchMatrixControl.obj

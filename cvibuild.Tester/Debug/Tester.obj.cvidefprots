@@ -18,6 +18,10 @@ Prototype="void GPIBScan();"
 Class="Function"
 Prototype="int LoadProbeCard_CB(int panel, int control, int event, void *callbackData, int eventData1, int eventData2);"
 
+[LoadLayout_CB]
+Class="Function"
+Prototype="int LoadLayout_CB(int panel, int control, int event, void *callbackData, int eventData1, int eventData2);"
+
 [ManConnectionChanged_CB]
 Class="Function"
 Prototype="int ManConnectionChanged_CB(int panel, int control, int event, void *callbackData, int eventData1, int eventData2);"
@@ -26,13 +30,9 @@ Prototype="int ManConnectionChanged_CB(int panel, int control, int event, void *
 Class="Function"
 Prototype="void updateManualControls();"
 
-[LoadLayout_CB]
+[renameRow_CB]
 Class="Function"
-Prototype="int LoadLayout_CB(int panel, int control, int event, void *callbackData, int eventData1, int eventData2);"
-
-[UpdateLabel_CB]
-Class="Function"
-Prototype="int UpdateLabel_CB(int panel, int control, int event, void *callbackData, int eventData1, int eventData2);"
+Prototype="int renameRow_CB(int panel, int control, int event, void *callbackData, int eventData1, int eventData2);"
 
 [ManualMeasure_CB]
 Class="Function"
@@ -85,6 +85,10 @@ Prototype="int getTabCount();"
 [getNewFrameID]
 Class="Function"
 Prototype="void getNewFrameID(char *newID);"
+
+[getSelectedRow]
+Class="Function"
+Prototype="int getSelectedRow();"
 
 [newFrame_CB]
 Class="Function"

@@ -1,4 +1,0 @@
-[ScanForGPIBDevices]
-Class="Function"
-Prototype="int ScanForGPIBDevices(short *ListenerList);"
-

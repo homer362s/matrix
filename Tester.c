@@ -12,6 +12,7 @@
 // Include files
 
 #include <formatio.h>
+#include <stdio.h>
 #include <ansi_c.h>
 #include <cvirte.h>		
 #include <userint.h>
@@ -21,6 +22,7 @@
 #include "SwitchMatrixControl.h"
 #include "Keithley2400.h"
 #include "gpibTools.h"
+#include "autoConfigParse.h"
 
 
 void GPIBScan();
@@ -34,6 +36,7 @@ void takeVoltageMeasurement(Addr4882_t addr, float bias, double* data);
 void changeConnection(int port, int pin);
 void setStatusBar(char* status);
 void setStatusDone();
+int getSelectedRow();
 
 //==============================================================================
 // Constants
@@ -148,6 +151,25 @@ int CVICALLBACK LoadProbeCard_CB(int panel, int control, int event, void *callba
 	return 0;
 }
 
+int CVICALLBACK LoadLayout_CB(int panel, int control, int event, void *callbackData, int eventData1, int eventData2)
+{
+	switch (event) {
+		case EVENT_COMMIT:
+			char pathName[512];
+			int success = FileSelectPopupEx("", "*.csv", "*.csv;*.*", "Select A Layout Config", VAL_LOAD_BUTTON, 0, 0, pathName);
+			if (success) {
+				// Read the file
+				struct AutoConfig* config = parseLayoutFile(pathName);
+				
+				
+				// Enable the "Start Measurement" button
+				SetCtrlAttribute(panelHandle, MAINPANEL_STARTMEASBUTTON, ATTR_DIMMED, 0);
+			}
+			break;
+	}
+	return 0;
+}
+
 int CVICALLBACK ManConnectionChanged_CB(int panel, int control, int event, void *callbackData, int eventData1, int eventData2)
 {
 	switch(event) {
@@ -205,13 +227,16 @@ void updateManualControls()
 	}
 }
 
-int CVICALLBACK LoadLayout_CB(int panel, int control, int event, void *callbackData, int eventData1, int eventData2)
+int CVICALLBACK renameRow_CB(int panel, int control, int event, void *callbackData, int eventData1, int eventData2)
 {
-	return 0;
-}
-
-int CVICALLBACK UpdateLabel_CB(int panel, int control, int event, void *callbackData, int eventData1, int eventData2)
-{
+	switch (event) {
+		case EVENT_COMMIT:
+			int row = getSelectedRow();
+			char label[16];
+			GetCtrlVal(panelHandle, MAINPANEL_DEVIDBOX, label);
+			SetTableRowAttribute(currentTabHandle, TABPANEL_1_MANUALTABLE, row, ATTR_LABEL_TEXT, label);
+			break;
+	}
 	return 0;
 }
 
@@ -224,11 +249,16 @@ int CVICALLBACK ManualMeasure_CB(int panel, int control, int event, void *callba
 			
 			float bias;
 			double data[5];
+			int row = -1;
 			switch(control) {
+				case MAINPANEL_REMEASURECURRENTBUTTO:
+					row = getSelectedRow();
 				case MAINPANEL_MEASURECURRENTBUTTON:
 					bias = getVBias();
 					takeCurrentMeasurement(24, bias, data);
 					break;
+				case MAINPANEL_REMEASUREVOLTAGEBUTTO:
+					row = getSelectedRow();
 				case MAINPANEL_MEASUREVOLTAGEBUTTON:
 					bias = getIBias();
 					takeVoltageMeasurement(24, bias, data);
@@ -240,11 +270,12 @@ int CVICALLBACK ManualMeasure_CB(int panel, int control, int event, void *callba
 			}
 			
 			
-			// Add row to table
-			InsertTableRows(currentTabHandle, TABPANEL_1_MANUALTABLE, -1, 1, VAL_CELL_NUMERIC);
-			
-			int row;
-			GetNumTableRows(currentTabHandle, TABPANEL_1_MANUALTABLE, &row); 
+			// Add row to table or modify existing row
+			if (row < 0)
+			{
+				InsertTableRows(currentTabHandle, TABPANEL_1_MANUALTABLE, -1, 1, VAL_CELL_NUMERIC);
+				GetNumTableRows(currentTabHandle, TABPANEL_1_MANUALTABLE, &row);
+			}	
 			
 			SetTableCellVal(currentTabHandle, TABPANEL_1_MANUALTABLE, MakePoint(1,row), data[0]);
 			SetTableCellVal(currentTabHandle, TABPANEL_1_MANUALTABLE, MakePoint(2,row), data[1]);
@@ -375,6 +406,13 @@ void getNewFrameID(char* newID)
 	GetCtrlVal(panelHandle, MAINPANEL_FRAMEIDBOX, newID);
 }
 
+int getSelectedRow()
+{
+	Point cell;
+	GetActiveTableCell(currentTabHandle, TABPANEL_1_MANUALTABLE, &cell);
+	return cell.y;
+}
+
 int CVICALLBACK newFrame_CB(int panel, int control, int event, void *callbackData, int eventData1, int eventData2)
 {
 	switch (event) {
@@ -393,6 +431,8 @@ int CVICALLBACK newFrame_CB(int panel, int control, int event, void *callbackDat
 			SetCtrlAttribute(currentTabHandle, tableCtrlID, ATTR_WIDTH, 240);
 			SetCtrlAttribute(currentTabHandle, tableCtrlID, ATTR_HEIGHT, 350);
 			SetCtrlAttribute(currentTabHandle, tableCtrlID, ATTR_SCROLL_BARS, 2);
+			SetCtrlAttribute(currentTabHandle, tableCtrlID, ATTR_ENABLE_COLUMN_SIZING, 0);
+			SetCtrlAttribute(currentTabHandle, tableCtrlID, ATTR_ENABLE_ROW_SIZING, 0);
 			
 			InsertTableColumns(currentTabHandle, tableCtrlID, 1, 3, VAL_CELL_NUMERIC);
 
@@ -447,6 +487,9 @@ int CVICALLBACK renameFrame_CB(int panel, int control, int event, void *callback
 {
 	switch (event) {
 		case EVENT_COMMIT:
+			char newLabel[15];
+			getNewFrameID(newLabel);
+			SetTabPageAttribute(panelHandle, MAINPANEL_TABS, getCurrentTab(), ATTR_LABEL_TEXT, newLabel);
 			break;
 	}
 	return 0;
@@ -471,6 +514,10 @@ int CVICALLBACK startAutoMeasure_CB(int panel, int control, int event, void *cal
 			setStatusBar("Measuring");
 	
 			// Do measurement in here
+			char label[16];
+			int pin1;
+			int pin2;
+			//getNextLayoutLine(label, &pin1, &pin2);
 	
 			setStatusDone();
 	}
