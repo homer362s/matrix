@@ -9,7 +9,7 @@ IVI Standard Root Dir = "/C/Program Files (x86)/IVI Foundation/IVI"
 VXIplug&play Framework Dir = "/C/Program Files (x86)/IVI Foundation/VISA/winnt"
 IVI Standard Root 64-bit Dir = "/C/Program Files/IVI Foundation/IVI"
 VXIplug&play Framework 64-bit Dir = "/C/Program Files/IVI Foundation/VISA/win64"
-Number of Files = 10
+Number of Files = 12
 Target Type = "Executable"
 Flags = 16
 Copied From Locked InstrDrv Directory = False
@@ -83,8 +83,8 @@ File Type = "CSource"
 Res Id = 5
 Path Is Rel = True
 Path Rel To = "Project"
-Path Rel Path = "SwitchMatrixControl.c"
-Path = "/c/Users/user/Desktop/switch matrix wip/SwitchMatrixControl.c"
+Path Rel Path = "Keithley6485.c"
+Path = "/c/Users/user/Desktop/switch matrix wip/Keithley6485.c"
 Exclude = False
 Compile Into Object File = False
 Project Flags = 0
@@ -96,6 +96,19 @@ File Type = "CSource"
 Res Id = 6
 Path Is Rel = True
 Path Rel To = "Project"
+Path Rel Path = "SwitchMatrixControl.c"
+Path = "/c/Users/user/Desktop/switch matrix wip/SwitchMatrixControl.c"
+Exclude = False
+Compile Into Object File = False
+Project Flags = 0
+Folder = "Source Files"
+Folder Id = 1
+
+[File 0007]
+File Type = "CSource"
+Res Id = 7
+Path Is Rel = True
+Path Rel To = "Project"
 Path Rel Path = "Tester.c"
 Path = "/c/Users/user/Desktop/switch matrix wip/Tester.c"
 Exclude = False
@@ -104,25 +117,13 @@ Project Flags = 0
 Folder = "Source Files"
 Folder Id = 1
 
-[File 0007]
-File Type = "Include"
-Res Id = 7
-Path Is Rel = True
-Path Rel To = "Project"
-Path Rel Path = "autoConfigParse.h"
-Path = "/c/Users/user/Desktop/switch matrix wip/autoConfigParse.h"
-Exclude = False
-Project Flags = 0
-Folder = "Include Files"
-Folder Id = 2
-
 [File 0008]
 File Type = "Include"
 Res Id = 8
 Path Is Rel = True
 Path Rel To = "Project"
-Path Rel Path = "gpibTools.h"
-Path = "/c/Users/user/Desktop/switch matrix wip/gpibTools.h"
+Path Rel Path = "autoConfigParse.h"
+Path = "/c/Users/user/Desktop/switch matrix wip/autoConfigParse.h"
 Exclude = False
 Project Flags = 0
 Folder = "Include Files"
@@ -133,8 +134,8 @@ File Type = "Include"
 Res Id = 9
 Path Is Rel = True
 Path Rel To = "Project"
-Path Rel Path = "Keithley2400.h"
-Path = "/c/Users/user/Desktop/switch matrix wip/Keithley2400.h"
+Path Rel Path = "gpibTools.h"
+Path = "/c/Users/user/Desktop/switch matrix wip/gpibTools.h"
 Exclude = False
 Project Flags = 0
 Folder = "Include Files"
@@ -143,6 +144,30 @@ Folder Id = 2
 [File 0010]
 File Type = "Include"
 Res Id = 10
+Path Is Rel = True
+Path Rel To = "Project"
+Path Rel Path = "Keithley2400.h"
+Path = "/c/Users/user/Desktop/switch matrix wip/Keithley2400.h"
+Exclude = False
+Project Flags = 0
+Folder = "Include Files"
+Folder Id = 2
+
+[File 0011]
+File Type = "Include"
+Res Id = 11
+Path Is Rel = True
+Path Rel To = "Project"
+Path Rel Path = "Keithley6485.h"
+Path = "/c/Users/user/Desktop/switch matrix wip/Keithley6485.h"
+Exclude = False
+Project Flags = 0
+Folder = "Include Files"
+Folder Id = 2
+
+[File 0012]
+File Type = "Include"
+Res Id = 12
 Path Is Rel = True
 Path Rel To = "Project"
 Path Rel Path = "SwitchMatrixControl.h"

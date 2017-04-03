@@ -14,6 +14,22 @@ Prototype="int GPIBScan_CB(int panel, int control, int event, void *callbackData
 Class="Function"
 Prototype="void GPIBScan();"
 
+[deviceChanged_CB]
+Class="Function"
+Prototype="int deviceChanged_CB(int panel, int control, int event, void *callbackData, int eventData1, int eventData2);"
+
+[addressChanged_CB]
+Class="Function"
+Prototype="int addressChanged_CB(int panel, int control, int event, void *callbackData, int eventData1, int eventData2);"
+
+[initializeMeasurement]
+Class="Function"
+Prototype="void initializeMeasurement(int addr);"
+
+[test_CB]
+Class="Function"
+Prototype="int test_CB(int panel, int control, int event, void *callbackData, int eventData1, int eventData2);"
+
 [LoadProbeCard_CB]
 Class="Function"
 Prototype="int LoadProbeCard_CB(int panel, int control, int event, void *callbackData, int eventData1, int eventData2);"

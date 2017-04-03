@@ -1,0 +1,28 @@
+[ke64__setZeroCheck]
+Class="Function"
+Prototype="void ke64__setZeroCheck(short addr, char *status);"
+
+[ke64__setZeroCorr]
+Class="Function"
+Prototype="void ke64__setZeroCorr(short addr, char *status);"
+
+[ke64__setRange]
+Class="Function"
+Prototype="void ke64__setRange(short addr, float range);"
+
+[ke64__setRangeAuto]
+Class="Function"
+Prototype="void ke64__setRangeAuto(short addr, char *status);"
+
+[ke64__zeroCorrect]
+Class="Function"
+Prototype="void ke64__zeroCorrect(short addr);"
+
+[ke64__initialize]
+Class="Function"
+Prototype="void ke64__initialize(short addr);"
+
+[ke64__takeMeasurement]
+Class="Function"
+Prototype="void ke64__takeMeasurement(short addr, double *data);"
+

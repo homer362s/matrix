@@ -2,7 +2,7 @@
 #include <formatio.h>
 
 void gpib__command(Addr4882_t addr, char* cmd) {
-	Send(0, 24, cmd, StringLength(cmd), NLend);
+	Send(0, addr, cmd, StringLength(cmd), NLend);
 }
 
 void gpib__enableRemote(Addr4882_t addr) {

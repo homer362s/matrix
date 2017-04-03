@@ -21,13 +21,19 @@
 #include "toolbox.h"
 #include "SwitchMatrixControl.h"
 #include "Keithley2400.h"
+#include "Keithley6485.h"
 #include "gpibTools.h"
 #include "autoConfigParse.h"
 
 #define MEASURE_CURRENT 0
 #define MEASURE_VOLTAGE 1
 
+#define NODEVICE 0
+#define KEITHLEY2400 1
+#define KEITHLEY6485 2
 
+
+// Function prototypes
 void GPIBScan();
 void updateManualControls();
 void updateRelays();
@@ -40,31 +46,22 @@ void changeConnection(int port, int pin);
 void setStatusBar(char* status);
 void setStatusDone();
 int getSelectedRow();
+void initializeMeasurement(int addr);
 
-//==============================================================================
-// Constants
 
-//==============================================================================
-// Types
-
-//==============================================================================
-// Static global variables
-
+// Global variables
 static int panelHandle = 0;
 int currentTabHandle;
+int sourceAddress = 0;
+int measAddress = 0;
+int sourceDevice = NODEVICE;
+int measDevice = NODEVICE;
 
-//==============================================================================
-// Static functions
-
-//==============================================================================
-// Global variables
 struct SwitchMatrixConfig_type *SwitchMatrixConfig;
 struct AutoConfig* layoutConfig = NULL;
 
-//==============================================================================
-// Global functions
 
-/// HIFN The main entry-point function.
+// Functions
 int main (int argc, char *argv[])
 {
 	int error = 0;
@@ -87,10 +84,6 @@ Error:
 	return 0;
 }
 
-//==============================================================================
-// UI callback function prototypes
-
-/// HIFN Exit when the user dismisses the panel.
 int CVICALLBACK panelCB (int panel, int event, void *callbackData, int eventData1, int eventData2)
 {
 	switch(event) {
@@ -114,7 +107,8 @@ int CVICALLBACK GPIBScan_CB(int panel, int control, int event, void *callbackDat
 void GPIBScan()
 {
 	// Delete all existing items in the dropdown menu
-	DeleteListItem(panelHandle, MAINPANEL_GPIBADDRESSRING, 0, -1);
+	DeleteListItem(panelHandle, MAINPANEL_SOURCEADDRESSRING, 0, -1);
+	DeleteListItem(panelHandle, MAINPANEL_MEASADDRESSRING, 0, -1);
 
 	// Replace those items with the newly discovered ones
 	Addr4882_t AttachedDevices[30];
@@ -122,12 +116,83 @@ void GPIBScan()
 	int devCount = gpib__scanForDevices(AttachedDevices);
 	SetBreakOnLibraryErrors(oldErrorSetting);
 
+	InsertListItem(panelHandle, MAINPANEL_SOURCEADDRESSRING, 0, "", 0);
+	InsertListItem(panelHandle, MAINPANEL_MEASADDRESSRING, 0, "", 0);
 	char tmpstr[3];
 	for(int i = 0; i < devCount; i++) {
 		sprintf(tmpstr, "%d", AttachedDevices[i]);
-		InsertListItem(panelHandle, MAINPANEL_GPIBADDRESSRING, 0, tmpstr, AttachedDevices[i]);
+		InsertListItem(panelHandle, MAINPANEL_SOURCEADDRESSRING, i+1, tmpstr, AttachedDevices[i]);
+		InsertListItem(panelHandle, MAINPANEL_MEASADDRESSRING, i+1, tmpstr, AttachedDevices[i]);
 	}
 
+}
+
+int CVICALLBACK deviceChanged_CB(int panel, int control, int event, void *callbackData, int eventData1, int eventData2)
+{
+	int newDevice;
+	switch(event) {
+		case EVENT_COMMIT:
+			GetCtrlVal(panelHandle, control, &newDevice);
+			int addressControl = 0;
+			switch(control) {
+				case MAINPANEL_SOURCEDEVICERING:
+					sourceDevice = newDevice;
+					addressControl = MAINPANEL_SOURCEADDRESSRING;
+					sourceAddress = 0;
+					break;
+				case MAINPANEL_MEASDEVICERING:
+					measDevice = newDevice;
+					addressControl = MAINPANEL_MEASADDRESSRING;
+					measAddress = 0;
+					break;
+			}
+			
+			SetCtrlIndex(panelHandle, addressControl, 0);
+	}
+	return 0;
+}
+
+int CVICALLBACK addressChanged_CB(int panel, int control, int event, void *callbackData, int eventData1, int eventData2)
+{
+	int value;
+	switch(event) {
+		case EVENT_COMMIT:
+			GetCtrlVal(panelHandle, control, &value);
+			switch(control) {
+				case MAINPANEL_SOURCEADDRESSRING:
+					sourceAddress = value;
+					break;
+				case MAINPANEL_MEASADDRESSRING:
+					measAddress = value;
+					initializeMeasurement(measAddress);
+					break;
+			}
+			break;
+	}
+	return 0;
+}
+
+void initializeMeasurement(int addr)
+{
+	switch(measDevice) {
+		case KEITHLEY2400:
+			break;
+		case KEITHLEY6485:
+			ke64__initialize(addr);
+			break;
+	}
+}
+
+int CVICALLBACK test_CB(int panel, int control, int event, void *callbackData, int eventData1, int eventData2)
+{
+	switch(event) {
+		case EVENT_COMMIT:
+			gpib__reset(14);
+			gpib__command(14, "CURR:RANG 0.02");
+			gpib__command(14, "DISP:DIG 3.5");
+			break;
+	}
+	return 0;
 }
 
 int CVICALLBACK LoadProbeCard_CB(int panel, int control, int event, void *callbackData, int eventData1, int eventData2)
@@ -268,10 +333,16 @@ int CVICALLBACK renameRow_CB(int panel, int control, int event, void *callbackDa
 
 void handleSingleMeasurement(int measurementType, int newRow, char* label)
 {
-	ke24__setSourceDelay(24,1);
-	ke24__setOutputAuto(24,KE24__AUTO_ON);
-
+	
 	float bias;
+	switch(sourceDevice) {
+		case KEITHLEY2400:
+			ke24__setSourceDelay(24,1);
+			ke24__setOutputAuto(24,KE24__AUTO_ON);
+			break;
+	}
+	
+
 	double data[5];
 	int row = -1;
 	if (!newRow) {
@@ -281,11 +352,11 @@ void handleSingleMeasurement(int measurementType, int newRow, char* label)
 	switch(measurementType) {
 		case MEASURE_CURRENT:
 			bias = getVBias();
-			takeCurrentMeasurement(24, bias, data);
+			takeCurrentMeasurement(measAddress, bias, data);
 			break;
 		case MEASURE_VOLTAGE:
 			bias = getIBias();
-			takeVoltageMeasurement(24, bias, data);
+			takeVoltageMeasurement(measAddress, bias, data);
 			break;
 		default:
 			data[0] = 0;
@@ -341,9 +412,32 @@ int CVICALLBACK ManualMeasure_CB(int panel, int control, int event, void *callba
 
 void takeCurrentMeasurement(Addr4882_t addr, float vbias, double* data)
 {
-	ke24__initializeVSource(addr);
-	ke24__setSourceAmplitude(addr, KE24__FUNC_VOLTAGE, vbias);
-	ke24__takeMeasurement(addr, data);
+	// Initialize and enable the source
+	switch(sourceDevice) {
+		case KEITHLEY2400:
+			ke24__initializeVSource(addr);
+			ke24__setSourceAmplitude(addr, KE24__FUNC_VOLTAGE, vbias);
+			ke24__setOutput(addr, KE24__SOURCE_ON);
+			break;
+	}
+	
+	// Take a measurement
+	switch(measDevice) {
+		case KEITHLEY2400:
+			ke24__takeMeasurement(addr, data);
+			break;
+		case KEITHLEY6485:
+			ke64__takeMeasurement(addr, data);
+			break;
+	}
+	
+	// Disable the source
+	switch(sourceDevice) {
+		case KEITHLEY2400:
+			ke24__setOutput(addr, KE24__SOURCE_OFF);
+			break;
+	}
+	
 }
 
 void takeVoltageMeasurement(Addr4882_t addr, float ibias, double* data)

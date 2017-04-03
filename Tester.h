@@ -27,35 +27,41 @@
 #define  MAINPANEL_IBIASBOX               12      /* control type: string, callback function: (none) */
 #define  MAINPANEL_MEASURECURRENTBUTTON   13      /* control type: command, callback function: ManualMeasure_CB */
 #define  MAINPANEL_VBIASBOX               14      /* control type: string, callback function: (none) */
-#define  MAINPANEL_GPIBADDRESSRING        15      /* control type: ring, callback function: (none) */
-#define  MAINPANEL_GPIBDEVICERING         16      /* control type: ring, callback function: (none) */
-#define  MAINPANEL_GPIBSCANBUTTON         17      /* control type: command, callback function: GPIBScan_CB */
-#define  MAINPANEL_LOADLAYOUTBUTTON       18      /* control type: command, callback function: LoadLayout_CB */
-#define  MAINPANEL_LOADPROBECARDBUTTON    19      /* control type: command, callback function: LoadProbeCard_CB */
-#define  MAINPANEL_PROBECARDNAME          20      /* control type: textMsg, callback function: (none) */
-#define  MAINPANEL_TABS                   21      /* control type: tab, callback function: tabs_CB */
-#define  MAINPANEL_RESETRELAYSBUTTON      22      /* control type: command, callback function: resetRelays_CB */
-#define  MAINPANEL_DECORATION             23      /* control type: deco, callback function: (none) */
-#define  MAINPANEL_TEXTMSG                24      /* control type: textMsg, callback function: (none) */
-#define  MAINPANEL_DECORATION_2           25      /* control type: deco, callback function: (none) */
-#define  MAINPANEL_DECORATION_3           26      /* control type: deco, callback function: (none) */
-#define  MAINPANEL_TEXTMSG_4              27      /* control type: textMsg, callback function: (none) */
-#define  MAINPANEL_TEXTMSG_3              28      /* control type: textMsg, callback function: (none) */
-#define  MAINPANEL_DECORATION_4           29      /* control type: deco, callback function: (none) */
-#define  MAINPANEL_TEXTMSG_5              30      /* control type: textMsg, callback function: (none) */
-#define  MAINPANEL_STARTMEASBUTTON        31      /* control type: command, callback function: startAutoMeasure_CB */
-#define  MAINPANEL_LAYOUTNAME             32      /* control type: textMsg, callback function: (none) */
-#define  MAINPANEL_SPLITTER               33      /* control type: splitter, callback function: (none) */
-#define  MAINPANEL_AUTOFRAMECHECK         34      /* control type: radioButton, callback function: (none) */
-#define  MAINPANEL_AUTODEVCHECK           35      /* control type: radioButton, callback function: (none) */
-#define  MAINPANEL_NEWBUTTON              36      /* control type: command, callback function: newFrame_CB */
-#define  MAINPANEL_SAVEALLBUTTON          37      /* control type: command, callback function: saveAllFrames_CB */
-#define  MAINPANEL_SAVEBUTTON             38      /* control type: command, callback function: saveFrame_CB */
-#define  MAINPANEL_DELETEBUTTON           39      /* control type: command, callback function: deleteFrame_CB */
-#define  MAINPANEL_REMEASURECURRENTBUTTO  40      /* control type: command, callback function: ManualMeasure_CB */
-#define  MAINPANEL_REMEASUREVOLTAGEBUTTO  41      /* control type: command, callback function: ManualMeasure_CB */
+#define  MAINPANEL_MEASADDRESSRING        15      /* control type: ring, callback function: addressChanged_CB */
+#define  MAINPANEL_MEASDEVICERING         16      /* control type: ring, callback function: deviceChanged_CB */
+#define  MAINPANEL_SOURCEADDRESSRING      17      /* control type: ring, callback function: addressChanged_CB */
+#define  MAINPANEL_SOURCEDEVICERING       18      /* control type: ring, callback function: deviceChanged_CB */
+#define  MAINPANEL_GPIBSCANBUTTON         19      /* control type: command, callback function: GPIBScan_CB */
+#define  MAINPANEL_LOADLAYOUTBUTTON       20      /* control type: command, callback function: LoadLayout_CB */
+#define  MAINPANEL_LOADPROBECARDBUTTON    21      /* control type: command, callback function: LoadProbeCard_CB */
+#define  MAINPANEL_PROBECARDNAME          22      /* control type: textMsg, callback function: (none) */
+#define  MAINPANEL_TABS                   23      /* control type: tab, callback function: tabs_CB */
+#define  MAINPANEL_RESETRELAYSBUTTON      24      /* control type: command, callback function: resetRelays_CB */
+#define  MAINPANEL_TEXTMSG                25      /* control type: textMsg, callback function: (none) */
+#define  MAINPANEL_DECORATION_2           26      /* control type: deco, callback function: (none) */
+#define  MAINPANEL_DECORATION_3           27      /* control type: deco, callback function: (none) */
+#define  MAINPANEL_TEXTMSG_4              28      /* control type: textMsg, callback function: (none) */
+#define  MAINPANEL_TEXTMSG_3              29      /* control type: textMsg, callback function: (none) */
+#define  MAINPANEL_DECORATION_4           30      /* control type: deco, callback function: (none) */
+#define  MAINPANEL_TEXTMSG_5              31      /* control type: textMsg, callback function: (none) */
+#define  MAINPANEL_STARTMEASBUTTON        32      /* control type: command, callback function: startAutoMeasure_CB */
+#define  MAINPANEL_LAYOUTNAME             33      /* control type: textMsg, callback function: (none) */
+#define  MAINPANEL_SPLITTER               34      /* control type: splitter, callback function: (none) */
+#define  MAINPANEL_AUTOFRAMECHECK         35      /* control type: radioButton, callback function: (none) */
+#define  MAINPANEL_AUTODEVCHECK           36      /* control type: radioButton, callback function: (none) */
+#define  MAINPANEL_NEWBUTTON              37      /* control type: command, callback function: newFrame_CB */
+#define  MAINPANEL_SAVEALLBUTTON          38      /* control type: command, callback function: saveAllFrames_CB */
+#define  MAINPANEL_SAVEBUTTON             39      /* control type: command, callback function: saveFrame_CB */
+#define  MAINPANEL_DELETEBUTTON           40      /* control type: command, callback function: deleteFrame_CB */
+#define  MAINPANEL_REMEASURECURRENTBUTTO  41      /* control type: command, callback function: ManualMeasure_CB */
 #define  MAINPANEL_STATUSBAR              42      /* control type: textMsg, callback function: (none) */
-#define  MAINPANEL_DECORATION_5           43      /* control type: deco, callback function: (none) */
+#define  MAINPANEL_REMEASUREVOLTAGEBUTTO  43      /* control type: command, callback function: ManualMeasure_CB */
+#define  MAINPANEL_MEASCOEFF              44      /* control type: string, callback function: (none) */
+#define  MAINPANEL_INPUTCOEFF             45      /* control type: string, callback function: (none) */
+#define  MAINPANEL_COMMANDBUTTON          46      /* control type: command, callback function: test_CB */
+#define  MAINPANEL_DECORATION_5           47      /* control type: deco, callback function: (none) */
+#define  MAINPANEL_DECORATION             48      /* control type: deco, callback function: (none) */
+#define  MAINPANEL_DECORATION_6           49      /* control type: deco, callback function: (none) */
 
      /* tab page panel controls */
 #define  TABPANEL_1_MANUALTABLE           2       /* control type: table, callback function: (none) */
@@ -72,7 +78,9 @@
 
      /* Callback Prototypes: */
 
+int  CVICALLBACK addressChanged_CB(int panel, int control, int event, void *callbackData, int eventData1, int eventData2);
 int  CVICALLBACK deleteFrame_CB(int panel, int control, int event, void *callbackData, int eventData1, int eventData2);
+int  CVICALLBACK deviceChanged_CB(int panel, int control, int event, void *callbackData, int eventData1, int eventData2);
 int  CVICALLBACK GPIBScan_CB(int panel, int control, int event, void *callbackData, int eventData1, int eventData2);
 int  CVICALLBACK LoadLayout_CB(int panel, int control, int event, void *callbackData, int eventData1, int eventData2);
 int  CVICALLBACK LoadProbeCard_CB(int panel, int control, int event, void *callbackData, int eventData1, int eventData2);
@@ -87,6 +95,7 @@ int  CVICALLBACK saveAllFrames_CB(int panel, int control, int event, void *callb
 int  CVICALLBACK saveFrame_CB(int panel, int control, int event, void *callbackData, int eventData1, int eventData2);
 int  CVICALLBACK startAutoMeasure_CB(int panel, int control, int event, void *callbackData, int eventData1, int eventData2);
 int  CVICALLBACK tabs_CB(int panel, int control, int event, void *callbackData, int eventData1, int eventData2);
+int  CVICALLBACK test_CB(int panel, int control, int event, void *callbackData, int eventData1, int eventData2);
 
 
 #ifdef __cplusplus
