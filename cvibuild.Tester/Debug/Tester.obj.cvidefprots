@@ -26,10 +26,6 @@ Prototype="int addressChanged_CB(int panel, int control, int event, void *callba
 Class="Function"
 Prototype="void initializeMeasurement(int addr);"
 
-[test_CB]
-Class="Function"
-Prototype="int test_CB(int panel, int control, int event, void *callbackData, int eventData1, int eventData2);"
-
 [LoadProbeCard_CB]
 Class="Function"
 Prototype="int LoadProbeCard_CB(int panel, int control, int event, void *callbackData, int eventData1, int eventData2);"
@@ -60,23 +56,19 @@ Prototype="int ManualMeasure_CB(int panel, int control, int event, void *callbac
 
 [takeCurrentMeasurement]
 Class="Function"
-Prototype="void takeCurrentMeasurement(short addr, float vbias, double *data);"
-
-[takeVoltageMeasurement]
-Class="Function"
-Prototype="void takeVoltageMeasurement(short addr, float ibias, double *data);"
+Prototype="double takeCurrentMeasurement(short sourceAddr, short measAddr, float voltage);"
 
 [getVBias]
 Class="Function"
 Prototype="float getVBias();"
 
-[getIBias]
+[getSourceCoeff]
 Class="Function"
-Prototype="float getIBias();"
+Prototype="float getSourceCoeff();"
 
-[SendGPIB]
+[getMeasCoeff]
 Class="Function"
-Prototype="int SendGPIB(int panel, int control, int event, void *callbackData, int eventData1, int eventData2);"
+Prototype="float getMeasCoeff();"
 
 [changeConnection]
 Class="Function"

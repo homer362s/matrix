@@ -39,14 +39,14 @@ void updateManualControls();
 void updateRelays();
 float getRequestedBias();
 float getVBias();
-float getIBias();
-void takeCurrentMeasurement(Addr4882_t addr, float bias, double* data);
-void takeVoltageMeasurement(Addr4882_t addr, float bias, double* data);
+double takeCurrentMeasurement(Addr4882_t sourceAddr, Addr4882_t measAddr, float bias);
 void changeConnection(int port, int pin);
 void setStatusBar(char* status);
 void setStatusDone();
 int getSelectedRow();
 void initializeMeasurement(int addr);
+float getSourceCoeff();
+float getMeasCoeff();
 
 
 // Global variables
@@ -181,18 +181,6 @@ void initializeMeasurement(int addr)
 			ke64__initialize(addr);
 			break;
 	}
-}
-
-int CVICALLBACK test_CB(int panel, int control, int event, void *callbackData, int eventData1, int eventData2)
-{
-	switch(event) {
-		case EVENT_COMMIT:
-			gpib__reset(14);
-			gpib__command(14, "CURR:RANG 0.02");
-			gpib__command(14, "DISP:DIG 3.5");
-			break;
-	}
-	return 0;
 }
 
 int CVICALLBACK LoadProbeCard_CB(int panel, int control, int event, void *callbackData, int eventData1, int eventData2)
@@ -333,34 +321,30 @@ int CVICALLBACK renameRow_CB(int panel, int control, int event, void *callbackDa
 
 void handleSingleMeasurement(int measurementType, int newRow, char* label)
 {
-	
-	float bias;
 	switch(sourceDevice) {
 		case KEITHLEY2400:
-			ke24__setSourceDelay(24,1);
-			ke24__setOutputAuto(24,KE24__AUTO_ON);
+			ke24__setSourceDelay(sourceAddress,1);
+			ke24__setOutputAuto(sourceAddress,KE24__AUTO_ON);
 			break;
 	}
 	
 
-	double data[5];
 	int row = -1;
 	if (!newRow) {
 		row = getSelectedRow();
 	}
 	
+	double current;
+	double voltage;
+	
 	switch(measurementType) {
 		case MEASURE_CURRENT:
-			bias = getVBias();
-			takeCurrentMeasurement(measAddress, bias, data);
-			break;
-		case MEASURE_VOLTAGE:
-			bias = getIBias();
-			takeVoltageMeasurement(measAddress, bias, data);
+			voltage = getVBias();
+			current = takeCurrentMeasurement(sourceAddress, measAddress, voltage/getSourceCoeff())*getMeasCoeff();
 			break;
 		default:
-			data[0] = 0;
-			data[1] = 0;
+			voltage = 1;
+			current = 1;
 			break;
 	}
 
@@ -376,9 +360,9 @@ void handleSingleMeasurement(int measurementType, int newRow, char* label)
 	SetTableRowAttribute(currentTabHandle, TABPANEL_1_MANUALTABLE, row, ATTR_LABEL_TEXT, label);
 
 	// Fill in the values
-	SetTableCellVal(currentTabHandle, TABPANEL_1_MANUALTABLE, MakePoint(1,row), data[0]);
-	SetTableCellVal(currentTabHandle, TABPANEL_1_MANUALTABLE, MakePoint(2,row), data[1]);
-	SetTableCellVal(currentTabHandle, TABPANEL_1_MANUALTABLE, MakePoint(3,row), data[0]/data[1]);
+	SetTableCellVal(currentTabHandle, TABPANEL_1_MANUALTABLE, MakePoint(1,row), voltage);
+	SetTableCellVal(currentTabHandle, TABPANEL_1_MANUALTABLE, MakePoint(2,row), current);
+	SetTableCellVal(currentTabHandle, TABPANEL_1_MANUALTABLE, MakePoint(3,row), voltage/current);
 
 	// Scroll table if necessary
 	// TODO: actually scroll the table if necessary
@@ -410,43 +394,49 @@ int CVICALLBACK ManualMeasure_CB(int panel, int control, int event, void *callba
 	return 0;
 }
 
-void takeCurrentMeasurement(Addr4882_t addr, float vbias, double* data)
+double takeCurrentMeasurement(Addr4882_t sourceAddr, Addr4882_t measAddr, float voltage)
 {
+	double current = 0;
 	// Initialize and enable the source
 	switch(sourceDevice) {
 		case KEITHLEY2400:
-			ke24__initializeVSource(addr);
-			ke24__setSourceAmplitude(addr, KE24__FUNC_VOLTAGE, vbias);
-			ke24__setOutput(addr, KE24__SOURCE_ON);
+			ke24__initializeVSource(sourceAddr);
+			ke24__setSourceAmplitude(sourceAddr, KE24__FUNC_VOLTAGE, voltage);
+			ke24__setOutput(sourceAddr, KE24__SOURCE_ON);
 			break;
 	}
+	
+	Delay(1);
 	
 	// Take a measurement
 	switch(measDevice) {
 		case KEITHLEY2400:
-			ke24__takeMeasurement(addr, data);
+			current = ke24__takeMeasurement(measAddr);
 			break;
 		case KEITHLEY6485:
-			ke64__takeMeasurement(addr, data);
+			current = ke64__takeMeasurement(measAddr);
 			break;
 	}
 	
 	// Disable the source
 	switch(sourceDevice) {
 		case KEITHLEY2400:
-			ke24__setOutput(addr, KE24__SOURCE_OFF);
+			ke24__setOutput(sourceAddr, KE24__SOURCE_OFF);
 			break;
 	}
 	
+	return current;
+	
 }
 
+/*
 void takeVoltageMeasurement(Addr4882_t addr, float ibias, double* data)
 {
 	ke24__initializeISource(addr);
 	ke24__setSourceAmplitude(addr, KE24__FUNC_CURRENT, ibias);
 	ke24__takeMeasurement(addr, data);
 }
-
+*/
 
 float getVBias()
 {
@@ -456,6 +446,23 @@ float getVBias()
 	return atof(strval);
 }
 
+float getSourceCoeff()
+{
+	char strval[64];
+	GetCtrlVal(panelHandle, MAINPANEL_INPUTCOEFF, strval);
+	
+	return atof(strval);
+}
+
+float getMeasCoeff()
+{
+	char strval[64];
+	GetCtrlVal(panelHandle, MAINPANEL_MEASCOEFF, strval);
+	
+	return atof(strval);
+}
+
+/*
 float getIBias()
 {
 	char strval[64];
@@ -463,29 +470,7 @@ float getIBias()
 	
 	return atof(strval);
 }
-
-int CVICALLBACK SendGPIB (int panel, int control, int event,
-						  void *callbackData, int eventData1, int eventData2)
-{
-	switch (event)
-	{
-		case EVENT_COMMIT:
-			//int Dev = ibdev(0, 24, 0,
-            //    T10s, 1, 0);
-			//
-			//ibclr(Dev);
-			
-			//static char cmd[] = ":SOUR:VOLT 0";
-			//Send(0, 24, cmd, StringLength(cmd), NLend);
-			gpib__reset(24);
-			ke24__initializeVSource(24);
-			ke24__setSourceAmplitude(24, KE24__FUNC_VOLTAGE, 1);
-			double data[5];
-			ke24__takeMeasurement(24, data);
-	}
-	
-	return 0;
-}
+*/
 
 // Chance the connection for the selected port from whatever it currently is to the specified probe pin 
 void changeConnection(int port, int pin) {

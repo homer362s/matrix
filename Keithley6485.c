@@ -27,7 +27,7 @@ void ke64__setRange(Addr4882_t addr, float range)
 void ke64__setRangeAuto(Addr4882_t addr, char* status)
 {
 	char cmd[64];
-	sprintf("CURR:RANG:AUTO %s", status);
+	sprintf(cmd, "CURR:RANG:AUTO %s", status);
 	gpib__command(addr, cmd);
 }
 
@@ -42,18 +42,25 @@ void ke64__zeroCorrect(Addr4882_t addr)
 	ke64__setZeroCheck(addr, KE64__STATUS_OFF);
 }
 
+void ke64__setRate(Addr4882_t addr, float cycles)
+{
+	char cmd[64];
+	sprintf(cmd, ":NPLCycles %f", cycles);
+	gpib__command(addr, cmd);
+}
+
 void ke64__initialize(Addr4882_t addr)
 {
 	gpib__reset(addr);
 	ke64__zeroCorrect(addr);
+	ke64__setRate(addr, KE64__RATE_SLOW);
 }
 
-void ke64__takeMeasurement(Addr4882_t addr, double* data)
+double ke64__takeMeasurement(Addr4882_t addr)
 {
 	gpib__command(addr, "READ?");
 	
 	char msg[64];
-	//gpib__receive(addr, msg, 64);
 	gpib__receive(addr, msg, 64);
 	
 	char reading[14];		// Measured current in amps. Overflow is sent as +9.9E37, NAN is sent as 9.91E37
@@ -66,6 +73,5 @@ void ke64__takeMeasurement(Addr4882_t addr, double* data)
 	strncpy(timestamp, msg+15, 13);		timestamp[13] = 0;
 	strncpy(status, msg+29, 13);		status[13] = 0;
 	
-	data[0] = 1.123;
-	data[1] = atof(reading);
+	return atof(reading);
 }

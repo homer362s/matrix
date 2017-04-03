@@ -72,5 +72,5 @@ Prototype="void ke24__initializeISource(short addr);"
 
 [ke24__takeMeasurement]
 Class="Function"
-Prototype="void ke24__takeMeasurement(short addr, double *data);"
+Prototype="double ke24__takeMeasurement(short addr);"
 

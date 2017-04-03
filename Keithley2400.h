@@ -38,7 +38,7 @@ void ke24__initialize(Addr4882_t addr, char* sourceFunc, char* senseFunc);
 void ke24__initializeVSource(Addr4882_t addr);
 void ke24__initializeISource(Addr4882_t addr);
 
-void ke24__takeMeasurement(Addr4882_t addr, double* data);
+double ke24__takeMeasurement(Addr4882_t addr);
 
 
 #endif  /* ndef __Keithley2400_H__ */

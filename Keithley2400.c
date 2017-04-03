@@ -121,7 +121,11 @@ void ke24__initializeISource(Addr4882_t addr) {
 // data = [voltage, current, resistance, time, status]
 // Note. Resistance seems to give incorrect values.
 // It should probably not be used
-void ke24__takeMeasurement(Addr4882_t addr, double* data) {
+double ke24__takeMeasurement(Addr4882_t addr)
+{
+	double current;
+	double data[5];
+	
 	gpib__enableRemote(addr);
 	
 	gpib__command(addr, ":MEAS?");
@@ -137,5 +141,7 @@ void ke24__takeMeasurement(Addr4882_t addr, double* data) {
 		aval[13] = 0;
 		data[i] = atof(aval);
 	}
+	
+	return data[1];
 }
 

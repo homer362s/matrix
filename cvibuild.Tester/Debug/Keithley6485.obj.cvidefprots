@@ -18,11 +18,15 @@ Prototype="void ke64__setRangeAuto(short addr, char *status);"
 Class="Function"
 Prototype="void ke64__zeroCorrect(short addr);"
 
+[ke64__setRate]
+Class="Function"
+Prototype="void ke64__setRate(short addr, float cycles);"
+
 [ke64__initialize]
 Class="Function"
 Prototype="void ke64__initialize(short addr);"
 
 [ke64__takeMeasurement]
 Class="Function"
-Prototype="void ke64__takeMeasurement(short addr, double *data);"
+Prototype="double ke64__takeMeasurement(short addr);"
 

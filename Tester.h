@@ -58,10 +58,9 @@
 #define  MAINPANEL_REMEASUREVOLTAGEBUTTO  43      /* control type: command, callback function: ManualMeasure_CB */
 #define  MAINPANEL_MEASCOEFF              44      /* control type: string, callback function: (none) */
 #define  MAINPANEL_INPUTCOEFF             45      /* control type: string, callback function: (none) */
-#define  MAINPANEL_COMMANDBUTTON          46      /* control type: command, callback function: test_CB */
-#define  MAINPANEL_DECORATION_5           47      /* control type: deco, callback function: (none) */
-#define  MAINPANEL_DECORATION             48      /* control type: deco, callback function: (none) */
-#define  MAINPANEL_DECORATION_6           49      /* control type: deco, callback function: (none) */
+#define  MAINPANEL_DECORATION_5           46      /* control type: deco, callback function: (none) */
+#define  MAINPANEL_DECORATION             47      /* control type: deco, callback function: (none) */
+#define  MAINPANEL_DECORATION_6           48      /* control type: deco, callback function: (none) */
 
      /* tab page panel controls */
 #define  TABPANEL_1_MANUALTABLE           2       /* control type: table, callback function: (none) */
@@ -95,7 +94,6 @@ int  CVICALLBACK saveAllFrames_CB(int panel, int control, int event, void *callb
 int  CVICALLBACK saveFrame_CB(int panel, int control, int event, void *callbackData, int eventData1, int eventData2);
 int  CVICALLBACK startAutoMeasure_CB(int panel, int control, int event, void *callbackData, int eventData1, int eventData2);
 int  CVICALLBACK tabs_CB(int panel, int control, int event, void *callbackData, int eventData1, int eventData2);
-int  CVICALLBACK test_CB(int panel, int control, int event, void *callbackData, int eventData1, int eventData2);
 
 
 #ifdef __cplusplus
