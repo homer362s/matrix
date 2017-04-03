@@ -134,10 +134,10 @@ int initSwitchMatrix (struct SwitchMatrixConfig_type *SwitchMatrixConfig, char P
 int switchMatrix(int inputNumber, int pinNumber, int action, struct SwitchMatrixConfig_type *SwitchMatrixConfig) {
 	switch(action) {
 		case Connect:
-			//printf("Connecting input %d to pin %d\n", inputNumber, pinNumber);
+			printf("Connecting input %d to pin %d\n", inputNumber, pinNumber);
 			break;
 		case DisConnect:
-			//printf("Disconnecting input %d from pin %d\n", inputNumber, pinNumber);
+			printf("Disconnecting input %d from pin %d\n", inputNumber, pinNumber);
 			break;
 	}
     int error;
@@ -177,7 +177,7 @@ int resetUsedRelays(struct SwitchMatrixConfig_type *SwitchMatrixConfig) {
 
 int resetAllRelays(struct SwitchMatrixConfig_type *SwitchMatrixConfig) {
 // Open all relays
-	//printf("Resetting all relays\n");
+	printf("Resetting all relays\n");
     int i, j, error;
     
     for (i=0; i<SwitchMatrixConfig->numBoards; i++) {

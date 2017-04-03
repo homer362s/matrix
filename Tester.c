@@ -24,6 +24,9 @@
 #include "gpibTools.h"
 #include "autoConfigParse.h"
 
+#define MEASURE_CURRENT 0
+#define MEASURE_VOLTAGE 1
+
 
 void GPIBScan();
 void updateManualControls();
@@ -56,6 +59,7 @@ int currentTabHandle;
 //==============================================================================
 // Global variables
 struct SwitchMatrixConfig_type *SwitchMatrixConfig;
+struct AutoConfig* layoutConfig = NULL;
 
 //==============================================================================
 // Global functions
@@ -140,6 +144,15 @@ int CVICALLBACK LoadProbeCard_CB(int panel, int control, int event, void *callba
 				
 				// Enable the currently disabled controls
 				SetCtrlAttribute(panelHandle, MAINPANEL_RESETRELAYSBUTTON, ATTR_DIMMED, 0);
+				
+				// Get file name (without path)
+				char* fileName = pathName;
+				char* tmp = pathName;
+				while(tmp) {
+					fileName = tmp + 1;
+					tmp = strchr(fileName, '\\');
+				}
+				SetCtrlVal(panelHandle, MAINPANEL_PROBECARDNAME, fileName);
 			}
 			
 			// Reset all relays
@@ -158,12 +171,25 @@ int CVICALLBACK LoadLayout_CB(int panel, int control, int event, void *callbackD
 			char pathName[512];
 			int success = FileSelectPopupEx("", "*.csv", "*.csv;*.*", "Select A Layout Config", VAL_LOAD_BUTTON, 0, 0, pathName);
 			if (success) {
+				// If we already have a layout read in, free it before overwriting the pointer
+				if (layoutConfig)
+					freeConfig(layoutConfig);
+				
 				// Read the file
-				struct AutoConfig* config = parseLayoutFile(pathName);
+				layoutConfig = parseLayoutFile(pathName);
 				
 				
-				// Enable the "Start Measurement" button
+				// Update the UI
 				SetCtrlAttribute(panelHandle, MAINPANEL_STARTMEASBUTTON, ATTR_DIMMED, 0);
+				
+				// Get file name (without path)
+				char* fileName = pathName;
+				char* tmp = pathName;
+				while(tmp) {
+					fileName = tmp + 1;
+					tmp = strchr(fileName, '\\');
+				}
+				SetCtrlVal(panelHandle, MAINPANEL_LAYOUTNAME, fileName);
 			}
 			break;
 	}
@@ -240,54 +266,74 @@ int CVICALLBACK renameRow_CB(int panel, int control, int event, void *callbackDa
 	return 0;
 }
 
+void handleSingleMeasurement(int measurementType, int newRow, char* label)
+{
+	ke24__setSourceDelay(24,1);
+	ke24__setOutputAuto(24,KE24__AUTO_ON);
+
+	float bias;
+	double data[5];
+	int row = -1;
+	if (!newRow) {
+		row = getSelectedRow();
+	}
+	
+	switch(measurementType) {
+		case MEASURE_CURRENT:
+			bias = getVBias();
+			takeCurrentMeasurement(24, bias, data);
+			break;
+		case MEASURE_VOLTAGE:
+			bias = getIBias();
+			takeVoltageMeasurement(24, bias, data);
+			break;
+		default:
+			data[0] = 0;
+			data[1] = 0;
+			break;
+	}
+
+	// Create a new row if one is needed
+	if (row < 0)
+	{
+		InsertTableRows(currentTabHandle, TABPANEL_1_MANUALTABLE, -1, 1, VAL_CELL_NUMERIC);
+		GetNumTableRows(currentTabHandle, TABPANEL_1_MANUALTABLE, &row);
+	}
+	
+	// Set row name
+	SetTableRowAttribute(currentTabHandle, TABPANEL_1_MANUALTABLE, row, ATTR_USE_LABEL_TEXT, 1);
+	SetTableRowAttribute(currentTabHandle, TABPANEL_1_MANUALTABLE, row, ATTR_LABEL_TEXT, label);
+
+	// Fill in the values
+	SetTableCellVal(currentTabHandle, TABPANEL_1_MANUALTABLE, MakePoint(1,row), data[0]);
+	SetTableCellVal(currentTabHandle, TABPANEL_1_MANUALTABLE, MakePoint(2,row), data[1]);
+	SetTableCellVal(currentTabHandle, TABPANEL_1_MANUALTABLE, MakePoint(3,row), data[0]/data[1]);
+
+	// Scroll table if necessary
+	// TODO: actually scroll the table if necessary
+	
+}
+
 int CVICALLBACK ManualMeasure_CB(int panel, int control, int event, void *callbackData, int eventData1, int eventData2)
 {
 	switch(event) {
 		case EVENT_COMMIT:
-			ke24__setSourceDelay(24,1);
-			ke24__setOutputAuto(24,KE24__AUTO_ON);
-			
-			float bias;
-			double data[5];
-			int row = -1;
-			switch(control) {
-				case MAINPANEL_REMEASURECURRENTBUTTO:
-					row = getSelectedRow();
-				case MAINPANEL_MEASURECURRENTBUTTON:
-					bias = getVBias();
-					takeCurrentMeasurement(24, bias, data);
-					break;
-				case MAINPANEL_REMEASUREVOLTAGEBUTTO:
-					row = getSelectedRow();
-				case MAINPANEL_MEASUREVOLTAGEBUTTON:
-					bias = getIBias();
-					takeVoltageMeasurement(24, bias, data);
-					break;
-				default:
-					data[0] = 0;
-					data[1] = 0;
-					break;
-			}
-			
-			
-			// Add row to table or modify existing row
-			if (row < 0)
-			{
-				InsertTableRows(currentTabHandle, TABPANEL_1_MANUALTABLE, -1, 1, VAL_CELL_NUMERIC);
-				GetNumTableRows(currentTabHandle, TABPANEL_1_MANUALTABLE, &row);
-			}	
-			
-			SetTableCellVal(currentTabHandle, TABPANEL_1_MANUALTABLE, MakePoint(1,row), data[0]);
-			SetTableCellVal(currentTabHandle, TABPANEL_1_MANUALTABLE, MakePoint(2,row), data[1]);
-			SetTableCellVal(currentTabHandle, TABPANEL_1_MANUALTABLE, MakePoint(3,row), data[0]/data[1]);
-			
-			// Set row name
 			char label[16];
 			GetCtrlVal(panelHandle, MAINPANEL_DEVIDBOX, label);
-			SetTableRowAttribute(currentTabHandle, TABPANEL_1_MANUALTABLE, row, ATTR_USE_LABEL_TEXT, 1);
-			SetTableRowAttribute(currentTabHandle, TABPANEL_1_MANUALTABLE, row, ATTR_LABEL_TEXT, label);
-			
-			// Scroll table if necessary
+			switch(control) {
+				case MAINPANEL_REMEASURECURRENTBUTTO:
+					handleSingleMeasurement(MEASURE_CURRENT, 0, label);
+					break;
+				case MAINPANEL_MEASURECURRENTBUTTON:
+					handleSingleMeasurement(MEASURE_CURRENT, 1, label);
+					break;
+				case MAINPANEL_REMEASUREVOLTAGEBUTTO:
+					handleSingleMeasurement(MEASURE_VOLTAGE, 0, label);
+					break;
+				case MAINPANEL_MEASUREVOLTAGEBUTTON:
+					handleSingleMeasurement(MEASURE_VOLTAGE,1, label);
+					break;
+			}
 	}
 	
 	return 0;
@@ -511,13 +557,30 @@ int CVICALLBACK startAutoMeasure_CB(int panel, int control, int event, void *cal
 {
 	switch(event) {
 		case EVENT_COMMIT:
+			setStatusBar("Resetting all relays");
+			resetAllRelays(SwitchMatrixConfig);
+			
 			setStatusBar("Measuring");
 	
-			// Do measurement in here
-			char label[16];
-			int pin1;
-			int pin2;
-			//getNextLayoutLine(label, &pin1, &pin2);
+			// Loop over each measurement
+			for (int i = 0;i < layoutConfig->measurementCount;i++) {
+				// Make the needed connections
+				for (int j = 0;j < layoutConfig->measurements[i]->connectionCount;j++) {
+					struct AutoConnection conn = layoutConfig->measurements[i]->connections[j];
+					switchMatrix(conn.input, conn.pin, Connect, SwitchMatrixConfig);
+				}
+				
+				// Do the measurement
+				printf("Taking measurement\n");
+				handleSingleMeasurement(MEASURE_CURRENT, 1, layoutConfig->measurements[i]->label);
+				
+				
+				// Clear the connections
+				for (int j = 0;j < layoutConfig->measurements[i]->connectionCount;j++) {
+					struct AutoConnection conn = layoutConfig->measurements[i]->connections[j];
+					switchMatrix(conn.input, conn.pin, DisConnect, SwitchMatrixConfig);
+				}
+			}
 	
 			setStatusDone();
 	}

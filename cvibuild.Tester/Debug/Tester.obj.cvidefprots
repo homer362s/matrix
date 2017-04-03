@@ -34,6 +34,10 @@ Prototype="void updateManualControls();"
 Class="Function"
 Prototype="int renameRow_CB(int panel, int control, int event, void *callbackData, int eventData1, int eventData2);"
 
+[handleSingleMeasurement]
+Class="Function"
+Prototype="void handleSingleMeasurement(int measurementType, int newRow, char *label);"
+
 [ManualMeasure_CB]
 Class="Function"
 Prototype="int ManualMeasure_CB(int panel, int control, int event, void *callbackData, int eventData1, int eventData2);"
