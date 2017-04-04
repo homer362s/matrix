@@ -26,6 +26,34 @@ Prototype="void ke64__setRate(short addr, float cycles);"
 Class="Function"
 Prototype="void ke64__initialize(short addr);"
 
+[ke64__setMedianRank]
+Class="Function"
+Prototype="void ke64__setMedianRank(short addr, int rank);"
+
+[ke64__enableMedianFilter]
+Class="Function"
+Prototype="void ke64__enableMedianFilter(short addr, char *state);"
+
+[ke64__setDigitalFilterControl]
+Class="Function"
+Prototype="void ke64__setDigitalFilterControl(short addr, char *filterControl);"
+
+[ke64__setDigitalFilterCount]
+Class="Function"
+Prototype="void ke64__setDigitalFilterCount(short addr, int count);"
+
+[ke64__enableDigitalFilter]
+Class="Function"
+Prototype="void ke64__enableDigitalFilter(short addr, char *state);"
+
+[ke64__enableDigitalFilterAdvanced]
+Class="Function"
+Prototype="void ke64__enableDigitalFilterAdvanced(short addr, char *state);"
+
+[ke64__setDigitalFilterAdvancedNoiseTolerence]
+Class="Function"
+Prototype="void ke64__setDigitalFilterAdvancedNoiseTolerence(short addr, int tolerence);"
+
 [ke64__takeMeasurement]
 Class="Function"
 Prototype="double ke64__takeMeasurement(short addr);"

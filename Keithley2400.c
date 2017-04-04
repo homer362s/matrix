@@ -117,10 +117,6 @@ void ke24__initializeISource(Addr4882_t addr) {
 	ke24__initialize(addr, KE24__FUNC_CURRENT, KE24__FUNC_VOLTAGE);
 }
 
-// data will be populated with the measured values:
-// data = [voltage, current, resistance, time, status]
-// Note. Resistance seems to give incorrect values.
-// It should probably not be used
 double ke24__takeMeasurement(Addr4882_t addr)
 {
 	double current;

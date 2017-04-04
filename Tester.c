@@ -406,7 +406,8 @@ double takeCurrentMeasurement(Addr4882_t sourceAddr, Addr4882_t measAddr, float 
 			break;
 	}
 	
-	Delay(1);
+	// Wait for the source to settle a bit
+	Delay(0.1);		// Delay specified in seconds
 	
 	// Take a measurement
 	switch(measDevice) {
@@ -414,7 +415,11 @@ double takeCurrentMeasurement(Addr4882_t sourceAddr, Addr4882_t measAddr, float 
 			current = ke24__takeMeasurement(measAddr);
 			break;
 		case KEITHLEY6485:
+			// Apparently the zero check should be enabled when connecting
+			// and disconnecting input signals
+			ke64__setZeroCheck(measAddr, KE64__STATUS_OFF);
 			current = ke64__takeMeasurement(measAddr);
+			ke64__setZeroCheck(measAddr, KE64__STATUS_ON);
 			break;
 	}
 	

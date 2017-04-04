@@ -39,7 +39,8 @@ void ke64__zeroCorrect(Addr4882_t addr)
 	gpib__command(addr, "SYST:ZCOR:ACQ");
 	ke64__setZeroCorr(addr, KE64__STATUS_ON);
 	ke64__setRangeAuto(addr, KE64__STATUS_ON);
-	ke64__setZeroCheck(addr, KE64__STATUS_OFF);
+	// Zero check should be enabled when connecting or disconnecting a supply
+	//ke64__setZeroCheck(addr, KE64__STATUS_OFF);
 }
 
 void ke64__setRate(Addr4882_t addr, float cycles)
@@ -49,11 +50,70 @@ void ke64__setRate(Addr4882_t addr, float cycles)
 	gpib__command(addr, cmd);
 }
 
+// Run some zero correction stuff
 void ke64__initialize(Addr4882_t addr)
 {
 	gpib__reset(addr);
 	ke64__zeroCorrect(addr);
-	ke64__setRate(addr, KE64__RATE_SLOW);
+	ke64__setRate(addr, KE64__RATE_MED);
+	ke64__setMedianRank(addr, 5);
+	ke64__enableMedianFilter(addr, KE64__STATUS_ON);
+	ke64__setDigitalFilterCount(addr, 20);
+	ke64__setDigitalFilterControl(addr, KE64__FILTER_REPEATING);
+	ke64__enableDigitalFilter(addr, KE64__STATUS_ON);
+}
+
+// Rank is an integer from 1-5 indicating 1/2 the number of points that are filtered
+void ke64__setMedianRank(Addr4882_t addr, int rank)
+{
+	char cmd[64];
+	sprintf(cmd, "MED:RANK %d", rank);
+	gpib__command(addr, cmd);
+}
+
+void ke64__enableMedianFilter(Addr4882_t addr, char* state)
+{
+	char cmd[64];
+	sprintf(cmd, "MED %s", state);
+	gpib__command(addr, cmd);
+}
+
+// Digital filters average multiple readings
+void ke64__setDigitalFilterControl(Addr4882_t addr, char* filterControl)
+{
+	char cmd[64];
+	sprintf(cmd, "AVER:TCON %s", filterControl);
+	gpib__command(addr, cmd);
+}
+
+// Count is from 1-100
+void ke64__setDigitalFilterCount(Addr4882_t addr, int count)
+{
+	char cmd[64];
+	sprintf(cmd, "AVER:COUN %d", count);
+	gpib__command(addr, cmd);
+}
+
+void ke64__enableDigitalFilter(Addr4882_t addr, char* state)
+{
+	char cmd[64];
+	sprintf(cmd, "AVER %s", state);
+	gpib__command(addr, cmd);
+}
+
+void ke64__enableDigitalFilterAdvanced(Addr4882_t addr, char* state)
+{
+	char cmd[64];
+	sprintf(cmd, "AVER:ADV %s", state);
+	gpib__command(addr, cmd);
+}   
+
+// tolerence is an integer from 1-105 (represeting percentage)
+void ke64__setDigitalFilterAdvancedNoiseTolerence(Addr4882_t addr, int tolerence)
+{
+	char cmd[64];
+	sprintf(cmd, "AVER:ADV:NTOL %d", tolerence);
+	gpib__command(addr, cmd);
 }
 
 double ke64__takeMeasurement(Addr4882_t addr)
