@@ -54,7 +54,7 @@ Window Top = 32
 Window Left = 10
 Window Height = 271
 Window Width = 523
-Window Z-Order = 4
+Window Z-Order = 1
 
 [File 0002]
 Path = "/c/Users/user/Desktop/switch matrix wip/Tester.c"
@@ -73,7 +73,7 @@ Disk Date = 3574088198
 In Projects = "1,"
 Window Top = 182
 Window Left = 90
-Window Z-Order = 3
+Window Z-Order = 4
 Source Window State = "1,464,464,464,4,15,15,0,0,76,0,278,0,0,0,25,136,0,179,4,349,683,1,15,"
 
 [File 0004]
@@ -173,8 +173,8 @@ Disk Date = 3574103471
 In Projects = "1,"
 Window Top = 152
 Window Left = 74
-Window Z-Order = 1
-Source Window State = "1,44,44,44,0,4,4,0,0,165,0,4,0,4,0,53,19,0,55,41,349,715,1,0,"
+Window Z-Order = 3
+Source Window State = "1,44,44,44,0,4,4,0,0,80,0,4,0,4,0,25,19,0,55,41,349,715,1,0,"
 
 [File 0014]
 Path = "/c/Users/user/Desktop/switch matrix wip/Keithley6485.h"
