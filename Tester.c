@@ -52,6 +52,7 @@ float getMeasCoeff();
 // Global variables
 static int panelHandle = 0;
 int currentTabHandle;
+int numTableRows;
 int sourceAddress = 0;
 int measAddress = 0;
 int sourceDevice = NODEVICE;
@@ -81,6 +82,11 @@ Error:
 	/* clean up */
 	if (panelHandle > 0)
 		DiscardPanel (panelHandle);
+	return 0;
+}
+
+int  CVICALLBACK startAutoReMeasure_CB(int panel, int control, int event, void *callbackData, int eventData1, int eventData2)
+{
 	return 0;
 }
 
@@ -597,8 +603,43 @@ int CVICALLBACK deleteFrame_CB(int panel, int control, int event, void *callback
 
 int CVICALLBACK saveFrame_CB(int panel, int control, int event, void *callbackData, int eventData1, int eventData2)
 {
+	int currentTab;
+	int numRows;
+	int currentTableValue;
+	char pathName[512];
+	
+	FILE *frameData;
+	
+	if (FileSelectPopupEx ("\\cvi\\samples", "*.dat", "datafile", "Create a save file", VAL_SAVE_BUTTON, 0, 0, pathName)
+            != VAL_NO_FILE_SELECTED)
+            {
+            
+            	/* Open the file and write out the data */
+           		frameData = fopen (pathName,"w+");
+            }
+	
 	switch (event) {
 		case EVENT_COMMIT:
+			{
+				 currentTab = getCurrentTab();
+				 SetActiveTabPage (panelHandle, MAINPANEL_TABS, currentTab);
+				 numRows = GetNumTableRows (panelHandle, TABPANEL_1_MANUALTABLE ,&numTableRows);
+				 fprintf(frameData,"V [V]\tI [A]\t R[Ohm]\n");
+				 
+				 for(int i=1;i<=3;i++)
+				 {
+					 for(int j=1;j<=numRows;j++)
+					 {
+						 GetTableCellVal(panelHandle, TABPANEL_1_MANUALTABLE, MakePoint(i,j), &currentTableValue);
+						 fprintf(frameData,"%f\t",currentTableValue);
+					 }
+					 
+					 fprintf(frameData,"\n");
+				 }
+				 
+				 fclose (frameData);
+				 
+			}
 			break;
 	}
 	return 0;
@@ -606,8 +647,49 @@ int CVICALLBACK saveFrame_CB(int panel, int control, int event, void *callbackDa
 
 int CVICALLBACK saveAllFrames_CB(int panel, int control, int event, void *callbackData, int eventData1, int eventData2)
 {
+	int numTabs;
+	int numRows;
+	int currentTableValue;
+	char pathName[512];
+	
+	FILE *frameData;
+	
+	if (FileSelectPopupEx ("\\cvi\\samples", "*.dat", "datafile", "Create a save file",VAL_SAVE_BUTTON, 0, 0, pathName)
+            != VAL_NO_FILE_SELECTED)
+            {
+            
+            	/* Open the file and write out the data */
+            	frameData = fopen (pathName,"w+");
+            }
+	
 	switch (event) {
 		case EVENT_COMMIT:
+			{
+				numTabs = getTabCount();
+				
+				fprintf(frameData,"Frame\tV [V]\tI [A]\t R[Ohm]\n");
+				
+				for(int currentTab=1;currentTab<=numTabs;currentTab++)
+				{	
+					SetActiveTabPage (panelHandle,MAINPANEL_TABS, currentTab);
+					numRows = GetNumTableRows (panelHandle, TABPANEL_1_MANUALTABLE,&numTableRows);
+					
+					for(int i=1;i<=3;i++)
+				 	{
+						 for(int j=1;j<=numRows;j++)
+						 {
+							 GetTableCellVal(panelHandle, TABPANEL_1_MANUALTABLE, MakePoint(i,j), &currentTableValue);
+							 fprintf(frameData,"%f\t",currentTableValue);
+						 }
+					 
+						fprintf(frameData,"\n");
+				 	}
+					
+					fprintf(frameData,"\n\n\n");	
+				}
+			
+				fclose (frameData);
+			}
 			break;
 	}
 	return 0;

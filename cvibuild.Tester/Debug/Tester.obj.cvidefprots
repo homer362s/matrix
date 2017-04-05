@@ -2,6 +2,10 @@
 Class="Function"
 Prototype="int main(int argc, char **argv);"
 
+[startAutoReMeasure_CB]
+Class="Function"
+Prototype="int startAutoReMeasure_CB(int panel, int control, int event, void *callbackData, int eventData1, int eventData2);"
+
 [panelCB]
 Class="Function"
 Prototype="int panelCB(int panel, int event, void *callbackData, int eventData1, int eventData2);"
