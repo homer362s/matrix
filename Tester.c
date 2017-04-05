@@ -594,7 +594,10 @@ int CVICALLBACK deleteFrame_CB(int panel, int control, int event, void *callback
 			int currentTab = getCurrentTab();
 			DeleteTabPage(panelHandle, MAINPANEL_TABS, currentTab, 1);
 			if (getTabCount() > 0)
+			{
 				SetActiveTabPage(panelHandle, MAINPANEL_TABS, currentTab == 0 ? 0 : currentTab - 1);
+				GetPanelHandleFromTabPage(panelHandle, MAINPANEL_TABS, getCurrentTab(), &currentTabHandle);
+			}
 			break;
 	}
 	return 0;
@@ -613,20 +616,23 @@ int CVICALLBACK saveFrame_CB(int panel, int control, int event, void *callbackDa
 	           		frameData = fopen (pathName,"w");
 				
 					// Get the number of rows in the table
-					int currentTab = getCurrentTab();
 					int numTableRows;
 					GetNumTableRows (currentTabHandle, TABPANEL_1_MANUALTABLE ,&numTableRows);
 				
 					// Write file header
-					fprintf(frameData,"V [V], I [A], R[Ohm]\n");
+					fprintf(frameData,"Device, V [V], I [A], R[Ohm]\n");
 
+					char devID[32];
+					
 					// Write data points
 					double currentTableValue;
-					for(int i=1;i<=numTableRows;i++)
+					for(int y=1;y<=numTableRows;y++)
 					{
-						for(int j=1;j<=3;j++)
+						GetTableRowAttribute(currentTabHandle, TABPANEL_1_MANUALTABLE, y, ATTR_LABEL_TEXT, devID);
+						fprintf(frameData, "%s, ", devID);
+						for(int x=1;x<=3;x++)
 						{
-							GetTableCellVal(currentTabHandle, TABPANEL_1_MANUALTABLE, MakePoint(j,i), &currentTableValue);
+							GetTableCellVal(currentTabHandle, TABPANEL_1_MANUALTABLE, MakePoint(x,y), &currentTableValue);
 							fprintf(frameData,"%e, ",currentTableValue);
 						}
  
@@ -644,8 +650,7 @@ int CVICALLBACK saveFrame_CB(int panel, int control, int event, void *callbackDa
 
 int CVICALLBACK saveAllFrames_CB(int panel, int control, int event, void *callbackData, int eventData1, int eventData2)
 {
-	int numTabs;
-	int currentTableValue;
+	double currentTableValue;
 	char pathName[512];
 	
 	FILE *frameData;
@@ -653,36 +658,41 @@ int CVICALLBACK saveAllFrames_CB(int panel, int control, int event, void *callba
 	switch (event) {
 		case EVENT_COMMIT:
 			{
-				if (FileSelectPopupEx ("\\cvi\\samples", "*.dat", "datafile", "Create a save file",VAL_SAVE_BUTTON, 0, 0, pathName) != VAL_NO_FILE_SELECTED)
+				if (FileSelectPopupEx ("%userprofile%", "*.dat", "datafile", "Create a save file", VAL_SAVE_BUTTON, 0, 0, pathName) != VAL_NO_FILE_SELECTED)
 	            {
 	            	/* Open the file and write out the data */
-	            	frameData = fopen (pathName,"w+");
+	            	frameData = fopen (pathName,"w");
+					int numTabs = getTabCount();
+					int tabHandle;
+					
+					fprintf(frameData,"Frame, Device, V [V], I [A], R[Ohm]\n");
+
+					for(int currentTab=0;currentTab<numTabs;currentTab++)
+					{
+						int numTableRows;
+						GetPanelHandleFromTabPage(panelHandle, MAINPANEL_TABS, currentTab, &tabHandle);
+						GetNumTableRows(tabHandle, TABPANEL_1_MANUALTABLE, &numTableRows);
+						
+						char frameID[32];
+						char devID[32];
+						GetTabPageAttribute(panelHandle, MAINPANEL_TABS, currentTab, ATTR_LABEL_TEXT, frameID);
+
+						for(int y=1;y<=numTableRows;y++)
+						{
+							GetTableRowAttribute(tabHandle, TABPANEL_1_MANUALTABLE, y, ATTR_LABEL_TEXT, devID);
+							fprintf(frameData, "%s, %s, ", frameID, devID);
+							for(int x=1;x<=3;x++)
+							{
+								GetTableCellVal(tabHandle, TABPANEL_1_MANUALTABLE, MakePoint(x,y), &currentTableValue);
+								fprintf(frameData,"%e, ", currentTableValue);
+							}
+
+							fseek(frameData, -2, SEEK_CUR);
+							fprintf(frameData,"\n");
+						}
+					}
+					fclose (frameData);
 	            }
-				numTabs = getTabCount();
-				
-				fprintf(frameData,"Frame\tV [V]\tI [A]\t R[Ohm]\n");
-				
-				for(int currentTab=1;currentTab<=numTabs;currentTab++)
-				{	
-					SetActiveTabPage (panelHandle,MAINPANEL_TABS, currentTab);
-					int numTableRows;
-					GetNumTableRows (panelHandle, TABPANEL_1_MANUALTABLE,&numTableRows);
-					
-					for(int i=1;i<=3;i++)
-				 	{
-						 for(int j=1;j<=numTableRows;j++)
-						 {
-							 GetTableCellVal(panelHandle, TABPANEL_1_MANUALTABLE, MakePoint(i,j), &currentTableValue);
-							 fprintf(frameData,"%f\t",currentTableValue);
-						 }
-					 
-						fprintf(frameData,"\n");
-				 	}
-					
-					fprintf(frameData,"\n\n\n");	
-				}
-			
-				fclose (frameData);
 			}
 			break;
 	}
