@@ -31,7 +31,7 @@
 #define  MAINPANEL_MEASDEVICERING         16      /* control type: ring, callback function: deviceChanged_CB */
 #define  MAINPANEL_SOURCEADDRESSRING      17      /* control type: ring, callback function: addressChanged_CB */
 #define  MAINPANEL_SOURCEDEVICERING       18      /* control type: ring, callback function: deviceChanged_CB */
-#define  MAINPANEL_GPIBSCANBUTTON         19      /* control type: command, callback function: GPIBScan_CB */
+#define  MAINPANEL_GPIBSCANBUTTON         19      /* control type: command, callback function: DevScan_CB */
 #define  MAINPANEL_LOADLAYOUTBUTTON       20      /* control type: command, callback function: LoadLayout_CB */
 #define  MAINPANEL_LOADPROBECARDBUTTON    21      /* control type: command, callback function: LoadProbeCard_CB */
 #define  MAINPANEL_PROBECARDNAME          22      /* control type: textMsg, callback function: (none) */
@@ -59,7 +59,7 @@
 #define  MAINPANEL_REMEASUREVOLTAGEBUTTO  44      /* control type: command, callback function: ManualMeasure_CB */
 #define  MAINPANEL_MEASCOEFF              45      /* control type: string, callback function: (none) */
 #define  MAINPANEL_INPUTCOEFF             46      /* control type: string, callback function: (none) */
-#define  MAINPANEL_MATRIXADDRRING         47      /* control type: ring, callback function: (none) */
+#define  MAINPANEL_MATRIXADDRRING         47      /* control type: ring, callback function: addressChanged_CB */
 #define  MAINPANEL_DECORATION_5           48      /* control type: deco, callback function: (none) */
 #define  MAINPANEL_DECORATION             49      /* control type: deco, callback function: (none) */
 #define  MAINPANEL_DECORATION_6           50      /* control type: deco, callback function: (none) */
@@ -82,7 +82,7 @@
 int  CVICALLBACK addressChanged_CB(int panel, int control, int event, void *callbackData, int eventData1, int eventData2);
 int  CVICALLBACK deleteFrame_CB(int panel, int control, int event, void *callbackData, int eventData1, int eventData2);
 int  CVICALLBACK deviceChanged_CB(int panel, int control, int event, void *callbackData, int eventData1, int eventData2);
-int  CVICALLBACK GPIBScan_CB(int panel, int control, int event, void *callbackData, int eventData1, int eventData2);
+int  CVICALLBACK DevScan_CB(int panel, int control, int event, void *callbackData, int eventData1, int eventData2);
 int  CVICALLBACK LoadLayout_CB(int panel, int control, int event, void *callbackData, int eventData1, int eventData2);
 int  CVICALLBACK LoadProbeCard_CB(int panel, int control, int event, void *callbackData, int eventData1, int eventData2);
 int  CVICALLBACK ManConnectionChanged_CB(int panel, int control, int event, void *callbackData, int eventData1, int eventData2);

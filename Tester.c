@@ -49,15 +49,17 @@ int getSelectedRow();
 void initializeMeasurement(Addr4882_t addr);
 float getSourceCoeff();
 float getMeasCoeff();
+void setProbeCardDisplay(int dimmed, char* label);
 
 
 // Global variables
 static int panelHandle = 0;
 int currentTabHandle;
-Addr4882_t sourceAddress = 0;
-Addr4882_t measAddress = 0;
-int sourceDevice = NODEVICE;
-int measDevice = NODEVICE;
+Addr4882_t sourceAddress = 24;
+Addr4882_t measAddress = 14;
+int matrixAddress = 0;
+int sourceDevice = KEITHLEY2400;
+int measDevice = KEITHLEY6485;
 
 struct SwitchMatrixConfig_type *SwitchMatrixConfig;
 struct AutoConfig* layoutConfig = NULL;
@@ -78,7 +80,14 @@ int main (int argc, char *argv[])
 	/* display the panel and run the user interface */
 	errChk (DisplayPanel (panelHandle));
 	GetPanelHandleFromTabPage(panelHandle, MAINPANEL_TABS, 0, &currentTabHandle);
+	
+	// Set the default measurement devices and initialize
+	SetCtrlIndex(panelHandle, MAINPANEL_SOURCEDEVICERING, KEITHLEY2400);
+	SetCtrlIndex(panelHandle, MAINPANEL_MEASDEVICERING, KEITHLEY6485);
+	
 	errChk (RunUserInterface ());
+	
+
 
 Error:
 	/* clean up */
@@ -102,7 +111,7 @@ int CVICALLBACK panelCB (int panel, int event, void *callbackData, int eventData
 	return 0;
 }
 
-int CVICALLBACK GPIBScan_CB(int panel, int control, int event, void *callbackData, int eventData1, int eventData2)
+int CVICALLBACK DevScan_CB(int panel, int control, int event, void *callbackData, int eventData1, int eventData2)
 {	
 	switch(event)											  
 	{
@@ -133,6 +142,8 @@ void GPIBScan()
 		InsertListItem(panelHandle, MAINPANEL_SOURCEADDRESSRING, i+1, tmpstr, AttachedDevices[i]);
 		InsertListItem(panelHandle, MAINPANEL_MEASADDRESSRING, i+1, tmpstr, AttachedDevices[i]);
 	}
+	sourceAddress = 0;
+	measAddress = 0;
 
 }
 
@@ -162,6 +173,8 @@ void COMScan()
 		sprintf(tmpstr, "COM%d", addresses[i]);
 		InsertListItem(panelHandle, MAINPANEL_MATRIXADDRRING, i+1, tmpstr, addresses[i]);
 	}
+	
+	matrixAddress = 0;
 }
 
 int CVICALLBACK deviceChanged_CB(int panel, int control, int event, void *callbackData, int eventData1, int eventData2)
@@ -191,18 +204,21 @@ int CVICALLBACK deviceChanged_CB(int panel, int control, int event, void *callba
 
 int CVICALLBACK addressChanged_CB(int panel, int control, int event, void *callbackData, int eventData1, int eventData2)
 {
-	Addr4882_t value;
+	int value;
 	switch(event) {
 		case EVENT_COMMIT:
 			GetCtrlVal(panelHandle, control, &value);
 			switch(control) {
 				case MAINPANEL_SOURCEADDRESSRING:
-					sourceAddress = value;
+					sourceAddress = (Addr4882_t) value;
 					break;
 				case MAINPANEL_MEASADDRESSRING:
-					measAddress = value;
+					measAddress = (Addr4882_t) value;
 					initializeMeasurement(measAddress);
 					break;
+				case MAINPANEL_MATRIXADDRRING:
+					matrixAddress = value;
+					setProbeCardDisplay(!value, "");
 			}
 			break;
 	}
@@ -220,6 +236,19 @@ void initializeMeasurement(Addr4882_t addr)
 	}
 }
 
+void setProbeCardDisplay(int dimmed, char* label)
+{
+	SetCtrlAttribute(panelHandle, MAINPANEL_LOADPROBECARDBUTTON, ATTR_DIMMED, dimmed);
+	
+	SetCtrlVal(panelHandle, MAINPANEL_PROBECARDNAME, label);
+	
+	if (!strcmp(label, "")) {
+		SetCtrlAttribute(panelHandle, MAINPANEL_RESETRELAYSBUTTON, ATTR_DIMMED, 1);
+	} else {
+		SetCtrlAttribute(panelHandle, MAINPANEL_RESETRELAYSBUTTON, ATTR_DIMMED, 0);
+	}
+}
+
 int CVICALLBACK LoadProbeCard_CB(int panel, int control, int event, void *callbackData, int eventData1, int eventData2)
 {
 	switch(event) {
@@ -232,9 +261,6 @@ int CVICALLBACK LoadProbeCard_CB(int panel, int control, int event, void *callba
 				// Update the manual controls to reflect the available options
 				updateManualControls();
 				
-				// Enable the currently disabled controls
-				SetCtrlAttribute(panelHandle, MAINPANEL_RESETRELAYSBUTTON, ATTR_DIMMED, 0);
-				
 				// Get file name (without path)
 				char* fileName = pathName;
 				char* tmp = pathName;
@@ -242,7 +268,7 @@ int CVICALLBACK LoadProbeCard_CB(int panel, int control, int event, void *callba
 					fileName = tmp + 1;
 					tmp = strchr(fileName, '\\');
 				}
-				SetCtrlVal(panelHandle, MAINPANEL_PROBECARDNAME, fileName);
+				setProbeCardDisplay(0, fileName);
 			}
 			
 			// Reset all relays
