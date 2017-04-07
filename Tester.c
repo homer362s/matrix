@@ -53,6 +53,9 @@ void setProbeCardDisplay(int dimmed, char* label);
 int getTabCount();
 void newFrame();
 void incrementLabelName(char* label);
+void updateHighlights();
+float getHighlightMin();
+float getHighlightMax();
 
 
 // Global variables
@@ -407,6 +410,7 @@ void handleSingleMeasurement(int measurementType, int newRow, char* label)
 	
 	double current;
 	double voltage;
+	double resistance;
 	
 	// Take the measurement
 	switch(measurementType) {
@@ -419,6 +423,8 @@ void handleSingleMeasurement(int measurementType, int newRow, char* label)
 			current = 1;
 			break;
 	}
+	
+	resistance = voltage/current;
 
 	// Create a new tab if one is needed
 	if (getTabCount() <= 0) {
@@ -440,10 +446,12 @@ void handleSingleMeasurement(int measurementType, int newRow, char* label)
 	// Fill in the values
 	SetTableCellVal(currentTabHandle, TABPANEL_1_MANUALTABLE, MakePoint(1,row), voltage);
 	SetTableCellVal(currentTabHandle, TABPANEL_1_MANUALTABLE, MakePoint(2,row), current);
-	SetTableCellVal(currentTabHandle, TABPANEL_1_MANUALTABLE, MakePoint(3,row), voltage/current);
-
-	// Scroll table if necessary
-	// TODO: actually scroll the table if necessary
+	SetTableCellVal(currentTabHandle, TABPANEL_1_MANUALTABLE, MakePoint(3,row), resistance);
+	
+	// Highlight the cell if its within the "good" range
+	if (resistance > getHighlightMin() && resistance < getHighlightMax()) {
+		SetTableCellAttribute(currentTabHandle, TABPANEL_1_MANUALTABLE, MakePoint(3,row), ATTR_TEXT_BGCOLOR, MakeColor(200,255,200));
+	}
 	
 }
 
@@ -929,6 +937,49 @@ int CVICALLBACK singleAutoMeasure_CB(int panel, int control, int event, void *ca
 			}
 			
 			setStatusDone();
+			break;
+	}
+	return 0;
+}
+
+void updateHighlights() {
+	float min = getHighlightMin();
+	float max = getHighlightMax();
+	
+	int tabHandle;
+	int rowCount;
+	double resistance;
+	for(int i = 0;i < getTabCount();i++) {
+		GetPanelHandleFromTabPage(panelHandle, MAINPANEL_TABS, i, &tabHandle);
+		GetNumTableRows(tabHandle, TABPANEL_1_MANUALTABLE, &rowCount);
+		for(int j = 0;j < rowCount;j++) {
+			GetTableCellVal(tabHandle, TABPANEL_1_MANUALTABLE, MakePoint(3,j+1), &resistance);
+			if (resistance > min && resistance < max) {
+				SetTableCellAttribute(tabHandle, TABPANEL_1_MANUALTABLE, MakePoint(3,j+1), ATTR_TEXT_BGCOLOR, MakeColor(200,255,200));
+			} else {
+				SetTableCellAttribute(tabHandle, TABPANEL_1_MANUALTABLE, MakePoint(3,j+1), ATTR_TEXT_BGCOLOR, MakeColor(255,255,255));
+			}
+		}
+	}
+}
+
+float getHighlightMin() {
+	char value[16];
+	GetCtrlVal(panelHandle, MAINPANEL_MINBOX, value);
+	return atof(value);
+}
+
+float getHighlightMax() {
+	char value[16];
+	GetCtrlVal(panelHandle, MAINPANEL_MAXBOX, value);
+	return atof(value);
+}
+
+int CVICALLBACK updateHighlights_CB(int panel, int control, int event, void *callbackData, int eventData1, int eventData2)
+{
+	switch(event) {
+		case EVENT_COMMIT:
+			updateHighlights();
 			break;
 	}
 	return 0;

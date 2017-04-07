@@ -62,11 +62,13 @@
 #define  MAINPANEL_MATRIXADDRRING         47      /* control type: ring, callback function: addressChanged_CB */
 #define  MAINPANEL_SINGLEAUTOMEASBUTTON   48      /* control type: command, callback function: singleAutoMeasure_CB */
 #define  MAINPANEL_AUTOMEASDEVLIST        49      /* control type: ring, callback function: (none) */
-#define  MAINPANEL_DECORATION_5           50      /* control type: deco, callback function: (none) */
-#define  MAINPANEL_DECORATION             51      /* control type: deco, callback function: (none) */
-#define  MAINPANEL_DECORATION_6           52      /* control type: deco, callback function: (none) */
-#define  MAINPANEL_DECORATION_7           53      /* control type: deco, callback function: (none) */
-#define  MAINPANEL_TEXTMSG_2              54      /* control type: textMsg, callback function: (none) */
+#define  MAINPANEL_MAXBOX                 50      /* control type: string, callback function: updateHighlights_CB */
+#define  MAINPANEL_MINBOX                 51      /* control type: string, callback function: updateHighlights_CB */
+#define  MAINPANEL_DECORATION_5           52      /* control type: deco, callback function: (none) */
+#define  MAINPANEL_DECORATION             53      /* control type: deco, callback function: (none) */
+#define  MAINPANEL_DECORATION_7           54      /* control type: deco, callback function: (none) */
+#define  MAINPANEL_TEXTMSG_2              55      /* control type: textMsg, callback function: (none) */
+#define  MAINPANEL_DECORATION_6           56      /* control type: deco, callback function: (none) */
 
      /* tab page panel controls */
 #define  TABPANEL_1_MANUALTABLE           2       /* control type: table, callback function: (none) */
@@ -102,6 +104,7 @@ int  CVICALLBACK singleAutoMeasure_CB(int panel, int control, int event, void *c
 int  CVICALLBACK startAutoMeasure_CB(int panel, int control, int event, void *callbackData, int eventData1, int eventData2);
 int  CVICALLBACK startAutoReMeasure_CB(int panel, int control, int event, void *callbackData, int eventData1, int eventData2);
 int  CVICALLBACK tabs_CB(int panel, int control, int event, void *callbackData, int eventData1, int eventData2);
+int  CVICALLBACK updateHighlights_CB(int panel, int control, int event, void *callbackData, int eventData1, int eventData2);
 
 
 #ifdef __cplusplus

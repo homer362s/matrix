@@ -150,6 +150,22 @@ Prototype="int startAutoReMeasure_CB(int panel, int control, int event, void *ca
 Class="Function"
 Prototype="int singleAutoMeasure_CB(int panel, int control, int event, void *callbackData, int eventData1, int eventData2);"
 
+[updateHighlights]
+Class="Function"
+Prototype="void updateHighlights();"
+
+[getHighlightMin]
+Class="Function"
+Prototype="float getHighlightMin();"
+
+[getHighlightMax]
+Class="Function"
+Prototype="float getHighlightMax();"
+
+[updateHighlights_CB]
+Class="Function"
+Prototype="int updateHighlights_CB(int panel, int control, int event, void *callbackData, int eventData1, int eventData2);"
+
 [startAutoMeasure_CB]
 Class="Function"
 Prototype="int startAutoMeasure_CB(int panel, int control, int event, void *callbackData, int eventData1, int eventData2);"
