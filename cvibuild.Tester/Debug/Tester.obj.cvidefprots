@@ -114,6 +114,10 @@ Prototype="int getSelectedRow();"
 Class="Function"
 Prototype="void newFrame();"
 
+[incrementLabelName]
+Class="Function"
+Prototype="void incrementLabelName(char *label);"
+
 [newFrame_CB]
 Class="Function"
 Prototype="int newFrame_CB(int panel, int control, int event, void *callbackData, int eventData1, int eventData2);"

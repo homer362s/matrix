@@ -52,6 +52,7 @@ float getMeasCoeff();
 void setProbeCardDisplay(int dimmed, char* label);
 int getTabCount();
 void newFrame();
+void incrementLabelName(char* label);
 
 
 // Global variables
@@ -444,6 +445,7 @@ int CVICALLBACK ManualMeasure_CB(int panel, int control, int event, void *callba
 		case EVENT_COMMIT:
 			char label[16];
 			GetCtrlVal(panelHandle, MAINPANEL_DEVIDBOX, label);
+			
 			switch(control) {
 				case MAINPANEL_REMEASURECURRENTBUTTO:
 					handleSingleMeasurement(MEASURE_CURRENT, 0, label);
@@ -457,6 +459,14 @@ int CVICALLBACK ManualMeasure_CB(int panel, int control, int event, void *callba
 				case MAINPANEL_MEASUREVOLTAGEBUTTON:
 					handleSingleMeasurement(MEASURE_VOLTAGE,1, label);
 					break;
+			}
+			
+			// Increment the device ID if requested
+			int checked;
+			GetCtrlVal(panelHandle, MAINPANEL_AUTODEVCHECK, &checked);
+			if (checked) {
+				incrementLabelName(label);
+				SetCtrlVal(panelHandle, MAINPANEL_DEVIDBOX, label);
 			}
 	}
 	
@@ -648,41 +658,42 @@ void newFrame()
 	GetCtrlVal(panelHandle, MAINPANEL_AUTOFRAMECHECK, &checked);
 	if (checked) {
 		char label[16];
-		int len;
-		int finalNum;
 		GetCtrlVal(panelHandle, MAINPANEL_FRAMEIDBOX, label);
-		
-		// Get final number
-		len = strlen(label);
-		for (int i = len-1;i >= 0;i--) {
-			if (len == 0) { // There is currently no label -> Make the next label "1"
-				sprintf(label, "1");
-				SetCtrlVal(panelHandle, MAINPANEL_FRAMEIDBOX, label);
-				break;
-			}
-			else if (i == 0 && !(label[i] < 48 || label[i] > 57)) { // The whole label is a number -> Increment it
-				finalNum = atoi(label);
-				sprintf(label, "%d", finalNum + 1);
-				SetCtrlVal(panelHandle, MAINPANEL_FRAMEIDBOX, label);
-				break;
-			}
-			else if (i == len-1 && (label[i] < 48 || label[i] > 57)) { // No trailing number -> Append a 1
-				sprintf(label, "%s%d", label, 1);
-				SetCtrlVal(panelHandle, MAINPANEL_FRAMEIDBOX, label);
-				break;
-			}
-			else if (label[i] < 48 || label[i] > 57) { // We found the trailing number
-				char* finalNumStr;
-				
-				i = i + 1;
-				finalNumStr = label + i;
-				
-				int oldNum = atoi(finalNumStr);
-				sprintf(finalNumStr, "%d", oldNum + 1);
-				
-				SetCtrlVal(panelHandle, MAINPANEL_FRAMEIDBOX, label);
-				break;
-			}
+		incrementLabelName(label);
+		SetCtrlVal(panelHandle, MAINPANEL_FRAMEIDBOX, label);
+	}
+}
+
+void incrementLabelName(char* label)
+{
+	int len;
+	int finalNum;
+	
+	// Get final number
+	len = strlen(label);
+	for (int i = len-1;i >= 0;i--) {
+		if (len == 0) { // There is currently no label -> Make the next label "1"
+			sprintf(label, "1");
+			break;
+		}
+		else if (i == 0 && !(label[i] < 48 || label[i] > 57)) { // The whole label is a number -> Increment it
+			finalNum = atoi(label);
+			sprintf(label, "%d", finalNum + 1);
+			break;
+		}
+		else if (i == len-1 && (label[i] < 48 || label[i] > 57)) { // No trailing number -> Append a 1
+			sprintf(label, "%s%d", label, 1);
+			break;
+		}
+		else if (label[i] < 48 || label[i] > 57) { // We found the trailing number
+			char* finalNumStr;
+			
+			i = i + 1;
+			finalNumStr = label + i;
+			
+			int oldNum = atoi(finalNumStr);
+			sprintf(finalNumStr, "%d", oldNum + 1);
+			break;
 		}
 	}
 }
