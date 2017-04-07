@@ -66,6 +66,7 @@
 #define  MAINPANEL_DECORATION             51      /* control type: deco, callback function: (none) */
 #define  MAINPANEL_DECORATION_6           52      /* control type: deco, callback function: (none) */
 #define  MAINPANEL_DECORATION_7           53      /* control type: deco, callback function: (none) */
+#define  MAINPANEL_TEXTMSG_2              54      /* control type: textMsg, callback function: (none) */
 
      /* tab page panel controls */
 #define  TABPANEL_1_MANUALTABLE           2       /* control type: table, callback function: (none) */
