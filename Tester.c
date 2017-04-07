@@ -296,6 +296,8 @@ int CVICALLBACK LoadLayout_CB(int panel, int control, int event, void *callbackD
 				// Update the UI
 				SetCtrlAttribute(panelHandle, MAINPANEL_STARTMEASBUTTON, ATTR_DIMMED, 0);
 				SetCtrlAttribute(panelHandle, MAINPANEL_STARTREMEASBUTTON, ATTR_DIMMED, 0);
+				SetCtrlAttribute(panelHandle, MAINPANEL_AUTOMEASDEVLIST, ATTR_DIMMED, 0);
+				SetCtrlAttribute(panelHandle, MAINPANEL_SINGLEAUTOMEASBUTTON, ATTR_DIMMED, 0);
 				
 				// Get file name (without path)
 				char* fileName = pathName;

@@ -60,7 +60,7 @@
 #define  MAINPANEL_MEASCOEFF              45      /* control type: string, callback function: (none) */
 #define  MAINPANEL_INPUTCOEFF             46      /* control type: string, callback function: (none) */
 #define  MAINPANEL_MATRIXADDRRING         47      /* control type: ring, callback function: addressChanged_CB */
-#define  MAINPANEL_COMMANDBUTTON          48      /* control type: command, callback function: singleAutoMeasure_CB */
+#define  MAINPANEL_SINGLEAUTOMEASBUTTON   48      /* control type: command, callback function: singleAutoMeasure_CB */
 #define  MAINPANEL_AUTOMEASDEVLIST        49      /* control type: ring, callback function: (none) */
 #define  MAINPANEL_DECORATION_5           50      /* control type: deco, callback function: (none) */
 #define  MAINPANEL_DECORATION             51      /* control type: deco, callback function: (none) */
