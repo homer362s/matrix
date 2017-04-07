@@ -2,10 +2,6 @@
 Class="Function"
 Prototype="int main(int argc, char **argv);"
 
-[startAutoReMeasure_CB]
-Class="Function"
-Prototype="int startAutoReMeasure_CB(int panel, int control, int event, void *callbackData, int eventData1, int eventData2);"
-
 [panelCB]
 Class="Function"
 Prototype="int panelCB(int panel, int event, void *callbackData, int eventData1, int eventData2);"
@@ -114,6 +110,10 @@ Prototype="void getNewFrameID(char *newID);"
 Class="Function"
 Prototype="int getSelectedRow();"
 
+[newFrame]
+Class="Function"
+Prototype="void newFrame();"
+
 [newFrame_CB]
 Class="Function"
 Prototype="int newFrame_CB(int panel, int control, int event, void *callbackData, int eventData1, int eventData2);"
@@ -137,6 +137,10 @@ Prototype="int renameFrame_CB(int panel, int control, int event, void *callbackD
 [tabs_CB]
 Class="Function"
 Prototype="int tabs_CB(int panel, int control, int event, void *callbackData, int eventData1, int eventData2);"
+
+[startAutoReMeasure_CB]
+Class="Function"
+Prototype="int startAutoReMeasure_CB(int panel, int control, int event, void *callbackData, int eventData1, int eventData2);"
 
 [startAutoMeasure_CB]
 Class="Function"

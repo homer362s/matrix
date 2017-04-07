@@ -6,7 +6,7 @@
 struct AutoConfig* parseLayoutFile(char* filename)
 {
 	// Open the file
-	FILE *fp = fopen(filename, "r");
+	FILE *fp = fopen(filename, "rb");
 	
 	// Find the end of the file so we know how big it is
 	fseek(fp, 0, SEEK_END);
@@ -35,10 +35,9 @@ struct AutoConfig* parseLayoutFile(char* filename)
 				maxLines = maxLines*2;
 				lines = realloc(lines, maxLines*sizeof(char*));
 			}
-			lines[lineCount - 1] = &str[i+1];
+			lines[lineCount - 1] = &str[i+1]; 
 			if (strlen(lines[lineCount-1]) == 0) {
 				lineCount = lineCount - 1;
-				
 			}
 		}
 	}

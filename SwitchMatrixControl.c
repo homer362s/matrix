@@ -161,6 +161,17 @@ int switchMatrix(int inputNumber, int pinNumber, int action, struct SwitchMatrix
     
 }
 
+void quickReset(struct SwitchMatrixConfig_type *SwitchMatrixConfig)
+{
+	for (int i = 0;i < MaxInputs;i++) {
+		for (int j = 0;j < MaxRelays;j++) {
+			if (SwitchMatrixConfig->Connections[i][j]) {
+				switchMatrix(i+1, j+1, DisConnect, SwitchMatrixConfig);
+			}
+		}
+	}
+}
+
 int resetUsedRelays(struct SwitchMatrixConfig_type *SwitchMatrixConfig) {
 //Open all relays that have been addressed, even those that are already open (just to be sure)
     int i, temp, boardAddressLoc, relayAddressLoc, error;

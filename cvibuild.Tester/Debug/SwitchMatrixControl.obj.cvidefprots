@@ -6,6 +6,10 @@ Prototype="int initSwitchMatrix(int port, struct SwitchMatrixConfig_type *Switch
 Class="Function"
 Prototype="int switchMatrix(int inputNumber, int pinNumber, int action, struct SwitchMatrixConfig_type *SwitchMatrixConfig);"
 
+[quickReset]
+Class="Function"
+Prototype="void quickReset(struct SwitchMatrixConfig_type *SwitchMatrixConfig);"
+
 [resetUsedRelays]
 Class="Function"
 Prototype="int resetUsedRelays(struct SwitchMatrixConfig_type *SwitchMatrixConfig);"

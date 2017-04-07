@@ -50,6 +50,8 @@ void initializeMeasurement(Addr4882_t addr);
 float getSourceCoeff();
 float getMeasCoeff();
 void setProbeCardDisplay(int dimmed, char* label);
+int getTabCount();
+void newFrame();
 
 
 // Global variables
@@ -93,11 +95,6 @@ Error:
 	/* clean up */
 	if (panelHandle > 0)
 		DiscardPanel (panelHandle);
-	return 0;
-}
-
-int  CVICALLBACK startAutoReMeasure_CB(int panel, int control, int event, void *callbackData, int eventData1, int eventData2)
-{
 	return 0;
 }
 
@@ -297,6 +294,7 @@ int CVICALLBACK LoadLayout_CB(int panel, int control, int event, void *callbackD
 				
 				// Update the UI
 				SetCtrlAttribute(panelHandle, MAINPANEL_STARTMEASBUTTON, ATTR_DIMMED, 0);
+				SetCtrlAttribute(panelHandle, MAINPANEL_STARTREMEASBUTTON, ATTR_DIMMED, 0);
 				
 				// Get file name (without path)
 				char* fileName = pathName;
@@ -384,6 +382,7 @@ int CVICALLBACK renameRow_CB(int panel, int control, int event, void *callbackDa
 
 void handleSingleMeasurement(int measurementType, int newRow, char* label)
 {
+	// Set up the source
 	switch(sourceDevice) {
 		case KEITHLEY2400:
 			ke24__setSourceDelay(sourceAddress,1);
@@ -400,6 +399,7 @@ void handleSingleMeasurement(int measurementType, int newRow, char* label)
 	double current;
 	double voltage;
 	
+	// Take the measurement
 	switch(measurementType) {
 		case MEASURE_CURRENT:
 			voltage = getVBias();
@@ -411,11 +411,17 @@ void handleSingleMeasurement(int measurementType, int newRow, char* label)
 			break;
 	}
 
+	// Create a new tab if one is needed
+	if (getTabCount() <= 0) {
+		newFrame();
+	}
+	
 	// Create a new row if one is needed
 	if (row < 0)
 	{
 		InsertTableRows(currentTabHandle, TABPANEL_1_MANUALTABLE, -1, 1, VAL_CELL_NUMERIC);
 		GetNumTableRows(currentTabHandle, TABPANEL_1_MANUALTABLE, &row);
+		SetActiveTableCell(currentTabHandle, TABPANEL_1_MANUALTABLE, MakePoint(1,row));
 	}
 	
 	// Set row name
@@ -606,40 +612,43 @@ int getSelectedRow()
 	return cell.y;
 }
 
-int CVICALLBACK newFrame_CB(int panel, int control, int event, void *callbackData, int eventData1, int eventData2)
+void newFrame()
+{
+	// Make the tab
+	char newLabel[15];
+	getNewFrameID(newLabel);
+	int newTabIndex = InsertTabPage(panelHandle, MAINPANEL_TABS, getTabCount(), newLabel);
+	SetActiveTabPage(panelHandle, MAINPANEL_TABS, newTabIndex);
+
+	// Update the current tab handle
+	GetPanelHandleFromTabPage(panelHandle, MAINPANEL_TABS, getCurrentTab(), &currentTabHandle);
+
+	// Create the table in the new tab
+	int tableCtrlID = NewCtrl(currentTabHandle, CTRL_TABLE, 0, 0, 0);
+	SetCtrlAttribute(currentTabHandle, tableCtrlID, ATTR_WIDTH, 240);
+	SetCtrlAttribute(currentTabHandle, tableCtrlID, ATTR_HEIGHT, 350);
+	SetCtrlAttribute(currentTabHandle, tableCtrlID, ATTR_SCROLL_BARS, 2);
+	SetCtrlAttribute(currentTabHandle, tableCtrlID, ATTR_ENABLE_COLUMN_SIZING, 0);
+	SetCtrlAttribute(currentTabHandle, tableCtrlID, ATTR_ENABLE_ROW_SIZING, 0);
+
+	InsertTableColumns(currentTabHandle, tableCtrlID, 1, 3, VAL_CELL_NUMERIC);
+
+	for (int i = 1;i <= 3;i++) {
+		SetTableColumnAttribute(currentTabHandle, tableCtrlID, i, ATTR_FORMAT, VAL_SCIENTIFIC_FORMAT);
+		SetTableColumnAttribute(currentTabHandle, tableCtrlID, i, ATTR_USE_LABEL_TEXT, 1);
+		SetTableColumnAttribute(currentTabHandle, tableCtrlID, i, ATTR_COLUMN_WIDTH, 60);
+	}
+
+	SetTableColumnAttribute(currentTabHandle, tableCtrlID, 1, ATTR_LABEL_TEXT, "V [V]");
+	SetTableColumnAttribute(currentTabHandle, tableCtrlID, 2, ATTR_LABEL_TEXT, "I [A]");
+	SetTableColumnAttribute(currentTabHandle, tableCtrlID, 3, ATTR_LABEL_TEXT, "R [Ohm]");
+	}
+
+	int CVICALLBACK newFrame_CB(int panel, int control, int event, void *callbackData, int eventData1, int eventData2)
 {
 	switch (event) {
 		case EVENT_COMMIT:
-			// Make the tab
-			char newLabel[15];
-			getNewFrameID(newLabel);
-			int newTabIndex = InsertTabPage(panelHandle, MAINPANEL_TABS, getTabCount(), newLabel);
-			SetActiveTabPage(panelHandle, MAINPANEL_TABS, newTabIndex);
-			
-			// Update the current tab handle
-			GetPanelHandleFromTabPage(panelHandle, MAINPANEL_TABS, getCurrentTab(), &currentTabHandle);
-			
-			// Create the table in the new tab
-			int tableCtrlID = NewCtrl(currentTabHandle, CTRL_TABLE, 0, 0, 0);
-			SetCtrlAttribute(currentTabHandle, tableCtrlID, ATTR_WIDTH, 240);
-			SetCtrlAttribute(currentTabHandle, tableCtrlID, ATTR_HEIGHT, 350);
-			SetCtrlAttribute(currentTabHandle, tableCtrlID, ATTR_SCROLL_BARS, 2);
-			SetCtrlAttribute(currentTabHandle, tableCtrlID, ATTR_ENABLE_COLUMN_SIZING, 0);
-			SetCtrlAttribute(currentTabHandle, tableCtrlID, ATTR_ENABLE_ROW_SIZING, 0);
-			
-			InsertTableColumns(currentTabHandle, tableCtrlID, 1, 3, VAL_CELL_NUMERIC);
-
-			for (int i = 1;i <= 3;i++) {
-				SetTableColumnAttribute(currentTabHandle, tableCtrlID, i, ATTR_FORMAT, VAL_SCIENTIFIC_FORMAT);
-				SetTableColumnAttribute(currentTabHandle, tableCtrlID, i, ATTR_USE_LABEL_TEXT, 1);
-				SetTableColumnAttribute(currentTabHandle, tableCtrlID, i, ATTR_COLUMN_WIDTH, 60);
-			}
-			
-			SetTableColumnAttribute(currentTabHandle, tableCtrlID, 1, ATTR_LABEL_TEXT, "V [V]");
-			SetTableColumnAttribute(currentTabHandle, tableCtrlID, 2, ATTR_LABEL_TEXT, "I [A]");
-			SetTableColumnAttribute(currentTabHandle, tableCtrlID, 3, ATTR_LABEL_TEXT, "R [Ohm]");
-			
-			
+			newFrame();
 			break;
 	}
 	return 0;
@@ -655,6 +664,8 @@ int CVICALLBACK deleteFrame_CB(int panel, int control, int event, void *callback
 			{
 				SetActiveTabPage(panelHandle, MAINPANEL_TABS, currentTab == 0 ? 0 : currentTab - 1);
 				GetPanelHandleFromTabPage(panelHandle, MAINPANEL_TABS, getCurrentTab(), &currentTabHandle);
+			} else {
+				currentTabHandle = -1;
 			}
 			break;
 	}
@@ -774,10 +785,52 @@ int CVICALLBACK tabs_CB(int panel, int control, int event, void *callbackData, i
 	switch (event)
 	{
 		case EVENT_ACTIVE_TAB_CHANGE:
-			GetPanelHandleFromTabPage(panelHandle, MAINPANEL_TABS, eventData2, &currentTabHandle);
+			int oldErrorSetting = SetBreakOnLibraryErrors(0);
+			int status = GetPanelHandleFromTabPage(panelHandle, MAINPANEL_TABS, eventData2, &currentTabHandle);
+			SetBreakOnLibraryErrors(oldErrorSetting);
+			
+			if (status < 0)
+				currentTabHandle = -1;
 			break;
 			
 	}
+	return 0;
+}
+
+int CVICALLBACK startAutoReMeasure_CB(int panel, int control, int event, void *callbackData, int eventData1, int eventData2)
+{
+	switch(event) {
+		case EVENT_COMMIT:
+			setStatusBar("Measuring");
+	
+			int row = getSelectedRow();
+			if (row <= 0) {
+				setStatusDone();
+				break;
+			}
+			
+			// Disconnect any connected relays
+			quickReset(SwitchMatrixConfig);
+			
+			struct AutoMeasurement* meas = layoutConfig->measurements[row-1];
+			
+			// Connect the required relays
+			for (int i = 0;i < meas->connectionCount;i++) {
+				switchMatrix(meas->connections[i].input, meas->connections[i].pin, Connect, SwitchMatrixConfig);
+			}
+			
+			// Take measurement
+			handleSingleMeasurement(MEASURE_CURRENT, 0, meas->label);
+			
+			// Disconnect the relays
+			for (int i = 0;i < meas->connectionCount;i++) {
+				switchMatrix(meas->connections[i].input, meas->connections[i].pin, DisConnect, SwitchMatrixConfig);
+			}
+			
+			setStatusDone();
+			break;
+	}
+	
 	return 0;
 }
 
@@ -785,9 +838,14 @@ int CVICALLBACK startAutoMeasure_CB(int panel, int control, int event, void *cal
 {
 	switch(event) {
 		case EVENT_COMMIT:
+			// Create a new frame for this measurement
+			newFrame();
+			
+			// Reset the relays
 			setStatusBar("Resetting all relays");
 			resetAllRelays(SwitchMatrixConfig);
 			
+			// Start the measurement
 			setStatusBar("Measuring");
 	
 			// Loop over each measurement
@@ -797,6 +855,9 @@ int CVICALLBACK startAutoMeasure_CB(int panel, int control, int event, void *cal
 					struct AutoConnection conn = layoutConfig->measurements[i]->connections[j];
 					switchMatrix(conn.input, conn.pin, Connect, SwitchMatrixConfig);
 				}
+				
+				// Delay to make sure all the relays finish connecting
+				Delay(0.2);
 				
 				// Do the measurement
 				printf("Taking measurement\n");
@@ -814,189 +875,3 @@ int CVICALLBACK startAutoMeasure_CB(int panel, int control, int event, void *cal
 	}
 	return 0;
 }
-
-/*
-int CVICALLBACK Run (int panel, int control, int event,
-					 void *callbackData, int eventData1, int eventData2)
-{
-	int error;
-	switch (event)
-	{
-		case EVENT_COMMIT:
-			//Very important: Run initialization first, passing in the name of the probe card config file
-			error = initSwitchMatrix (6, SwitchMatrixConfig, "48 Pin Probe Card.csv");
-			
-			//Just to be crazy safe, let's reset all relays
-			//error = resetAllRelays(SwitchMatrixConfig);
-			
-			//Now we are ready to do the measurement.  Let's do an example of measuring betweens pins 1&2
-			//and then pins 3&4,  Connect input 1 to pin 1, and input2 to pin 2
-			//Syntax is:switchMatrix(switchMatrix(inputNumber, pinNumber, action, SwitchMatrixConfig)
-			error = switchMatrix(1, 1, Connect, SwitchMatrixConfig);
-			error = switchMatrix(2, 2, Connect, SwitchMatrixConfig);
-			//Now do the measurement and record data
-			
-			//Next, disconnect the inputs
-			error = switchMatrix(1, 1, DisConnect, SwitchMatrixConfig);
-			error = switchMatrix(2, 2, DisConnect, SwitchMatrixConfig);
-			
-			//Now connect the inputs to pins 3&4
-			error = switchMatrix(1, 3, Connect, SwitchMatrixConfig);
-			error = switchMatrix(2, 4, Connect, SwitchMatrixConfig);
-			//Now do the measurement and record data
-			
-			//Next, disconnect the inputs
-			error = switchMatrix(1, 3, DisConnect, SwitchMatrixConfig);
-			error = switchMatrix(2, 4, DisConnect, SwitchMatrixConfig);
-			
-			
-			//This section will step through the entire 48 pins
-			error = switchMatrix(2, 1, Connect, SwitchMatrixConfig);
-			error = switchMatrix(2, 1, DisConnect, SwitchMatrixConfig);
-			
-			error = switchMatrix(2, 2, Connect, SwitchMatrixConfig);
-			error = switchMatrix(2, 2, DisConnect, SwitchMatrixConfig);
-			
-			error = switchMatrix(2, 3, Connect, SwitchMatrixConfig);
-			error = switchMatrix(2, 3, DisConnect, SwitchMatrixConfig);
-			
-			error = switchMatrix(2, 4, Connect, SwitchMatrixConfig);
-			error = switchMatrix(2, 4, DisConnect, SwitchMatrixConfig);
-			
-			error = switchMatrix(2, 5, Connect, SwitchMatrixConfig);
-			error = switchMatrix(2, 5, DisConnect, SwitchMatrixConfig);
-			
-			error = switchMatrix(2, 6, Connect, SwitchMatrixConfig);
-			error = switchMatrix(2, 6, DisConnect, SwitchMatrixConfig);
-			
-			error = switchMatrix(2, 7, Connect, SwitchMatrixConfig);
-			error = switchMatrix(2, 7, DisConnect, SwitchMatrixConfig);
-			
-			error = switchMatrix(2, 8, Connect, SwitchMatrixConfig);
-			error = switchMatrix(2, 8, DisConnect, SwitchMatrixConfig);
-			
-			error = switchMatrix(2, 9, Connect, SwitchMatrixConfig);
-			error = switchMatrix(2, 9, DisConnect, SwitchMatrixConfig);
-			
-			error = switchMatrix(2, 10, Connect, SwitchMatrixConfig);
-			error = switchMatrix(2, 10, DisConnect, SwitchMatrixConfig);
-			
-			error = switchMatrix(2, 11, Connect, SwitchMatrixConfig);
-			error = switchMatrix(2, 11, DisConnect, SwitchMatrixConfig);
-			
-			error = switchMatrix(2, 12, Connect, SwitchMatrixConfig);
-			error = switchMatrix(2, 12, DisConnect, SwitchMatrixConfig);
-			
-			error = switchMatrix(2, 13, Connect, SwitchMatrixConfig);
-			error = switchMatrix(2, 13, DisConnect, SwitchMatrixConfig);
-									
-			error = switchMatrix(2, 14, Connect, SwitchMatrixConfig);
-			error = switchMatrix(2, 14, DisConnect, SwitchMatrixConfig);
-			
-			error = switchMatrix(2, 15, Connect, SwitchMatrixConfig);
-			error = switchMatrix(2, 15, DisConnect, SwitchMatrixConfig);
-			
-			error = switchMatrix(2, 16, Connect, SwitchMatrixConfig);
-			error = switchMatrix(2, 16, DisConnect, SwitchMatrixConfig);
-			
-			error = switchMatrix(2, 17, Connect, SwitchMatrixConfig);
-			error = switchMatrix(2, 17, DisConnect, SwitchMatrixConfig);
-			
-			error = switchMatrix(2, 18, Connect, SwitchMatrixConfig);
-			error = switchMatrix(2, 18, DisConnect, SwitchMatrixConfig);
-			
-			error = switchMatrix(2, 19, Connect, SwitchMatrixConfig);
-			error = switchMatrix(2, 19, DisConnect, SwitchMatrixConfig);
-			
-			error = switchMatrix(2, 20, Connect, SwitchMatrixConfig);
-			error = switchMatrix(2, 20, DisConnect, SwitchMatrixConfig);
-			
-			error = switchMatrix(2, 21, Connect, SwitchMatrixConfig);
-			error = switchMatrix(2, 21, DisConnect, SwitchMatrixConfig);
-			
-			error = switchMatrix(2, 22, Connect, SwitchMatrixConfig);
-			error = switchMatrix(2, 22, DisConnect, SwitchMatrixConfig);
-			
-			error = switchMatrix(2, 23, Connect, SwitchMatrixConfig);
-			error = switchMatrix(2, 23, DisConnect, SwitchMatrixConfig);
-			
-			error = switchMatrix(2, 24, Connect, SwitchMatrixConfig);
-			error = switchMatrix(2, 24, DisConnect, SwitchMatrixConfig);
-			
-			error = switchMatrix(2, 25, Connect, SwitchMatrixConfig);
-			error = switchMatrix(2, 25, DisConnect, SwitchMatrixConfig);
-			
-			error = switchMatrix(2, 26, Connect, SwitchMatrixConfig);
-			error = switchMatrix(2, 26, DisConnect, SwitchMatrixConfig);
-			
-			error = switchMatrix(2, 27, Connect, SwitchMatrixConfig);
-			error = switchMatrix(2, 27, DisConnect, SwitchMatrixConfig);
-			
-			error = switchMatrix(2, 28, Connect, SwitchMatrixConfig);
-			error = switchMatrix(2, 28, DisConnect, SwitchMatrixConfig);
-			
-			error = switchMatrix(2, 29, Connect, SwitchMatrixConfig);
-			error = switchMatrix(2, 29, DisConnect, SwitchMatrixConfig);
-			
-			error = switchMatrix(2, 30, Connect, SwitchMatrixConfig);
-			error = switchMatrix(2, 30, DisConnect, SwitchMatrixConfig);
-			
-			error = switchMatrix(2, 31, Connect, SwitchMatrixConfig);
-			error = switchMatrix(2, 31, DisConnect, SwitchMatrixConfig);
-			
-			error = switchMatrix(2, 32, Connect, SwitchMatrixConfig);
-			error = switchMatrix(2, 32, DisConnect, SwitchMatrixConfig);
-			
-			error = switchMatrix(2, 33, Connect, SwitchMatrixConfig);
-			error = switchMatrix(2, 33, DisConnect, SwitchMatrixConfig);
-			
-			error = switchMatrix(2, 34, Connect, SwitchMatrixConfig);
-			error = switchMatrix(2, 34, DisConnect, SwitchMatrixConfig);
-			
-			error = switchMatrix(2, 35, Connect, SwitchMatrixConfig);
-			error = switchMatrix(2, 35, DisConnect, SwitchMatrixConfig);
-			
-			error = switchMatrix(2, 36, Connect, SwitchMatrixConfig);
-			error = switchMatrix(2, 36, DisConnect, SwitchMatrixConfig);
-			
-			error = switchMatrix(2, 37, Connect, SwitchMatrixConfig);
-			error = switchMatrix(2, 37, DisConnect, SwitchMatrixConfig);
-			
-			error = switchMatrix(2, 38, Connect, SwitchMatrixConfig);
-			error = switchMatrix(2, 38, DisConnect, SwitchMatrixConfig);
-			
-			error = switchMatrix(2, 39, Connect, SwitchMatrixConfig);
-			error = switchMatrix(2, 39, DisConnect, SwitchMatrixConfig);
-			
-			error = switchMatrix(2, 40, Connect, SwitchMatrixConfig);
-			error = switchMatrix(2, 40, DisConnect, SwitchMatrixConfig);
-			
-			error = switchMatrix(2, 41, Connect, SwitchMatrixConfig);
-			error = switchMatrix(2, 41, DisConnect, SwitchMatrixConfig);
-			
-			error = switchMatrix(2, 42, Connect, SwitchMatrixConfig);
-			error = switchMatrix(2, 42, DisConnect, SwitchMatrixConfig);
-			
-			error = switchMatrix(2, 43, Connect, SwitchMatrixConfig);
-			error = switchMatrix(2, 43, DisConnect, SwitchMatrixConfig);
-			
-			error = switchMatrix(2, 44, Connect, SwitchMatrixConfig);
-			error = switchMatrix(2, 44, DisConnect, SwitchMatrixConfig);
-			
-			error = switchMatrix(2, 45, Connect, SwitchMatrixConfig);
-			error = switchMatrix(2, 45, DisConnect, SwitchMatrixConfig);
-			
-			error = switchMatrix(2, 46, Connect, SwitchMatrixConfig);
-			error = switchMatrix(2, 46, DisConnect, SwitchMatrixConfig);
-			
-			error = switchMatrix(2, 47, Connect, SwitchMatrixConfig);
-			error = switchMatrix(2, 47, DisConnect, SwitchMatrixConfig);
-			
-			error = switchMatrix(2, 48, Connect, SwitchMatrixConfig);
-			error = switchMatrix(2, 48, DisConnect, SwitchMatrixConfig);
-
-			break;
-	}
-	return 0;
-}
-*/
