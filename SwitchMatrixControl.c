@@ -12,8 +12,8 @@ char *fileread(char name[], char access[]);
 int getInputNew(char FileInput[], int *pointer, char **line);
 int relayUpdate(int boardNumber, int relayNumber, int action);
 
-int comPort = 3;				//Number of port into which the digital I/O board is plugged.
-char device[6] = "COM3\0";		//Name of device (digital I/O board) on Windows.
+int comPort = 6;				//Number of port into which the digital I/O board is plugged.
+char device[6] = "COM6\0";		//Name of device (digital I/O board) on Windows.
 long baud = 9600;				//Baud rate of port where digital I/O board is plugged: 9600 bits per second.
 int parity = 0;					//Parity mode for selected port: no parity.
 int dataBit = 8;				//Number of data bits for port.

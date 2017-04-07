@@ -28,7 +28,7 @@ struct AutoConfig* parseLayoutFile(char* filename)
 	
 	lines[0] = str;
 	for (int i = 0;i < fsize;i++) {
-		if (str[i] == '\r') {
+		if (str[i] == '\n') {
 			str[i] = 0;
 			lineCount++;
 			if (lineCount > maxLines) {
