@@ -59,9 +59,10 @@
 #define  MAINPANEL_REMEASUREVOLTAGEBUTTO  44      /* control type: command, callback function: ManualMeasure_CB */
 #define  MAINPANEL_MEASCOEFF              45      /* control type: string, callback function: (none) */
 #define  MAINPANEL_INPUTCOEFF             46      /* control type: string, callback function: (none) */
-#define  MAINPANEL_DECORATION_5           47      /* control type: deco, callback function: (none) */
-#define  MAINPANEL_DECORATION             48      /* control type: deco, callback function: (none) */
-#define  MAINPANEL_DECORATION_6           49      /* control type: deco, callback function: (none) */
+#define  MAINPANEL_MATRIXADDRRING         47      /* control type: ring, callback function: (none) */
+#define  MAINPANEL_DECORATION_5           48      /* control type: deco, callback function: (none) */
+#define  MAINPANEL_DECORATION             49      /* control type: deco, callback function: (none) */
+#define  MAINPANEL_DECORATION_6           50      /* control type: deco, callback function: (none) */
 
      /* tab page panel controls */
 #define  TABPANEL_1_MANUALTABLE           2       /* control type: table, callback function: (none) */

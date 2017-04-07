@@ -32,7 +32,7 @@ struct SwitchMatrixConfig_type{
 };
 
 //Function prototypes
-int initSwitchMatrix (struct SwitchMatrixConfig_type *SwitchMatrixConfig, char ProbeCardConfig[]);
+int initSwitchMatrix (int port, struct SwitchMatrixConfig_type *SwitchMatrixConfig, char ProbeCardConfig[]);
 int switchMatrix(int inputNumber, int pinNumber, int action, struct SwitchMatrixConfig_type *SwitchMatrixConfig);
 int resetUsedRelays(struct SwitchMatrixConfig_type *SwitchMatrixConfig);
 int resetAllRelays(struct SwitchMatrixConfig_type *SwitchMatrixConfig);

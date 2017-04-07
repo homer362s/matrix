@@ -11,6 +11,7 @@
 //==============================================================================
 // Include files
 
+#include <rs232.h>
 #include <formatio.h>
 #include <stdio.h>
 #include <ansi_c.h>
@@ -35,6 +36,7 @@
 
 // Function prototypes
 void GPIBScan();
+void COMScan();
 void updateManualControls();
 void updateRelays();
 float getRequestedBias();
@@ -44,7 +46,7 @@ void changeConnection(int port, int pin);
 void setStatusBar(char* status);
 void setStatusDone();
 int getSelectedRow();
-void initializeMeasurement(int addr);
+void initializeMeasurement(Addr4882_t addr);
 float getSourceCoeff();
 float getMeasCoeff();
 
@@ -52,8 +54,8 @@ float getMeasCoeff();
 // Global variables
 static int panelHandle = 0;
 int currentTabHandle;
-int sourceAddress = 0;
-int measAddress = 0;
+Addr4882_t sourceAddress = 0;
+Addr4882_t measAddress = 0;
 int sourceDevice = NODEVICE;
 int measDevice = NODEVICE;
 
@@ -70,6 +72,7 @@ int main (int argc, char *argv[])
 	nullChk (InitCVIRTE (0, argv, 0));
 	errChk (panelHandle = LoadPanel (0, "Tester.uir", MAINPANEL));
 	GPIBScan();
+	COMScan();
 	SwitchMatrixConfig = (struct SwitchMatrixConfig_type *) malloc(sizeof (struct SwitchMatrixConfig_type));
 	
 	/* display the panel and run the user interface */
@@ -105,6 +108,7 @@ int CVICALLBACK GPIBScan_CB(int panel, int control, int event, void *callbackDat
 	{
 		case EVENT_COMMIT:
 			GPIBScan();
+			COMScan();
 	}
 	return 0;
 }
@@ -130,6 +134,34 @@ void GPIBScan()
 		InsertListItem(panelHandle, MAINPANEL_MEASADDRESSRING, i+1, tmpstr, AttachedDevices[i]);
 	}
 
+}
+
+void COMScan()
+{
+	// Delete all existing items in the dropdown menu
+	DeleteListItem(panelHandle, MAINPANEL_MATRIXADDRRING, 0, -1);
+	
+	// Discover some addresses
+	int maxAddr = 20;
+	int addrCount = 0;
+	int addresses[maxAddr];
+	int oldErrorSetting = SetBreakOnLibraryErrors(0);
+	for (int i = 1;i <= maxAddr;i++) {
+		if (OpenCom(i, "") >= 0){
+			addresses[addrCount] = i;
+			addrCount++;
+			CloseCom(i);
+		}
+	}
+	SetBreakOnLibraryErrors(oldErrorSetting);
+	
+	// Replace those items with the newly discovered ones
+	InsertListItem(panelHandle, MAINPANEL_MATRIXADDRRING, 0, "", 0);
+	char tmpstr[6];
+	for (int i = 0; i < addrCount; i++) {
+		sprintf(tmpstr, "COM%d", addresses[i]);
+		InsertListItem(panelHandle, MAINPANEL_MATRIXADDRRING, i+1, tmpstr, addresses[i]);
+	}
 }
 
 int CVICALLBACK deviceChanged_CB(int panel, int control, int event, void *callbackData, int eventData1, int eventData2)
@@ -159,7 +191,7 @@ int CVICALLBACK deviceChanged_CB(int panel, int control, int event, void *callba
 
 int CVICALLBACK addressChanged_CB(int panel, int control, int event, void *callbackData, int eventData1, int eventData2)
 {
-	int value;
+	Addr4882_t value;
 	switch(event) {
 		case EVENT_COMMIT:
 			GetCtrlVal(panelHandle, control, &value);
@@ -177,7 +209,7 @@ int CVICALLBACK addressChanged_CB(int panel, int control, int event, void *callb
 	return 0;
 }
 
-void initializeMeasurement(int addr)
+void initializeMeasurement(Addr4882_t addr)
 {
 	switch(measDevice) {
 		case KEITHLEY2400:
@@ -195,7 +227,7 @@ int CVICALLBACK LoadProbeCard_CB(int panel, int control, int event, void *callba
 			char pathName[512];
 			int success = FileSelectPopupEx("", "*.csv", "*.csv;*.*", "Select A Probe Card", VAL_LOAD_BUTTON, 0, 0, pathName);
 			if (success) {
-				initSwitchMatrix(SwitchMatrixConfig, pathName);
+				initSwitchMatrix(6, SwitchMatrixConfig, pathName);
 	
 				// Update the manual controls to reflect the available options
 				updateManualControls();
@@ -757,6 +789,7 @@ int CVICALLBACK startAutoMeasure_CB(int panel, int control, int event, void *cal
 	return 0;
 }
 
+/*
 int CVICALLBACK Run (int panel, int control, int event,
 					 void *callbackData, int eventData1, int eventData2)
 {
@@ -765,7 +798,7 @@ int CVICALLBACK Run (int panel, int control, int event,
 	{
 		case EVENT_COMMIT:
 			//Very important: Run initialization first, passing in the name of the probe card config file
-			error = initSwitchMatrix (SwitchMatrixConfig, "48 Pin Probe Card.csv");
+			error = initSwitchMatrix (6, SwitchMatrixConfig, "48 Pin Probe Card.csv");
 			
 			//Just to be crazy safe, let's reset all relays
 			//error = resetAllRelays(SwitchMatrixConfig);
@@ -940,3 +973,4 @@ int CVICALLBACK Run (int panel, int control, int event,
 	}
 	return 0;
 }
+*/

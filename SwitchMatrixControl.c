@@ -12,8 +12,8 @@ char *fileread(char name[], char access[]);
 int getInputNew(char FileInput[], int *pointer, char **line);
 int relayUpdate(int boardNumber, int relayNumber, int action);
 
-int comPort = 6;				//Number of port into which the digital I/O board is plugged.
-char device[6] = "COM6\0";		//Name of device (digital I/O board) on Windows.
+int comPort = 0;				//Number of port into which the digital I/O board is plugged.
+//char device[6] = "COM6\0";		//Name of device (digital I/O board) on Windows.
 long baud = 9600;				//Baud rate of port where digital I/O board is plugged: 9600 bits per second.
 int parity = 0;					//Parity mode for selected port: no parity.
 int dataBit = 8;				//Number of data bits for port.
@@ -22,8 +22,15 @@ int inputQ = 16;				//Size of input queue for port.
 int outputQ = 14;				//Size of output queue for port.
 int RS232;						//Receives output of function that opens COM port and sets parameters.
 
-int initSwitchMatrix (struct SwitchMatrixConfig_type *SwitchMatrixConfig, char ProbeCardConfig[])
+int initSwitchMatrix (int port, struct SwitchMatrixConfig_type *SwitchMatrixConfig, char ProbeCardConfig[])
 {
+	// Close a possibly already open COM port
+	if (comPort)
+		CloseCom(comPort);
+	// Open the COM port and save the port number
+	comPort = port;
+	RS232 = OpenComConfig(port, "", baud, parity, dataBit, stopBit, inputQ, outputQ);
+	
     //Initialize switch matrix
     FILE *file = NULL;
     char *record = NULL, access[3], *line = NULL, *InputFile=NULL, probeCardInitPins[MaxRelays][3];
@@ -330,8 +337,8 @@ int relayUpdate(int boardNumber, int relayNumber, int action)
 	strcat(commandCode, boardNumberHex);
 	
 	
-	RS232 = 
-		OpenComConfig(comPort, device, baud, parity, dataBit, stopBit, inputQ, outputQ);	//Opens COM port and sets parameters
+	//RS232 = 
+	//	OpenComConfig(comPort, device, baud, parity, dataBit, stopBit, inputQ, outputQ);	//Opens COM port and sets parameters
 	SetXMode (comPort, 0);		//Disables software handshaking and XON/XOFF sensitivity
     SetCTSMode (comPort, 0);	//Disables hardware handshaking
     SetComTime (comPort, 5);	//Sets timeout limit for input and output actions

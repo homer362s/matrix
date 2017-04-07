@@ -1,6 +1,6 @@
 [initSwitchMatrix]
 Class="Function"
-Prototype="int initSwitchMatrix(struct SwitchMatrixConfig_type *SwitchMatrixConfig, char *ProbeCardConfig);"
+Prototype="int initSwitchMatrix(int port, struct SwitchMatrixConfig_type *SwitchMatrixConfig, char *ProbeCardConfig);"
 
 [switchMatrix]
 Class="Function"
