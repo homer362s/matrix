@@ -60,9 +60,11 @@
 #define  MAINPANEL_MEASCOEFF              45      /* control type: string, callback function: (none) */
 #define  MAINPANEL_INPUTCOEFF             46      /* control type: string, callback function: (none) */
 #define  MAINPANEL_MATRIXADDRRING         47      /* control type: ring, callback function: addressChanged_CB */
-#define  MAINPANEL_DECORATION_5           48      /* control type: deco, callback function: (none) */
-#define  MAINPANEL_DECORATION             49      /* control type: deco, callback function: (none) */
-#define  MAINPANEL_DECORATION_6           50      /* control type: deco, callback function: (none) */
+#define  MAINPANEL_COMMANDBUTTON          48      /* control type: command, callback function: (none) */
+#define  MAINPANEL_RING                   49      /* control type: ring, callback function: (none) */
+#define  MAINPANEL_DECORATION_5           50      /* control type: deco, callback function: (none) */
+#define  MAINPANEL_DECORATION             51      /* control type: deco, callback function: (none) */
+#define  MAINPANEL_DECORATION_6           52      /* control type: deco, callback function: (none) */
 
      /* tab page panel controls */
 #define  TABPANEL_1_MANUALTABLE           2       /* control type: table, callback function: (none) */

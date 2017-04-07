@@ -642,9 +642,52 @@ void newFrame()
 	SetTableColumnAttribute(currentTabHandle, tableCtrlID, 1, ATTR_LABEL_TEXT, "V [V]");
 	SetTableColumnAttribute(currentTabHandle, tableCtrlID, 2, ATTR_LABEL_TEXT, "I [A]");
 	SetTableColumnAttribute(currentTabHandle, tableCtrlID, 3, ATTR_LABEL_TEXT, "R [Ohm]");
+	
+	// Update the next frame label if it is set to auto
+	int checked;
+	GetCtrlVal(panelHandle, MAINPANEL_AUTOFRAMECHECK, &checked);
+	if (checked) {
+		char label[16];
+		int len;
+		int finalNum;
+		GetCtrlVal(panelHandle, MAINPANEL_FRAMEIDBOX, label);
+		
+		// Get final number
+		len = strlen(label);
+		for (int i = len-1;i >= 0;i--) {
+			if (len == 0) { // There is currently no label -> Make the next label "1"
+				sprintf(label, "1");
+				SetCtrlVal(panelHandle, MAINPANEL_FRAMEIDBOX, label);
+				break;
+			}
+			else if (i == 0 && !(label[i] < 48 || label[i] > 57)) { // The whole label is a number -> Increment it
+				finalNum = atoi(label);
+				sprintf(label, "%d", finalNum + 1);
+				SetCtrlVal(panelHandle, MAINPANEL_FRAMEIDBOX, label);
+				break;
+			}
+			else if (i == len-1 && (label[i] < 48 || label[i] > 57)) { // No trailing number -> Append a 1
+				sprintf(label, "%s%d", label, 1);
+				SetCtrlVal(panelHandle, MAINPANEL_FRAMEIDBOX, label);
+				break;
+			}
+			else if (label[i] < 48 || label[i] > 57) { // We found the trailing number
+				char* finalNumStr;
+				
+				i = i + 1;
+				finalNumStr = label + i;
+				
+				int oldNum = atoi(finalNumStr);
+				sprintf(finalNumStr, "%d", oldNum + 1);
+				
+				SetCtrlVal(panelHandle, MAINPANEL_FRAMEIDBOX, label);
+				break;
+			}
+		}
 	}
+}
 
-	int CVICALLBACK newFrame_CB(int panel, int control, int event, void *callbackData, int eventData1, int eventData2)
+int CVICALLBACK newFrame_CB(int panel, int control, int event, void *callbackData, int eventData1, int eventData2)
 {
 	switch (event) {
 		case EVENT_COMMIT:
