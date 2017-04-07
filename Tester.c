@@ -305,6 +305,12 @@ int CVICALLBACK LoadLayout_CB(int panel, int control, int event, void *callbackD
 					tmp = strchr(fileName, '\\');
 				}
 				SetCtrlVal(panelHandle, MAINPANEL_LAYOUTNAME, fileName);
+				
+				// Update the device list
+				DeleteListItem(panelHandle, MAINPANEL_AUTOMEASDEVLIST, 0, -1);
+				for (int i = 0;i < layoutConfig->measurementCount;i++) {
+					InsertListItem(panelHandle, MAINPANEL_AUTOMEASDEVLIST, i, layoutConfig->measurements[i]->label, i);
+				}
 			}
 			break;
 	}
@@ -885,6 +891,40 @@ int CVICALLBACK startAutoReMeasure_CB(int panel, int control, int event, void *c
 			break;
 	}
 	
+	return 0;
+}
+
+int CVICALLBACK singleAutoMeasure_CB(int panel, int control, int event, void *callbackData, int eventData1, int eventData2)
+{
+	switch(event) {
+		case EVENT_COMMIT:
+			setStatusBar("Measuring");
+			
+			// Disconnect any connected relays
+			quickReset(SwitchMatrixConfig);
+			
+			// Get the measurement index
+			int index;
+			GetCtrlIndex(panelHandle, MAINPANEL_AUTOMEASDEVLIST, &index);
+			
+			struct AutoMeasurement* meas = layoutConfig->measurements[index];
+			
+			// Connect the required relays
+			for (int i = 0;i < meas->connectionCount;i++) {
+				switchMatrix(meas->connections[i].input, meas->connections[i].pin, Connect, SwitchMatrixConfig);
+			}
+			
+			// Take measurement
+			handleSingleMeasurement(MEASURE_CURRENT, 1, meas->label);
+			
+			// Disconnect the relays
+			for (int i = 0;i < meas->connectionCount;i++) {
+				switchMatrix(meas->connections[i].input, meas->connections[i].pin, DisConnect, SwitchMatrixConfig);
+			}
+			
+			setStatusDone();
+			break;
+	}
 	return 0;
 }
 

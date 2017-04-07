@@ -146,6 +146,10 @@ Prototype="int tabs_CB(int panel, int control, int event, void *callbackData, in
 Class="Function"
 Prototype="int startAutoReMeasure_CB(int panel, int control, int event, void *callbackData, int eventData1, int eventData2);"
 
+[singleAutoMeasure_CB]
+Class="Function"
+Prototype="int singleAutoMeasure_CB(int panel, int control, int event, void *callbackData, int eventData1, int eventData2);"
+
 [startAutoMeasure_CB]
 Class="Function"
 Prototype="int startAutoMeasure_CB(int panel, int control, int event, void *callbackData, int eventData1, int eventData2);"
