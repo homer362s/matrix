@@ -740,7 +740,11 @@ int CVICALLBACK saveFrame_CB(int panel, int control, int event, void *callbackDa
 	switch (event) {
 		case EVENT_COMMIT:
 			{
-				if (FileSelectPopupEx ("%userprofile%", "*.dat", "datafile", "Create a save file", VAL_SAVE_BUTTON, 0, 0, pathName) != VAL_NO_FILE_SELECTED)
+				char defaultFilename[32];
+				GetTabPageAttribute(panelHandle, MAINPANEL_TABS, getCurrentTab(), ATTR_LABEL_TEXT, defaultFilename);
+				sprintf(defaultFilename, "%s.dat", defaultFilename);
+				
+				if (FileSelectPopupEx ("%userprofile%", defaultFilename, "datafile", "Create a save file", VAL_SAVE_BUTTON, 0, 0, pathName) != VAL_NO_FILE_SELECTED)
 	            {
 	            	/* Open the file and write out the data */
 					FILE *frameData;
