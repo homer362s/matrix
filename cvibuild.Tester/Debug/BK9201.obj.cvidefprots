@@ -1,0 +1,16 @@
+[bk92__systemRemote]
+Class="Function"
+Prototype="void bk92__systemRemote(short addr, char *status);"
+
+[bk92__setOutput]
+Class="Function"
+Prototype="void bk92__setOutput(short addr, int status);"
+
+[bk92__setSourceAmplitude]
+Class="Function"
+Prototype="void bk92__setSourceAmplitude(short addr, char *func, float amplitude);"
+
+[bk92__measure]
+Class="Function"
+Prototype="float bk92__measure(short addr, char *func);"
+

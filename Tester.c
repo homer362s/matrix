@@ -23,6 +23,7 @@
 #include "SwitchMatrixControl.h"
 #include "Keithley2400.h"
 #include "Keithley6485.h"
+#include "BK9201.h"
 #include "gpibTools.h"
 #include "autoConfigParse.h"
 
@@ -32,6 +33,7 @@
 #define NODEVICE 0
 #define KEITHLEY2400 1
 #define KEITHLEY6485 2
+#define BK9201 3
 
 
 // Function prototypes
@@ -46,6 +48,7 @@ void changeConnection(int port, int pin);
 void setStatusBar(char* status);
 void setStatusDone();
 int getSelectedRow();
+void initializeSource(Addr4882_t addr);
 void initializeMeasurement(Addr4882_t addr);
 float getSourceCoeff();
 float getMeasCoeff();
@@ -64,7 +67,7 @@ int currentTabHandle;
 Addr4882_t sourceAddress = 24;
 Addr4882_t measAddress = 14;
 int matrixAddress = 0;
-int sourceDevice = KEITHLEY2400;
+int sourceDevice = BK9201;
 int measDevice = KEITHLEY6485;
 
 struct SwitchMatrixConfig_type *SwitchMatrixConfig;
@@ -88,8 +91,12 @@ int main (int argc, char *argv[])
 	GetPanelHandleFromTabPage(panelHandle, MAINPANEL_TABS, 0, &currentTabHandle);
 	
 	// Set the default measurement devices and initialize
-	SetCtrlIndex(panelHandle, MAINPANEL_SOURCEDEVICERING, KEITHLEY2400);
-	SetCtrlIndex(panelHandle, MAINPANEL_MEASDEVICERING, KEITHLEY6485);
+	int sourceIndex = 0;
+	int measIndex = 0;
+	GetIndexFromValue(panelHandle, MAINPANEL_SOURCEDEVICERING, &sourceIndex, sourceDevice);
+	GetIndexFromValue(panelHandle, MAINPANEL_MEASDEVICERING, &measIndex, measDevice);
+	SetCtrlIndex(panelHandle, MAINPANEL_SOURCEDEVICERING, sourceIndex);
+	SetCtrlIndex(panelHandle, MAINPANEL_MEASDEVICERING, measIndex);
 	
 	errChk (RunUserInterface ());
 	
@@ -212,6 +219,7 @@ int CVICALLBACK addressChanged_CB(int panel, int control, int event, void *callb
 			switch(control) {
 				case MAINPANEL_SOURCEADDRESSRING:
 					sourceAddress = (Addr4882_t) value;
+					initializeSource(sourceAddress);
 					break;
 				case MAINPANEL_MEASADDRESSRING:
 					measAddress = (Addr4882_t) value;
@@ -224,6 +232,17 @@ int CVICALLBACK addressChanged_CB(int panel, int control, int event, void *callb
 			break;
 	}
 	return 0;
+}
+
+void initializeSource(Addr4882_t addr)
+{
+	switch(sourceDevice) {
+		case BK9201:
+			bk92__systemRemote(addr, BK92__REMOTE);
+			gpib__reset(addr);
+			bk92__setSourceAmplitude(addr, BK92__FUNC_CURRENT, 0.5);  // Set a 500 mA current limit
+			break;
+	}
 }
 
 void initializeMeasurement(Addr4882_t addr)
@@ -499,6 +518,11 @@ double takeCurrentMeasurement(Addr4882_t sourceAddr, Addr4882_t measAddr, float 
 			ke24__setSourceAmplitude(sourceAddr, KE24__FUNC_VOLTAGE, voltage);
 			ke24__setOutput(sourceAddr, KE24__SOURCE_ON);
 			break;
+		case BK9201:
+			bk92__systemRemote(sourceAddr, BK92__REMOTE);
+			bk92__setSourceAmplitude(sourceAddr, BK92__FUNC_VOLTAGE, voltage);
+			bk92__setOutput(sourceAddr, BK92__SOURCE_ON);
+			break;
 	}
 	
 	// Wait for the source to settle a bit
@@ -522,6 +546,9 @@ double takeCurrentMeasurement(Addr4882_t sourceAddr, Addr4882_t measAddr, float 
 	switch(sourceDevice) {
 		case KEITHLEY2400:
 			ke24__setOutput(sourceAddr, KE24__SOURCE_OFF);
+			break;
+		case BK9201:
+			bk92__setOutput(sourceAddr, BK92__SOURCE_OFF);
 			break;
 	}
 	

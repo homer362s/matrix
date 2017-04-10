@@ -1,4 +1,5 @@
 Depends "c:\\Users\\user\\Desktop\\switch matrix wip\\cvibuild.Tester\\Debug\\Tester.exe" : "c:\\Users\\user\\Desktop\\switch matrix wip\\cvibuild.Tester\\Debug\\autoConfigParse.obj" ;
+Depends "c:\\Users\\user\\Desktop\\switch matrix wip\\cvibuild.Tester\\Debug\\Tester.exe" : "c:\\Users\\user\\Desktop\\switch matrix wip\\cvibuild.Tester\\Debug\\BK9201.obj" ;
 Depends "c:\\Users\\user\\Desktop\\switch matrix wip\\cvibuild.Tester\\Debug\\Tester.exe" : "c:\\Users\\user\\Desktop\\switch matrix wip\\cvibuild.Tester\\Debug\\gpibTools.obj" ;
 Depends "c:\\Users\\user\\Desktop\\switch matrix wip\\cvibuild.Tester\\Debug\\Tester.exe" : "c:\\Users\\user\\Desktop\\switch matrix wip\\cvibuild.Tester\\Debug\\Keithley2400.obj" ;
 Depends "c:\\Users\\user\\Desktop\\switch matrix wip\\cvibuild.Tester\\Debug\\Tester.exe" : "c:\\Users\\user\\Desktop\\switch matrix wip\\cvibuild.Tester\\Debug\\Keithley6485.obj" ;
