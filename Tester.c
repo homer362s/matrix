@@ -471,6 +471,9 @@ void handleSingleMeasurement(int measurementType, int newRow, char* label)
 	if (resistance > getHighlightMin() && resistance < getHighlightMax()) {
 		SetTableCellAttribute(currentTabHandle, TABPANEL_1_MANUALTABLE, MakePoint(3,row), ATTR_TEXT_BGCOLOR, MakeColor(200,255,200));
 	}
+	else {
+		SetTableCellAttribute(currentTabHandle, TABPANEL_1_MANUALTABLE, MakePoint(3,row), ATTR_TEXT_BGCOLOR, MakeColor(255,255,255)); 
+	}
 	
 }
 

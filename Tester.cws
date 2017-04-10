@@ -54,27 +54,27 @@ Window Top = 32
 Window Left = 10
 Window Height = 271
 Window Width = 523
-Window Z-Order = 8
+Window Z-Order = 1
 
 [File 0002]
 Path = "/c/Users/user/Desktop/switch matrix wip/Tester.c"
 File Type = "CSource"
-Disk Date = 3574694871
+Disk Date = 3574698272
 In Projects = "1,"
 Window Top = 62
 Window Left = 26
-Window Z-Order = 1
-Source Window State = "1,521,521,521,31,35,31,0,0,172,0,92,0,0,0,55,504,0,521,41,349,619,1,14,"
+Window Z-Order = 2
+Source Window State = "1,474,474,474,127,130,130,0,0,68,0,92,0,0,0,25,448,0,474,130,349,619,1,14,"
 
 [File 0003]
 Path = "/c/Users/user/Desktop/switch matrix wip/SwitchMatrixControl.c"
 File Type = "CSource"
-Disk Date = 3574438640
+Disk Date = 3574697839
 In Projects = "1,"
 Window Top = 182
 Window Left = 90
 Window Z-Order = 3
-Source Window State = "1,167,167,167,51,52,52,0,0,76,0,353,0,0,0,25,353,0,372,92,349,683,1,13,"
+Source Window State = "1,30,30,30,106,108,106,0,0,76,0,377,0,0,0,25,377,0,414,109,349,683,1,16,"
 
 [File 0004]
 Path = "/c/Users/user/Desktop/switch matrix wip/SwitchMatrixControl.h"
@@ -113,7 +113,7 @@ Disk Date = 3574161540
 In Projects = "1,"
 Window Top = 242
 Window Left = 122
-Window Z-Order = 7
+Window Z-Order = 8
 Source Window State = "1,101,101,101,5,21,21,0,3,76,0,6,0,6,0,25,98,0,101,5,349,683,1,0,"
 
 [File 0008]
@@ -123,7 +123,7 @@ Disk Date = 3574161858
 In Projects = "1,"
 Window Top = 272
 Window Left = 138
-Window Z-Order = 6
+Window Z-Order = 7
 Source Window State = "1,0,1,1,0,29,29,0,0,76,0,41,0,41,0,25,0,0,5,56,349,683,1,0,"
 
 [File 0009]
@@ -133,7 +133,7 @@ Disk Date = 3574100199
 In Projects = "1,"
 Window Top = 92
 Window Left = 42
-Window Z-Order = 4
+Window Z-Order = 5
 Source Window State = "1,19,19,19,5,16,16,0,3,76,0,0,0,2,0,25,0,0,19,5,349,683,1,0,"
 
 [File 0010]
@@ -203,7 +203,7 @@ Disk Date = 3574692487
 In Projects = "1,"
 Window Top = 32
 Window Left = 10
-Window Z-Order = 5
+Window Z-Order = 6
 Source Window State = "1,25,25,25,0,48,0,0,0,80,0,1,0,1,0,25,0,0,25,48,349,715,1,0,"
 
 [File 0017]
@@ -213,7 +213,7 @@ Disk Date = 3574693454
 In Projects = "1,"
 Window Top = 62
 Window Left = 26
-Window Z-Order = 2
+Window Z-Order = 4
 Source Window State = "1,7,7,7,14,20,20,0,0,80,0,0,0,0,0,25,0,0,7,20,349,715,1,0,"
 
 [Tab Order]
