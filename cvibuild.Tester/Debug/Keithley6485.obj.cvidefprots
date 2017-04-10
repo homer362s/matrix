@@ -22,10 +22,6 @@ Prototype="void ke64__zeroCorrect(short addr);"
 Class="Function"
 Prototype="void ke64__setRate(short addr, float cycles);"
 
-[ke64__initialize]
-Class="Function"
-Prototype="void ke64__initialize(short addr);"
-
 [ke64__setMedianRank]
 Class="Function"
 Prototype="void ke64__setMedianRank(short addr, int rank);"
@@ -57,4 +53,20 @@ Prototype="void ke64__setDigitalFilterAdvancedNoiseTolerence(short addr, int tol
 [ke64__takeMeasurement]
 Class="Function"
 Prototype="double ke64__takeMeasurement(short addr);"
+
+[ke64__setup]
+Class="Function"
+Prototype="void ke64__setup(short addr);"
+
+[ke64__initialize]
+Class="Function"
+Prototype="void ke64__initialize(short addr);"
+
+[ke64__measure]
+Class="Function"
+Prototype="void ke64__measure(short addr, double *data, int *wasMeasured);"
+
+[ke64__cleanup]
+Class="Function"
+Prototype="void ke64__cleanup(short addr);"
 

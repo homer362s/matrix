@@ -18,6 +18,7 @@
 -in:c:\Users\user\Desktop\switch matrix wip\cvibuild.Tester\Debug\gpibTools.obj
 -in:c:\Users\user\Desktop\switch matrix wip\cvibuild.Tester\Debug\Keithley2400.obj
 -in:c:\Users\user\Desktop\switch matrix wip\cvibuild.Tester\Debug\Keithley6485.obj
+-in:c:\Users\user\Desktop\switch matrix wip\cvibuild.Tester\Debug\MeasurementSetup.obj
 -in:c:\Users\user\Desktop\switch matrix wip\cvibuild.Tester\Debug\SwitchMatrixControl.obj
 -in:c:\Users\user\Desktop\switch matrix wip\cvibuild.Tester\Debug\Tester.obj
 -more:c:\program files (x86)\national instruments\cvi2015\bin\msvc\cvistart.lib

@@ -26,14 +26,6 @@ Prototype="int deviceChanged_CB(int panel, int control, int event, void *callbac
 Class="Function"
 Prototype="int addressChanged_CB(int panel, int control, int event, void *callbackData, int eventData1, int eventData2);"
 
-[initializeSource]
-Class="Function"
-Prototype="void initializeSource(short addr);"
-
-[initializeMeasurement]
-Class="Function"
-Prototype="void initializeMeasurement(short addr);"
-
 [setProbeCardDisplay]
 Class="Function"
 Prototype="void setProbeCardDisplay(int dimmed, char *label);"
@@ -58,6 +50,10 @@ Prototype="void updateManualControls();"
 Class="Function"
 Prototype="int renameRow_CB(int panel, int control, int event, void *callbackData, int eventData1, int eventData2);"
 
+[takeCurrentMeasurement]
+Class="Function"
+Prototype="void takeCurrentMeasurement(struct MeasurementSetup setup, float voltage, double *data, int *wasMeasured);"
+
 [handleSingleMeasurement]
 Class="Function"
 Prototype="void handleSingleMeasurement(int measurementType, int newRow, char *label);"
@@ -65,10 +61,6 @@ Prototype="void handleSingleMeasurement(int measurementType, int newRow, char *l
 [ManualMeasure_CB]
 Class="Function"
 Prototype="int ManualMeasure_CB(int panel, int control, int event, void *callbackData, int eventData1, int eventData2);"
-
-[takeCurrentMeasurement]
-Class="Function"
-Prototype="double takeCurrentMeasurement(short sourceAddr, short measAddr, float voltage);"
 
 [getVBias]
 Class="Function"

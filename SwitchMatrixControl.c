@@ -381,23 +381,20 @@ int relayUpdate(int boardNumber, int relayNumber, int action)
 			bytesSent = ComWrt(comPort, command, commandSize);  //Send command to digital I/O board to set a certain port to low voltage
 		}
 	}
-	//Delay(.004);	
-	Delay(0.008);
+	Delay(.004);	
 	strcpy(command,"gpio set C"); //Set driver input HIGH 
 	command[10] = '\r';
 	command[11] = '\0';
 	commandSize = StringLength(command);
 	bytesSent = ComWrt(comPort, command, commandSize);
-	//Delay(0.004);
-	Delay(.008);
+	Delay(0.004);
 	
 	strcpy(command,"gpio set D"); //Set master enable HIGH (this will open the relay if it is closed) 
 	command[10] = '\r';
 	command[11] = '\0';
 	commandSize = StringLength(command);
 	bytesSent = ComWrt(comPort, command, commandSize);
-	//Delay(.020);
-	Delay(0.040);
+	Delay(.020);
 	
 	if (action == Connect) {
 		strcpy(command,"gpio clear C");  //Set driver input LOW.  (This closes the relay)
@@ -405,9 +402,7 @@ int relayUpdate(int boardNumber, int relayNumber, int action)
 		command[13] = '\0';
 		commandSize = StringLength(command);
 		bytesSent = ComWrt(comPort, command, commandSize);
-		//Delay(.030);
-		//Delay(0.060);
-		Delay(0.2);
+		Delay(.030);
 		
 		strcpy(command,"gpio clear D");  //Set master enable LOW
 		command[12] = '\r';
@@ -421,8 +416,7 @@ int relayUpdate(int boardNumber, int relayNumber, int action)
 		command[13] = '\0';
 		commandSize = StringLength(command);
 		bytesSent = ComWrt(comPort, command, commandSize);
-		//Delay(.004);
-		Delay(0.008);
+		Delay(.004);
 		
 		strcpy(command,"gpio clear C");  //Set driver input LOW. (This has no effect)  
 		command[12] = '\r';

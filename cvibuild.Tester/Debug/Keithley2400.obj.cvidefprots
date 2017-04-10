@@ -74,3 +74,39 @@ Prototype="void ke24__initializeISource(short addr);"
 Class="Function"
 Prototype="double ke24__takeMeasurement(short addr);"
 
+[ke24__setupSource]
+Class="Function"
+Prototype="void ke24__setupSource(short addr);"
+
+[ke24__setupMeasurement]
+Class="Function"
+Prototype="void ke24__setupMeasurement(short addr);"
+
+[ke24__initializeSource]
+Class="Function"
+Prototype="void ke24__initializeSource(short addr, float voltage, float current);"
+
+[ke24__initializeMeasurement]
+Class="Function"
+Prototype="void ke24__initializeMeasurement(short addr);"
+
+[ke24__enable]
+Class="Function"
+Prototype="void ke24__enable(short addr);"
+
+[ke24__measure]
+Class="Function"
+Prototype="void ke24__measure(short addr, double *data, int *wasMeasured);"
+
+[ke24__disable]
+Class="Function"
+Prototype="void ke24__disable(short addr);"
+
+[ke24__cleanupSource]
+Class="Function"
+Prototype="void ke24__cleanupSource(short addr);"
+
+[ke24__cleanupMeasurement]
+Class="Function"
+Prototype="void ke24__cleanupMeasurement(short addr);"
+

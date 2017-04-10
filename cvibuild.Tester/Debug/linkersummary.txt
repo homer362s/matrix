@@ -3,6 +3,7 @@ BK9201.obj
 gpibTools.obj
 Keithley2400.obj
 Keithley6485.obj
+MeasurementSetup.obj
 SwitchMatrixControl.obj
 Tester.obj
 cvi.lib

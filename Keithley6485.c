@@ -2,6 +2,16 @@
 #include <gpib.h>
 #include "gpibTools.h"
 #include "Keithley6485.h"
+#include "MeasurementSetup.h"
+
+struct MeasurementDevice ke64__measurementDevice = {
+	.name = "Keithley 6485",
+	.addr = 0,
+	.setup = &ke64__setup,
+	.initialize = &ke64__initialize,
+	.measure = &ke64__measure,
+	.cleanup = &ke64__cleanup
+};
 
 void ke64__setZeroCheck(Addr4882_t addr, char* status) 
 {
@@ -48,19 +58,6 @@ void ke64__setRate(Addr4882_t addr, float cycles)
 	char cmd[64];
 	sprintf(cmd, ":NPLCycles %f", cycles);
 	gpib__command(addr, cmd);
-}
-
-// Run some zero correction stuff
-void ke64__initialize(Addr4882_t addr)
-{
-	gpib__reset(addr);
-	ke64__zeroCorrect(addr);
-	ke64__setRate(addr, KE64__RATE_MED);
-	ke64__setMedianRank(addr, 5);
-	ke64__enableMedianFilter(addr, KE64__STATUS_ON);
-	ke64__setDigitalFilterCount(addr, 20);
-	ke64__setDigitalFilterControl(addr, KE64__FILTER_REPEATING);
-	ke64__enableDigitalFilter(addr, KE64__STATUS_ON);
 }
 
 // Rank is an integer from 1-5 indicating 1/2 the number of points that are filtered
@@ -134,4 +131,34 @@ double ke64__takeMeasurement(Addr4882_t addr)
 	strncpy(status, msg+29, 13);		status[13] = 0;
 	
 	return atof(reading);
+}
+
+// The required interface functions
+void ke64__setup(Addr4882_t addr)
+{
+	gpib__reset(addr);
+	ke64__zeroCorrect(addr);
+	ke64__setRate(addr, KE64__RATE_MED);
+	ke64__setMedianRank(addr, 5);
+	ke64__enableMedianFilter(addr, KE64__STATUS_ON);
+	ke64__setDigitalFilterCount(addr, 20);
+	ke64__setDigitalFilterControl(addr, KE64__FILTER_REPEATING);
+	ke64__enableDigitalFilter(addr, KE64__STATUS_ON);
+}
+
+void ke64__initialize(Addr4882_t addr)
+{
+}
+
+void ke64__measure(Addr4882_t addr, double* data, int* wasMeasured)
+{
+	ke64__setZeroCheck(addr, KE64__STATUS_OFF);
+	data[1] = ke64__takeMeasurement(addr);
+	wasMeasured[0] = 0;
+	wasMeasured[1] = 1;
+	ke64__setZeroCheck(addr, KE64__STATUS_ON);
+}
+
+void ke64__cleanup(Addr4882_t addr)
+{
 }

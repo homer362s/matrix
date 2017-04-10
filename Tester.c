@@ -26,6 +26,7 @@
 #include "BK9201.h"
 #include "gpibTools.h"
 #include "autoConfigParse.h"
+#include "MeasurementSetup.h"
 
 #define MEASURE_CURRENT 0
 #define MEASURE_VOLTAGE 1
@@ -43,13 +44,11 @@ void updateManualControls();
 void updateRelays();
 float getRequestedBias();
 float getVBias();
-double takeCurrentMeasurement(Addr4882_t sourceAddr, Addr4882_t measAddr, float bias);
+void takeCurrentMeasurement(struct MeasurementSetup setup, float voltage, double* data, int* wasMeasured);
 void changeConnection(int port, int pin);
 void setStatusBar(char* status);
 void setStatusDone();
 int getSelectedRow();
-void initializeSource(Addr4882_t addr);
-void initializeMeasurement(Addr4882_t addr);
 float getSourceCoeff();
 float getMeasCoeff();
 void setProbeCardDisplay(int dimmed, char* label);
@@ -72,7 +71,7 @@ int measDevice = KEITHLEY6485;
 
 struct SwitchMatrixConfig_type *SwitchMatrixConfig;
 struct AutoConfig* layoutConfig = NULL;
-
+struct MeasurementSetup measurementSetup;
 
 // Functions
 int main (int argc, char *argv[])
@@ -98,8 +97,25 @@ int main (int argc, char *argv[])
 	SetCtrlIndex(panelHandle, MAINPANEL_SOURCEDEVICERING, sourceIndex);
 	SetCtrlIndex(panelHandle, MAINPANEL_MEASDEVICERING, measIndex);
 	
-	errChk (RunUserInterface ());
+	switch (sourceDevice) {
+		case KEITHLEY2400:
+			measurementSetup.source = ke24__sourceDevice;
+			break;
+		case BK9201:
+			measurementSetup.source = bk92__sourceDevice;
+			break;
+	}
 	
+	switch (measDevice) {
+		case KEITHLEY2400:
+			measurementSetup.measure = ke24__measurementDevice;
+			break;
+		case KEITHLEY6485:
+			measurementSetup.measure = ke64__measurementDevice;
+			break;
+	}
+	
+	errChk (RunUserInterface ());
 
 
 Error:
@@ -194,14 +210,26 @@ int CVICALLBACK deviceChanged_CB(int panel, int control, int event, void *callba
 			int addressControl = 0;
 			switch(control) {
 				case MAINPANEL_SOURCEDEVICERING:
-					sourceDevice = newDevice;
+					switch (newDevice) {
+						case KEITHLEY2400:
+							measurementSetup.source = ke24__sourceDevice;
+							break;
+						case BK9201:
+							measurementSetup.source = bk92__sourceDevice;
+							break;
+					}
 					addressControl = MAINPANEL_SOURCEADDRESSRING;
-					sourceAddress = 0;
 					break;
 				case MAINPANEL_MEASDEVICERING:
-					measDevice = newDevice;
+					switch (newDevice) {
+						case KEITHLEY2400:
+							measurementSetup.measure = ke24__measurementDevice;
+							break;
+						case KEITHLEY6485:
+							measurementSetup.measure = ke64__measurementDevice;
+							break;
+					}
 					addressControl = MAINPANEL_MEASADDRESSRING;
-					measAddress = 0;
 					break;
 			}
 			
@@ -218,12 +246,12 @@ int CVICALLBACK addressChanged_CB(int panel, int control, int event, void *callb
 			GetCtrlVal(panelHandle, control, &value);
 			switch(control) {
 				case MAINPANEL_SOURCEADDRESSRING:
-					sourceAddress = (Addr4882_t) value;
-					initializeSource(sourceAddress);
+					measurementSetup.source.addr = (Addr4882_t) value;
+					setupSource(measurementSetup);
 					break;
 				case MAINPANEL_MEASADDRESSRING:
-					measAddress = (Addr4882_t) value;
-					initializeMeasurement(measAddress);
+					measurementSetup.measure.addr = (Addr4882_t) value;
+					setupMeasurement(measurementSetup);
 					break;
 				case MAINPANEL_MATRIXADDRRING:
 					matrixAddress = value;
@@ -232,28 +260,6 @@ int CVICALLBACK addressChanged_CB(int panel, int control, int event, void *callb
 			break;
 	}
 	return 0;
-}
-
-void initializeSource(Addr4882_t addr)
-{
-	switch(sourceDevice) {
-		case BK9201:
-			bk92__systemRemote(addr, BK92__REMOTE);
-			gpib__reset(addr);
-			bk92__setSourceAmplitude(addr, BK92__FUNC_CURRENT, 0.5);  // Set a 500 mA current limit
-			break;
-	}
-}
-
-void initializeMeasurement(Addr4882_t addr)
-{
-	switch(measDevice) {
-		case KEITHLEY2400:
-			break;
-		case KEITHLEY6485:
-			ke64__initialize(addr);
-			break;
-	}
 }
 
 void setProbeCardDisplay(int dimmed, char* label)
@@ -411,17 +417,41 @@ int CVICALLBACK renameRow_CB(int panel, int control, int event, void *callbackDa
 	return 0;
 }
 
+// Run a single current measurement
+// Takes in the measurement setup and returns the data in a 3 element double array:
+// data = [Voltage [V], Current [A], Resistance [Ohm]]
+// measured is a 2 element boolean array indicating if the specific quantity was measured or not
+// measured = [WasVoltageMeasured, WasCurrentMeasured]
+// Since at least one of those two must be measured, resistance is implied to have been measured
+void takeCurrentMeasurement(struct MeasurementSetup setup, float voltage, double* data, int* wasMeasured)
+{
+	// Initialize the source
+	initializeSource(measurementSetup, voltage, 0);
+	
+	// Initialize the measurement
+	initializeMeasurement(measurementSetup);
+	
+	// Enable the source
+	enableSource(measurementSetup);
+	
+	// Delay for the source to settle
+	Delay(0.1);
+	
+	// Take the measurement
+	takeMeasurement(measurementSetup, data, wasMeasured);
+	
+	// Disable the source
+	disableSource(measurementSetup);
+	
+	// Measurement cleanup
+	cleanupMeasurement(measurementSetup);
+	
+	// Source cleanup
+	cleanupSource(measurementSetup);
+}
+
 void handleSingleMeasurement(int measurementType, int newRow, char* label)
 {
-	// Set up the source
-	switch(sourceDevice) {
-		case KEITHLEY2400:
-			ke24__setSourceDelay(sourceAddress,1);
-			ke24__setOutputAuto(sourceAddress,KE24__AUTO_ON);
-			break;
-	}
-	
-
 	int row = -1;
 	if (!newRow) {
 		row = getSelectedRow();
@@ -431,11 +461,15 @@ void handleSingleMeasurement(int measurementType, int newRow, char* label)
 	double voltage;
 	double resistance;
 	
+	double data[3];
+	int wasMeasured[2];
+	
 	// Take the measurement
 	switch(measurementType) {
 		case MEASURE_CURRENT:
 			voltage = getVBias();
-			current = takeCurrentMeasurement(sourceAddress, measAddress, voltage/getSourceCoeff())*getMeasCoeff();
+			takeCurrentMeasurement(measurementSetup, voltage/getSourceCoeff(), data, wasMeasured);
+			current = data[1];
 			break;
 		default:
 			voltage = 1;
@@ -510,63 +544,6 @@ int CVICALLBACK ManualMeasure_CB(int panel, int control, int event, void *callba
 	
 	return 0;
 }
-
-double takeCurrentMeasurement(Addr4882_t sourceAddr, Addr4882_t measAddr, float voltage)
-{
-	double current = 0;
-	// Initialize and enable the source
-	switch(sourceDevice) {
-		case KEITHLEY2400:
-			ke24__initializeVSource(sourceAddr);
-			ke24__setSourceAmplitude(sourceAddr, KE24__FUNC_VOLTAGE, voltage);
-			ke24__setOutput(sourceAddr, KE24__SOURCE_ON);
-			break;
-		case BK9201:
-			bk92__systemRemote(sourceAddr, BK92__REMOTE);
-			bk92__setSourceAmplitude(sourceAddr, BK92__FUNC_VOLTAGE, voltage);
-			bk92__setOutput(sourceAddr, BK92__SOURCE_ON);
-			break;
-	}
-	
-	// Wait for the source to settle a bit
-	Delay(0.1);		// Delay specified in seconds
-	
-	// Take a measurement
-	switch(measDevice) {
-		case KEITHLEY2400:
-			current = ke24__takeMeasurement(measAddr);
-			break;
-		case KEITHLEY6485:
-			// Apparently the zero check should be enabled when connecting
-			// and disconnecting input signals
-			ke64__setZeroCheck(measAddr, KE64__STATUS_OFF);
-			current = ke64__takeMeasurement(measAddr);
-			ke64__setZeroCheck(measAddr, KE64__STATUS_ON);
-			break;
-	}
-	
-	// Disable the source
-	switch(sourceDevice) {
-		case KEITHLEY2400:
-			ke24__setOutput(sourceAddr, KE24__SOURCE_OFF);
-			break;
-		case BK9201:
-			bk92__setOutput(sourceAddr, BK92__SOURCE_OFF);
-			break;
-	}
-	
-	return current;
-	
-}
-
-/*
-void takeVoltageMeasurement(Addr4882_t addr, float ibias, double* data)
-{
-	ke24__initializeISource(addr);
-	ke24__setSourceAmplitude(addr, KE24__FUNC_CURRENT, ibias);
-	ke24__takeMeasurement(addr, data);
-}
-*/
 
 float getVBias()
 {

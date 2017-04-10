@@ -15,6 +15,8 @@
 #define KE24__SOURCE_OFF 0
 #define KE24__SOURCE_ON 1
 
+struct SourceDevice ke24__sourceDevice;
+struct MeasurementDevice ke24__measurementDevice;
 
 void ke24__setSourceFunc(Addr4882_t addr, char* func);
 void ke24__setSourceMode(Addr4882_t addr, char* func, char* mode);
@@ -39,6 +41,17 @@ void ke24__initializeVSource(Addr4882_t addr);
 void ke24__initializeISource(Addr4882_t addr);
 
 double ke24__takeMeasurement(Addr4882_t addr);
+
+// The required interface functions
+void ke24__setupSource(Addr4882_t addr);
+void ke24__setupMeasurement(Addr4882_t addr);
+void ke24__initializeSource(Addr4882_t addr, float voltage, float current);
+void ke24__initializeMeasurement(Addr4882_t addr);
+void ke24__enable(Addr4882_t addr);
+void ke24__measure(Addr4882_t addr, double*, int*);
+void ke24__disable(Addr4882_t addr);
+void ke24__cleanupSource(Addr4882_t addr);
+void ke24__cleanupMeasurement(Addr4882_t addr);
 
 
 #endif  /* ndef __Keithley2400_H__ */
