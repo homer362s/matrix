@@ -47,6 +47,9 @@ struct AutoConfig* parseLayoutFile(char* filename)
 	
 	// Loop over the lines
 	for (int i = 0;i < lineCount;i++) {
+		// If the first character is '#' skip that line
+		if (*lines[i] == '#')
+			continue;
 		
 		char* token = strtok(lines[i], ",");
 		
