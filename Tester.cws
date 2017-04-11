@@ -48,13 +48,13 @@ Batch Build Debug = False
 [File 0001]
 Path = "/c/Users/user/Desktop/switch matrix wip/Tester.uir"
 File Type = "User Interface Resource"
-Disk Date = 3574784239
+Disk Date = 3574790391
 In Projects = "1,"
 Window Top = 32
 Window Left = 10
 Window Height = 271
 Window Width = 523
-Window Z-Order = 3
+Window Z-Order = 1
 
 [File 0002]
 Path = "/c/Users/user/Desktop/switch matrix wip/Tester.c"
@@ -64,7 +64,7 @@ In Projects = "1,"
 Window Top = 62
 Window Left = 26
 Window Z-Order = 2
-Source Window State = "1,264,264,264,16,31,31,0,0,68,0,415,0,0,0,25,238,0,273,31,349,619,1,16,"
+Source Window State = "1,264,264,264,16,31,31,0,0,68,0,415,0,0,0,25,238,0,255,65,349,619,1,16,"
 
 [File 0003]
 Path = "/c/Users/user/Desktop/switch matrix wip/Keithley2400.c"
@@ -93,8 +93,8 @@ Disk Date = 3574100199
 In Projects = "1,"
 Window Top = 92
 Window Left = 42
-Window Z-Order = 1
-Source Window State = "1,19,19,19,5,16,16,0,0,172,0,0,0,2,0,52,0,0,4,4,349,683,1,0,"
+Window Z-Order = 4
+Source Window State = "1,19,19,19,5,16,16,0,0,76,0,0,0,2,0,25,0,0,6,21,349,683,1,0,"
 
 [File 0006]
 Path = "/c/Users/user/Desktop/switch matrix wip/autoConfigParse.c"
@@ -179,12 +179,12 @@ Source Window State = "1,5,5,5,11,16,16,0,0,80,0,0,0,0,0,25,0,0,3,43,349,715,1,1
 [File 0014]
 Path = "/c/Users/user/Desktop/switch matrix wip/SwitchMatrixControl.c"
 File Type = "CSource"
-Disk Date = 3574782398
+Disk Date = 3574789283
 In Projects = "1,"
 Window Top = 182
 Window Left = 90
-Window Z-Order = 4
-Source Window State = "1,98,99,98,133,133,133,0,0,76,0,377,0,0,0,25,90,0,98,113,349,683,1,16,"
+Window Z-Order = 3
+Source Window State = "1,405,405,405,0,19,19,0,0,76,0,377,0,0,0,25,363,0,400,39,349,683,1,16,"
 
 [File 0015]
 Path = "/c/Users/user/Desktop/switch matrix wip/gpibTools.h"
