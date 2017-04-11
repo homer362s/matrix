@@ -30,7 +30,7 @@ Save Changes Before Compiling = "Always"
 Hide Windows = False
 Break At First Statement = False
 Sort Type = "File Name"
-Number of Opened Files = 12
+Number of Opened Files = 14
 Window Confinement Region Enabled = True
 MainColumnWidth = 214
 FileDateColumnWidth = 70
@@ -48,23 +48,23 @@ Batch Build Debug = False
 [File 0001]
 Path = "/c/Users/user/Desktop/switch matrix wip/Tester.uir"
 File Type = "User Interface Resource"
-Disk Date = 3574692615
+Disk Date = 3574784239
 In Projects = "1,"
 Window Top = 32
 Window Left = 10
 Window Height = 271
 Window Width = 523
-Window Z-Order = 6
+Window Z-Order = 3
 
 [File 0002]
 Path = "/c/Users/user/Desktop/switch matrix wip/Tester.c"
 File Type = "CSource"
-Disk Date = 3574707550
+Disk Date = 3574784343
 In Projects = "1,"
 Window Top = 62
 Window Left = 26
-Window Z-Order = 7
-Source Window State = "1,555,555,555,6,20,20,0,0,68,0,415,0,0,0,25,446,0,470,77,349,619,1,16,"
+Window Z-Order = 2
+Source Window State = "1,264,264,264,16,31,31,0,0,68,0,415,0,0,0,25,238,0,273,31,349,619,1,16,"
 
 [File 0003]
 Path = "/c/Users/user/Desktop/switch matrix wip/Keithley2400.c"
@@ -73,7 +73,7 @@ Disk Date = 3574706929
 In Projects = "1,"
 Window Top = 242
 Window Left = 122
-Window Z-Order = 5
+Window Z-Order = 11
 Source Window State = "1,7,7,7,50,51,50,0,0,76,0,8,0,8,0,25,0,0,19,25,349,683,1,0,"
 
 [File 0004]
@@ -83,7 +83,7 @@ Disk Date = 3574707059
 In Projects = "1,"
 Window Top = 272
 Window Left = 138
-Window Z-Order = 12
+Window Z-Order = 14
 Source Window State = "1,18,18,18,7,13,13,0,0,76,0,54,0,54,0,25,0,0,18,18,349,683,1,0,"
 
 [File 0005]
@@ -93,7 +93,8 @@ Disk Date = 3574100199
 In Projects = "1,"
 Window Top = 92
 Window Left = 42
-Source Window State = "1,19,19,19,5,16,16,0,0,76,0,0,0,2,0,25,0,0,4,4,349,683,1,0,"
+Window Z-Order = 1
+Source Window State = "1,19,19,19,5,16,16,0,0,172,0,0,0,2,0,52,0,0,4,4,349,683,1,0,"
 
 [File 0006]
 Path = "/c/Users/user/Desktop/switch matrix wip/autoConfigParse.c"
@@ -102,8 +103,8 @@ Disk Date = 3574781667
 In Projects = "1,"
 Window Top = 92
 Window Left = 42
-Window Z-Order = 1
-Source Window State = "1,31,31,31,0,16,16,0,0,172,0,57,0,0,0,52,21,0,52,113,297,715,1,15,"
+Window Z-Order = 7
+Source Window State = "1,31,31,31,0,16,16,0,0,80,0,57,0,0,0,21,21,0,50,78,297,715,1,15,"
 
 [File 0007]
 Path = "/c/Users/user/Desktop/switch matrix wip/autoConfigParse.h"
@@ -112,7 +113,7 @@ Disk Date = 3574081174
 In Projects = "1,"
 Window Top = 122
 Window Left = 58
-Window Z-Order = 2
+Window Z-Order = 8
 Source Window State = "1,11,11,11,10,14,14,0,0,80,0,0,0,0,0,21,0,0,20,51,297,715,1,0,"
 
 [File 0008]
@@ -122,7 +123,7 @@ Disk Date = 3574706942
 In Projects = "1,"
 Window Top = 152
 Window Left = 74
-Window Z-Order = 4
+Window Z-Order = 10
 Source Window State = "1,6,6,6,0,48,0,0,0,80,0,5,0,5,0,25,0,0,10,69,349,715,1,0,"
 
 [File 0009]
@@ -132,7 +133,7 @@ Disk Date = 3574707086
 In Projects = "1,"
 Window Top = 182
 Window Left = 90
-Window Z-Order = 3
+Window Z-Order = 9
 Source Window State = "1,31,31,31,37,67,37,0,0,80,0,0,0,0,0,25,0,0,13,49,349,715,1,0,"
 
 [File 0010]
@@ -142,7 +143,7 @@ Disk Date = 3574705840
 In Projects = "1,"
 Window Top = 32
 Window Left = 10
-Window Z-Order = 11
+Window Z-Order = 13
 Source Window State = "1,6,6,6,0,38,0,0,3,80,0,1,0,1,0,25,0,0,6,38,349,715,1,0,"
 
 [File 0011]
@@ -152,7 +153,7 @@ Disk Date = 3574707074
 In Projects = "1,"
 Window Top = 62
 Window Left = 26
-Window Z-Order = 10
+Window Z-Order = 12
 Source Window State = "1,19,19,19,17,32,32,0,0,80,0,0,0,0,0,25,0,0,12,39,349,715,1,0,"
 
 [File 0012]
@@ -162,7 +163,7 @@ Disk Date = 3574705212
 In Projects = "1,"
 Window Top = 182
 Window Left = 90
-Window Z-Order = 8
+Window Z-Order = 5
 Source Window State = "1,16,21,21,0,32,32,0,0,80,0,0,0,0,0,25,0,0,13,65,349,715,1,0,"
 
 [File 0013]
@@ -172,17 +173,18 @@ Disk Date = 3574705220
 In Projects = "1,"
 Window Top = 212
 Window Left = 106
-Window Z-Order = 9
+Window Z-Order = 6
 Source Window State = "1,5,5,5,11,16,16,0,0,80,0,0,0,0,0,25,0,0,3,43,349,715,1,16,"
 
 [File 0014]
 Path = "/c/Users/user/Desktop/switch matrix wip/SwitchMatrixControl.c"
 File Type = "CSource"
-Disk Date = 3574698366
+Disk Date = 3574782398
 In Projects = "1,"
 Window Top = 182
 Window Left = 90
-Source Window State = "1,384,384,384,0,17,17,0,0,0,0,377,0,0,0,0,346,0,383,4,349,683,1,16,"
+Window Z-Order = 4
+Source Window State = "1,98,99,98,133,133,133,0,0,76,0,377,0,0,0,25,90,0,98,113,349,683,1,16,"
 
 [File 0015]
 Path = "/c/Users/user/Desktop/switch matrix wip/gpibTools.h"
@@ -205,16 +207,18 @@ Source Window State = "1,24,24,24,4,10,10,0,0,0,0,0,0,0,0,0,14,0,38,68,349,683,1
 [Tab Order]
 Tab 0001 = "/c/Users/user/Desktop/switch matrix wip/Tester.uir"
 Tab 0002 = "/c/Users/user/Desktop/switch matrix wip/Tester.c"
-Tab 0003 = "/c/Users/user/Desktop/switch matrix wip/MeasurementSetup.h"
-Tab 0004 = "/c/Users/user/Desktop/switch matrix wip/MeasurementSetup.c"
-Tab 0005 = "/c/Users/user/Desktop/switch matrix wip/autoConfigParse.h"
-Tab 0006 = "/c/Users/user/Desktop/switch matrix wip/autoConfigParse.c"
-Tab 0007 = "/c/Users/user/Desktop/switch matrix wip/Keithley2400.c"
-Tab 0008 = "/c/Users/user/Desktop/switch matrix wip/Keithley2400.h"
-Tab 0009 = "/c/Users/user/Desktop/switch matrix wip/Keithley6485.c"
-Tab 0010 = "/c/Users/user/Desktop/switch matrix wip/Keithley6485.h"
-Tab 0011 = "/c/Users/user/Desktop/switch matrix wip/BK9201.h"
-Tab 0012 = "/c/Users/user/Desktop/switch matrix wip/BK9201.c"
+Tab 0003 = "/c/Users/user/Desktop/switch matrix wip/SwitchMatrixControl.c"
+Tab 0004 = "/c/Users/user/Desktop/switch matrix wip/MeasurementSetup.h"
+Tab 0005 = "/c/Users/user/Desktop/switch matrix wip/MeasurementSetup.c"
+Tab 0006 = "/c/Users/user/Desktop/switch matrix wip/autoConfigParse.h"
+Tab 0007 = "/c/Users/user/Desktop/switch matrix wip/autoConfigParse.c"
+Tab 0008 = "/c/Users/user/Desktop/switch matrix wip/Keithley2400.c"
+Tab 0009 = "/c/Users/user/Desktop/switch matrix wip/Keithley2400.h"
+Tab 0010 = "/c/Users/user/Desktop/switch matrix wip/Keithley6485.c"
+Tab 0011 = "/c/Users/user/Desktop/switch matrix wip/Keithley6485.h"
+Tab 0012 = "/c/Users/user/Desktop/switch matrix wip/BK9201.h"
+Tab 0013 = "/c/Users/user/Desktop/switch matrix wip/BK9201.c"
+Tab 0014 = "/c/Users/user/Desktop/switch matrix wip/gpibTools.c"
 
 [Default Build Config 0001 Debug]
 Generate Browse Info = True

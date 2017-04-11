@@ -40,31 +40,31 @@
 #define  MAINPANEL_TEXTMSG                25      /* control type: textMsg, callback function: (none) */
 #define  MAINPANEL_DECORATION_2           26      /* control type: deco, callback function: (none) */
 #define  MAINPANEL_DECORATION_3           27      /* control type: deco, callback function: (none) */
-#define  MAINPANEL_TEXTMSG_4              28      /* control type: textMsg, callback function: (none) */
-#define  MAINPANEL_TEXTMSG_3              29      /* control type: textMsg, callback function: (none) */
-#define  MAINPANEL_DECORATION_4           30      /* control type: deco, callback function: (none) */
-#define  MAINPANEL_TEXTMSG_5              31      /* control type: textMsg, callback function: (none) */
-#define  MAINPANEL_STARTREMEASBUTTON      32      /* control type: command, callback function: startAutoReMeasure_CB */
-#define  MAINPANEL_STARTMEASBUTTON        33      /* control type: command, callback function: startAutoMeasure_CB */
-#define  MAINPANEL_LAYOUTNAME             34      /* control type: textMsg, callback function: (none) */
-#define  MAINPANEL_SPLITTER               35      /* control type: splitter, callback function: (none) */
-#define  MAINPANEL_AUTOFRAMECHECK         36      /* control type: radioButton, callback function: (none) */
-#define  MAINPANEL_AUTODEVCHECK           37      /* control type: radioButton, callback function: (none) */
-#define  MAINPANEL_NEWBUTTON              38      /* control type: command, callback function: newFrame_CB */
-#define  MAINPANEL_SAVEALLBUTTON          39      /* control type: command, callback function: saveAllFrames_CB */
-#define  MAINPANEL_SAVEBUTTON             40      /* control type: command, callback function: saveFrame_CB */
-#define  MAINPANEL_DELETEBUTTON           41      /* control type: command, callback function: deleteFrame_CB */
-#define  MAINPANEL_REMEASURECURRENTBUTTO  42      /* control type: command, callback function: ManualMeasure_CB */
-#define  MAINPANEL_STATUSBAR              43      /* control type: textMsg, callback function: (none) */
-#define  MAINPANEL_REMEASUREVOLTAGEBUTTO  44      /* control type: command, callback function: ManualMeasure_CB */
-#define  MAINPANEL_MEASCOEFF              45      /* control type: string, callback function: (none) */
-#define  MAINPANEL_INPUTCOEFF             46      /* control type: string, callback function: (none) */
-#define  MAINPANEL_MATRIXADDRRING         47      /* control type: ring, callback function: addressChanged_CB */
-#define  MAINPANEL_SINGLEAUTOMEASBUTTON   48      /* control type: command, callback function: singleAutoMeasure_CB */
-#define  MAINPANEL_AUTOMEASDEVLIST        49      /* control type: ring, callback function: (none) */
-#define  MAINPANEL_MAXBOX                 50      /* control type: string, callback function: updateHighlights_CB */
-#define  MAINPANEL_MINBOX                 51      /* control type: string, callback function: updateHighlights_CB */
-#define  MAINPANEL_DECORATION_5           52      /* control type: deco, callback function: (none) */
+#define  MAINPANEL_TEXTMSG_3              28      /* control type: textMsg, callback function: (none) */
+#define  MAINPANEL_DECORATION_4           29      /* control type: deco, callback function: (none) */
+#define  MAINPANEL_TEXTMSG_5              30      /* control type: textMsg, callback function: (none) */
+#define  MAINPANEL_STARTREMEASBUTTON      31      /* control type: command, callback function: startAutoReMeasure_CB */
+#define  MAINPANEL_STARTMEASBUTTON        32      /* control type: command, callback function: startAutoMeasure_CB */
+#define  MAINPANEL_LAYOUTNAME             33      /* control type: textMsg, callback function: (none) */
+#define  MAINPANEL_SPLITTER               34      /* control type: splitter, callback function: (none) */
+#define  MAINPANEL_AUTOFRAMECHECK         35      /* control type: radioButton, callback function: (none) */
+#define  MAINPANEL_AUTODEVCHECK           36      /* control type: radioButton, callback function: (none) */
+#define  MAINPANEL_NEWBUTTON              37      /* control type: command, callback function: newFrame_CB */
+#define  MAINPANEL_SAVEALLBUTTON          38      /* control type: command, callback function: saveAllFrames_CB */
+#define  MAINPANEL_SAVEBUTTON             39      /* control type: command, callback function: saveFrame_CB */
+#define  MAINPANEL_DELETEBUTTON           40      /* control type: command, callback function: deleteFrame_CB */
+#define  MAINPANEL_REMEASURECURRENTBUTTO  41      /* control type: command, callback function: ManualMeasure_CB */
+#define  MAINPANEL_STATUSBAR              42      /* control type: textMsg, callback function: (none) */
+#define  MAINPANEL_REMEASUREVOLTAGEBUTTO  43      /* control type: command, callback function: ManualMeasure_CB */
+#define  MAINPANEL_MEASCOEFF              44      /* control type: string, callback function: (none) */
+#define  MAINPANEL_INPUTCOEFF             45      /* control type: string, callback function: (none) */
+#define  MAINPANEL_MATRIXADDRRING         46      /* control type: ring, callback function: addressChanged_CB */
+#define  MAINPANEL_SINGLEAUTOMEASBUTTON   47      /* control type: command, callback function: singleAutoMeasure_CB */
+#define  MAINPANEL_AUTOMEASDEVLIST        48      /* control type: ring, callback function: (none) */
+#define  MAINPANEL_MAXBOX                 49      /* control type: string, callback function: updateHighlights_CB */
+#define  MAINPANEL_MINBOX                 50      /* control type: string, callback function: updateHighlights_CB */
+#define  MAINPANEL_DECORATION_5           51      /* control type: deco, callback function: (none) */
+#define  MAINPANEL_COLORSCHECKBOX         52      /* control type: radioButton, callback function: toggleColors_CB */
 #define  MAINPANEL_DECORATION             53      /* control type: deco, callback function: (none) */
 #define  MAINPANEL_DECORATION_7           54      /* control type: deco, callback function: (none) */
 #define  MAINPANEL_TEXTMSG_2              55      /* control type: textMsg, callback function: (none) */
@@ -104,6 +104,7 @@ int  CVICALLBACK singleAutoMeasure_CB(int panel, int control, int event, void *c
 int  CVICALLBACK startAutoMeasure_CB(int panel, int control, int event, void *callbackData, int eventData1, int eventData2);
 int  CVICALLBACK startAutoReMeasure_CB(int panel, int control, int event, void *callbackData, int eventData1, int eventData2);
 int  CVICALLBACK tabs_CB(int panel, int control, int event, void *callbackData, int eventData1, int eventData2);
+int  CVICALLBACK toggleColors_CB(int panel, int control, int event, void *callbackData, int eventData1, int eventData2);
 int  CVICALLBACK updateHighlights_CB(int panel, int control, int event, void *callbackData, int eventData1, int eventData2);
 
 

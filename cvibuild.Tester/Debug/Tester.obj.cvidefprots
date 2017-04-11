@@ -26,6 +26,10 @@ Prototype="int deviceChanged_CB(int panel, int control, int event, void *callbac
 Class="Function"
 Prototype="int addressChanged_CB(int panel, int control, int event, void *callbackData, int eventData1, int eventData2);"
 
+[toggleColors_CB]
+Class="Function"
+Prototype="int toggleColors_CB(int panel, int control, int event, void *callbackData, int eventData1, int eventData2);"
+
 [setProbeCardDisplay]
 Class="Function"
 Prototype="void setProbeCardDisplay(int dimmed, char *label);"

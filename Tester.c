@@ -262,6 +262,21 @@ int CVICALLBACK addressChanged_CB(int panel, int control, int event, void *callb
 	return 0;
 }
 
+int CVICALLBACK toggleColors_CB(int panel, int control, int event, void *callbackData, int eventData1, int eventData2)
+{
+	int isChecked;
+	
+	switch (event) {
+		case EVENT_COMMIT:
+			GetCtrlVal(panelHandle, MAINPANEL_COLORSCHECKBOX, &isChecked);
+			SetCtrlAttribute(panelHandle, MAINPANEL_MINBOX, ATTR_DIMMED, !isChecked);
+			SetCtrlAttribute(panelHandle, MAINPANEL_MAXBOX, ATTR_DIMMED, !isChecked);
+			updateHighlights();
+			break;
+	}
+	return 0;
+}
+
 void setProbeCardDisplay(int dimmed, char* label)
 {
 	SetCtrlAttribute(panelHandle, MAINPANEL_LOADPROBECARDBUTTON, ATTR_DIMMED, dimmed);
@@ -300,6 +315,14 @@ int CVICALLBACK LoadProbeCard_CB(int panel, int control, int event, void *callba
 			// Reset all relays
 			setStatusBar("Resetting Relays");
 			resetAllRelays(SwitchMatrixConfig);
+			int count;
+			int ctrlArrayHandle = GetCtrlArrayFromResourceID(panelHandle, MAN_CON_ARRAY);
+
+			GetNumCtrlArrayItems(ctrlArrayHandle, &count);
+			for (int i=0; i<count; i++) {
+				int MenuHandle = GetCtrlArrayItem(ctrlArrayHandle, i);
+				SetCtrlIndex(panelHandle, MenuHandle, 0);
+			}
 			setStatusDone();
 	}
 	
@@ -502,7 +525,9 @@ void handleSingleMeasurement(int measurementType, int newRow, char* label)
 	SetTableCellVal(currentTabHandle, TABPANEL_1_MANUALTABLE, MakePoint(3,row), resistance);
 	
 	// Highlight the cell if its within the "good" range
-	if (resistance > getHighlightMin() && resistance < getHighlightMax()) {
+	int isChecked;
+	GetCtrlVal(panelHandle, MAINPANEL_COLORSCHECKBOX, &isChecked);
+	if (isChecked && resistance > getHighlightMin() && resistance < getHighlightMax()) {
 		SetTableCellAttribute(currentTabHandle, TABPANEL_1_MANUALTABLE, MakePoint(3,row), ATTR_TEXT_BGCOLOR, MakeColor(200,255,200));
 	}
 	else {
@@ -599,6 +624,16 @@ int CVICALLBACK resetRelays_CB(int panel, int control, int event, void *callback
 		case EVENT_COMMIT:
 			setStatusBar("Resetting Relays");
 			resetAllRelays(SwitchMatrixConfig);
+			
+			int count;
+			int ctrlArrayHandle = GetCtrlArrayFromResourceID(panelHandle, MAN_CON_ARRAY);
+
+			GetNumCtrlArrayItems(ctrlArrayHandle, &count);
+			for (int i=0; i<count; i++) {
+				int MenuHandle = GetCtrlArrayItem(ctrlArrayHandle, i);
+				SetCtrlIndex(panelHandle, MenuHandle, 0);
+			}
+			
 			setStatusDone();
 			break;
 	}
@@ -961,7 +996,9 @@ void updateHighlights() {
 		GetNumTableRows(tabHandle, TABPANEL_1_MANUALTABLE, &rowCount);
 		for(int j = 0;j < rowCount;j++) {
 			GetTableCellVal(tabHandle, TABPANEL_1_MANUALTABLE, MakePoint(3,j+1), &resistance);
-			if (resistance > min && resistance < max) {
+			int isChecked;
+			GetCtrlVal(panelHandle, MAINPANEL_COLORSCHECKBOX, &isChecked);
+			if (isChecked && resistance > min && resistance < max) {
 				SetTableCellAttribute(tabHandle, TABPANEL_1_MANUALTABLE, MakePoint(3,j+1), ATTR_TEXT_BGCOLOR, MakeColor(200,255,200));
 			} else {
 				SetTableCellAttribute(tabHandle, TABPANEL_1_MANUALTABLE, MakePoint(3,j+1), ATTR_TEXT_BGCOLOR, MakeColor(255,255,255));
@@ -1002,6 +1039,14 @@ int CVICALLBACK startAutoMeasure_CB(int panel, int control, int event, void *cal
 			// Reset the relays
 			setStatusBar("Resetting all relays");
 			resetAllRelays(SwitchMatrixConfig);
+			int count;
+			int ctrlArrayHandle = GetCtrlArrayFromResourceID(panelHandle, MAN_CON_ARRAY);
+
+			GetNumCtrlArrayItems(ctrlArrayHandle, &count);
+			for (int i=0; i<count; i++) {
+				int MenuHandle = GetCtrlArrayItem(ctrlArrayHandle, i);
+				SetCtrlIndex(panelHandle, MenuHandle, 0);
+			}
 			
 			// Start the measurement
 			setStatusBar("Measuring");
@@ -1018,7 +1063,7 @@ int CVICALLBACK startAutoMeasure_CB(int panel, int control, int event, void *cal
 				Delay(0.2);
 				
 				// Do the measurement
-				printf("Taking measurement\n");
+				//printf("Taking measurement\n");
 				handleSingleMeasurement(MEASURE_CURRENT, 1, layoutConfig->measurements[i]->label);
 				
 				
