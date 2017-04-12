@@ -1035,6 +1035,7 @@ int CVICALLBACK startAutoMeasure_CB(int panel, int control, int event, void *cal
 		case EVENT_COMMIT:
 			// Create a new frame for this measurement
 			newFrame();
+			ProcessDrawEvents();
 			
 			// Reset the relays
 			setStatusBar("Resetting all relays");
@@ -1065,6 +1066,7 @@ int CVICALLBACK startAutoMeasure_CB(int panel, int control, int event, void *cal
 				// Do the measurement
 				//printf("Taking measurement\n");
 				handleSingleMeasurement(MEASURE_CURRENT, 1, layoutConfig->measurements[i]->label);
+				ProcessDrawEvents();
 				
 				
 				// Clear the connections

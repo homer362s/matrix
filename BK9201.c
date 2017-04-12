@@ -53,7 +53,7 @@ void bk92__setup(Addr4882_t addr)
 {
 	bk92__systemRemote(addr, BK92__REMOTE);
 	gpib__reset(addr);
-	bk92__setSourceAmplitude(addr, BK92__FUNC_CURRENT, 0.5);  // Set a 500 mA current limit
+	bk92__setSourceAmplitude(addr, BK92__FUNC_CURRENT, 0.01);  // Set a 10 mA current limit
 }
 
 void bk92__initialize(Addr4882_t addr, float voltage, float current)

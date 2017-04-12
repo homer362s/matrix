@@ -13,11 +13,11 @@ Number of Projects = 1
 Active Project = 1
 Project 0001 = "Tester.prj"
 Drag Bar Left = 231
-Window Top = 74
-Window Left = 416
-Window Bottom = 581
-Window Right = 1206
-Maximized = True
+Window Top = 192
+Window Left = 657
+Window Bottom = 696
+Window Right = 1447
+Maximized = False
 Maximized Children = True
 Max32 Number Of Errors = 20
 Track Include File Dependencies = True
@@ -54,17 +54,17 @@ Window Top = 32
 Window Left = 10
 Window Height = 271
 Window Width = 523
-Window Z-Order = 1
+Window Z-Order = 4
 
 [File 0002]
 Path = "/c/Users/user/Desktop/switch matrix wip/Tester.c"
 File Type = "CSource"
-Disk Date = 3574784343
+Disk Date = 3574867302
 In Projects = "1,"
 Window Top = 62
 Window Left = 26
-Window Z-Order = 2
-Source Window State = "1,264,264,264,16,31,31,0,0,68,0,415,0,0,0,25,238,0,255,65,349,619,1,16,"
+Window Z-Order = 1
+Source Window State = "1,1031,1031,1031,16,35,35,0,0,172,0,415,0,0,0,52,1030,0,1068,36,349,619,1,16,"
 
 [File 0003]
 Path = "/c/Users/user/Desktop/switch matrix wip/Keithley2400.c"
@@ -73,7 +73,7 @@ Disk Date = 3574706929
 In Projects = "1,"
 Window Top = 242
 Window Left = 122
-Window Z-Order = 11
+Window Z-Order = 13
 Source Window State = "1,7,7,7,50,51,50,0,0,76,0,8,0,8,0,25,0,0,19,25,349,683,1,0,"
 
 [File 0004]
@@ -93,7 +93,7 @@ Disk Date = 3574100199
 In Projects = "1,"
 Window Top = 92
 Window Left = 42
-Window Z-Order = 4
+Window Z-Order = 6
 Source Window State = "1,19,19,19,5,16,16,0,0,76,0,0,0,2,0,25,0,0,6,21,349,683,1,0,"
 
 [File 0006]
@@ -103,7 +103,7 @@ Disk Date = 3574781667
 In Projects = "1,"
 Window Top = 92
 Window Left = 42
-Window Z-Order = 7
+Window Z-Order = 9
 Source Window State = "1,31,31,31,0,16,16,0,0,80,0,57,0,0,0,21,21,0,50,78,297,715,1,15,"
 
 [File 0007]
@@ -113,7 +113,7 @@ Disk Date = 3574081174
 In Projects = "1,"
 Window Top = 122
 Window Left = 58
-Window Z-Order = 8
+Window Z-Order = 10
 Source Window State = "1,11,11,11,10,14,14,0,0,80,0,0,0,0,0,21,0,0,20,51,297,715,1,0,"
 
 [File 0008]
@@ -123,7 +123,7 @@ Disk Date = 3574706942
 In Projects = "1,"
 Window Top = 152
 Window Left = 74
-Window Z-Order = 10
+Window Z-Order = 12
 Source Window State = "1,6,6,6,0,48,0,0,0,80,0,5,0,5,0,25,0,0,10,69,349,715,1,0,"
 
 [File 0009]
@@ -133,18 +133,18 @@ Disk Date = 3574707086
 In Projects = "1,"
 Window Top = 182
 Window Left = 90
-Window Z-Order = 9
+Window Z-Order = 11
 Source Window State = "1,31,31,31,37,67,37,0,0,80,0,0,0,0,0,25,0,0,13,49,349,715,1,0,"
 
 [File 0010]
 Path = "/c/Users/user/Desktop/switch matrix wip/BK9201.c"
 File Type = "CSource"
-Disk Date = 3574705840
+Disk Date = 3574868166
 In Projects = "1,"
 Window Top = 32
 Window Left = 10
-Window Z-Order = 13
-Source Window State = "1,6,6,6,0,38,0,0,3,80,0,1,0,1,0,25,0,0,6,38,349,715,1,0,"
+Window Z-Order = 2
+Source Window State = "1,55,55,55,72,74,74,0,0,80,0,1,0,1,0,25,26,0,55,73,349,715,1,0,"
 
 [File 0011]
 Path = "/c/Users/user/Desktop/switch matrix wip/BK9201.h"
@@ -153,7 +153,7 @@ Disk Date = 3574707074
 In Projects = "1,"
 Window Top = 62
 Window Left = 26
-Window Z-Order = 12
+Window Z-Order = 3
 Source Window State = "1,19,19,19,17,32,32,0,0,80,0,0,0,0,0,25,0,0,12,39,349,715,1,0,"
 
 [File 0012]
@@ -163,7 +163,7 @@ Disk Date = 3574705212
 In Projects = "1,"
 Window Top = 182
 Window Left = 90
-Window Z-Order = 5
+Window Z-Order = 7
 Source Window State = "1,16,21,21,0,32,32,0,0,80,0,0,0,0,0,25,0,0,13,65,349,715,1,0,"
 
 [File 0013]
@@ -173,7 +173,7 @@ Disk Date = 3574705220
 In Projects = "1,"
 Window Top = 212
 Window Left = 106
-Window Z-Order = 6
+Window Z-Order = 8
 Source Window State = "1,5,5,5,11,16,16,0,0,80,0,0,0,0,0,25,0,0,3,43,349,715,1,16,"
 
 [File 0014]
@@ -183,7 +183,7 @@ Disk Date = 3574789283
 In Projects = "1,"
 Window Top = 182
 Window Left = 90
-Window Z-Order = 3
+Window Z-Order = 5
 Source Window State = "1,405,405,405,0,19,19,0,0,76,0,377,0,0,0,25,363,0,400,39,349,683,1,16,"
 
 [File 0015]
