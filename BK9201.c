@@ -11,32 +11,32 @@ struct SourceDevice bk92__sourceDevice = {
 	.initialize = &bk92__initialize,
 	.enable = &bk92__enable,
 	.disable = &bk92__disable,
-	.cleanup = &bk92__cleanup
+	.cleanup = NULL
 };
 
 // Low level functions
-void bk92__systemRemote(Addr4882_t addr, char* status)
+static void bk92__systemRemote(Addr4882_t addr, char* status)
 {
 	char cmd[64];
 	sprintf(cmd, "SYST:%s", status);
 	gpib__command(addr, cmd);
 }
 
-void bk92__setOutput(Addr4882_t addr, int status)
+static void bk92__setOutput(Addr4882_t addr, int status)
 {
 	char cmd[64];
 	sprintf(cmd, "OUTP %d", status);
 	gpib__command(addr, cmd);
 }
 
-void bk92__setSourceAmplitude(Addr4882_t addr, char* func, float amplitude)
+static void bk92__setSourceAmplitude(Addr4882_t addr, char* func, float amplitude)
 {
 	char cmd[64];
 	sprintf(cmd, "%s %f", func, amplitude);
 	gpib__command(addr, cmd);
 }
 
-float bk92__measure(Addr4882_t addr, char* func)
+static float bk92__measure(Addr4882_t addr, char* func)
 {
 	char cmd[64];
 	sprintf(cmd, "MEAS:%s?", func);
@@ -70,8 +70,4 @@ void bk92__enable(Addr4882_t addr)
 void bk92__disable(Addr4882_t addr)
 {
 	bk92__setOutput(addr, BK92__SOURCE_OFF);
-}
-
-void bk92__cleanup(Addr4882_t addr)
-{
 }

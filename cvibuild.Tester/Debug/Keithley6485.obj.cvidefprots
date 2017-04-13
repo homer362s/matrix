@@ -1,72 +1,8 @@
-[ke64__setZeroCheck]
-Class="Function"
-Prototype="void ke64__setZeroCheck(short addr, char *status);"
-
-[ke64__setZeroCorr]
-Class="Function"
-Prototype="void ke64__setZeroCorr(short addr, char *status);"
-
-[ke64__setRange]
-Class="Function"
-Prototype="void ke64__setRange(short addr, float range);"
-
-[ke64__setRangeAuto]
-Class="Function"
-Prototype="void ke64__setRangeAuto(short addr, char *status);"
-
-[ke64__zeroCorrect]
-Class="Function"
-Prototype="void ke64__zeroCorrect(short addr);"
-
-[ke64__setRate]
-Class="Function"
-Prototype="void ke64__setRate(short addr, float cycles);"
-
-[ke64__setMedianRank]
-Class="Function"
-Prototype="void ke64__setMedianRank(short addr, int rank);"
-
-[ke64__enableMedianFilter]
-Class="Function"
-Prototype="void ke64__enableMedianFilter(short addr, char *state);"
-
-[ke64__setDigitalFilterControl]
-Class="Function"
-Prototype="void ke64__setDigitalFilterControl(short addr, char *filterControl);"
-
-[ke64__setDigitalFilterCount]
-Class="Function"
-Prototype="void ke64__setDigitalFilterCount(short addr, int count);"
-
-[ke64__enableDigitalFilter]
-Class="Function"
-Prototype="void ke64__enableDigitalFilter(short addr, char *state);"
-
-[ke64__enableDigitalFilterAdvanced]
-Class="Function"
-Prototype="void ke64__enableDigitalFilterAdvanced(short addr, char *state);"
-
-[ke64__setDigitalFilterAdvancedNoiseTolerence]
-Class="Function"
-Prototype="void ke64__setDigitalFilterAdvancedNoiseTolerence(short addr, int tolerence);"
-
-[ke64__takeMeasurement]
-Class="Function"
-Prototype="double ke64__takeMeasurement(short addr);"
-
 [ke64__setup]
 Class="Function"
 Prototype="void ke64__setup(short addr);"
 
-[ke64__initialize]
-Class="Function"
-Prototype="void ke64__initialize(short addr);"
-
 [ke64__measure]
 Class="Function"
 Prototype="void ke64__measure(short addr, double *data, int *wasMeasured);"
-
-[ke64__cleanup]
-Class="Function"
-Prototype="void ke64__cleanup(short addr);"
 

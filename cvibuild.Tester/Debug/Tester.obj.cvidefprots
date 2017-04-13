@@ -2,9 +2,21 @@
 Class="Function"
 Prototype="int main(int argc, char **argv);"
 
-[panelCB]
+[mainPanel_CB]
 Class="Function"
-Prototype="int panelCB(int panel, int event, void *callbackData, int eventData1, int eventData2);"
+Prototype="int mainPanel_CB(int panel, int event, void *callbackData, int eventData1, int eventData2);"
+
+[rPanel_CB]
+Class="Function"
+Prototype="int rPanel_CB(int panel, int event, void *callbackData, int eventData1, int eventData2);"
+
+[pPanel_CB]
+Class="Function"
+Prototype="int pPanel_CB(int panel, int event, void *callbackData, int eventData1, int eventData2);"
+
+[showResistanceWindow_CB]
+Class="Function"
+Prototype="int showResistanceWindow_CB(int panel, int control, int event, void *callbackData, int eventData1, int eventData2);"
 
 [DevScan_CB]
 Class="Function"
@@ -169,4 +181,8 @@ Prototype="int updateHighlights_CB(int panel, int control, int event, void *call
 [startAutoMeasure_CB]
 Class="Function"
 Prototype="int startAutoMeasure_CB(int panel, int control, int event, void *callbackData, int eventData1, int eventData2);"
+
+[ivChanged_CB]
+Class="Function"
+Prototype="int ivChanged_CB(int panel, int control, int event, void *callbackData, int eventData1, int eventData2);"
 

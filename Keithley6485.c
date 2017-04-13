@@ -8,40 +8,40 @@ struct MeasurementDevice ke64__measurementDevice = {
 	.name = "Keithley 6485",
 	.addr = 0,
 	.setup = &ke64__setup,
-	.initialize = &ke64__initialize,
+	.initialize = NULL,
 	.measure = &ke64__measure,
-	.cleanup = &ke64__cleanup
+	.cleanup = NULL
 };
 
-void ke64__setZeroCheck(Addr4882_t addr, char* status) 
+static void ke64__setZeroCheck(Addr4882_t addr, char* status) 
 {
 	char cmd[64];
 	sprintf(cmd, "SYST:ZCH %s", status);
 	gpib__command(addr, cmd);
 }
 
-void ke64__setZeroCorr(Addr4882_t addr, char* status)
+static void ke64__setZeroCorr(Addr4882_t addr, char* status)
 {
 	char cmd[64];
 	sprintf(cmd, "SYST:ZCOR %s", status);
 	gpib__command(addr, cmd);
 }
 
-void ke64__setRange(Addr4882_t addr, float range)
+static void ke64__setRange(Addr4882_t addr, float range)
 {
 	char cmd[64];
 	sprintf(cmd, "CURR:RANG %f", range);
 	gpib__command(addr, cmd);
 }
 
-void ke64__setRangeAuto(Addr4882_t addr, char* status)
+static void ke64__setRangeAuto(Addr4882_t addr, char* status)
 {
 	char cmd[64];
 	sprintf(cmd, "CURR:RANG:AUTO %s", status);
 	gpib__command(addr, cmd);
 }
 
-void ke64__zeroCorrect(Addr4882_t addr)
+static void ke64__zeroCorrect(Addr4882_t addr)
 {
 	ke64__setZeroCheck(addr, KE64__STATUS_ON);
 	ke64__setRange(addr, 2e-9);
@@ -53,7 +53,7 @@ void ke64__zeroCorrect(Addr4882_t addr)
 	//ke64__setZeroCheck(addr, KE64__STATUS_OFF);
 }
 
-void ke64__setRate(Addr4882_t addr, float cycles)
+static void ke64__setRate(Addr4882_t addr, float cycles)
 {
 	char cmd[64];
 	sprintf(cmd, ":NPLCycles %f", cycles);
@@ -61,14 +61,14 @@ void ke64__setRate(Addr4882_t addr, float cycles)
 }
 
 // Rank is an integer from 1-5 indicating 1/2 the number of points that are filtered
-void ke64__setMedianRank(Addr4882_t addr, int rank)
+static void ke64__setMedianRank(Addr4882_t addr, int rank)
 {
 	char cmd[64];
 	sprintf(cmd, "MED:RANK %d", rank);
 	gpib__command(addr, cmd);
 }
 
-void ke64__enableMedianFilter(Addr4882_t addr, char* state)
+static void ke64__enableMedianFilter(Addr4882_t addr, char* state)
 {
 	char cmd[64];
 	sprintf(cmd, "MED %s", state);
@@ -76,7 +76,7 @@ void ke64__enableMedianFilter(Addr4882_t addr, char* state)
 }
 
 // Digital filters average multiple readings
-void ke64__setDigitalFilterControl(Addr4882_t addr, char* filterControl)
+static void ke64__setDigitalFilterControl(Addr4882_t addr, char* filterControl)
 {
 	char cmd[64];
 	sprintf(cmd, "AVER:TCON %s", filterControl);
@@ -84,21 +84,21 @@ void ke64__setDigitalFilterControl(Addr4882_t addr, char* filterControl)
 }
 
 // Count is from 1-100
-void ke64__setDigitalFilterCount(Addr4882_t addr, int count)
+static void ke64__setDigitalFilterCount(Addr4882_t addr, int count)
 {
 	char cmd[64];
 	sprintf(cmd, "AVER:COUN %d", count);
 	gpib__command(addr, cmd);
 }
 
-void ke64__enableDigitalFilter(Addr4882_t addr, char* state)
+static void ke64__enableDigitalFilter(Addr4882_t addr, char* state)
 {
 	char cmd[64];
 	sprintf(cmd, "AVER %s", state);
 	gpib__command(addr, cmd);
 }
 
-void ke64__enableDigitalFilterAdvanced(Addr4882_t addr, char* state)
+static void ke64__enableDigitalFilterAdvanced(Addr4882_t addr, char* state)
 {
 	char cmd[64];
 	sprintf(cmd, "AVER:ADV %s", state);
@@ -106,14 +106,14 @@ void ke64__enableDigitalFilterAdvanced(Addr4882_t addr, char* state)
 }   
 
 // tolerence is an integer from 1-105 (represeting percentage)
-void ke64__setDigitalFilterAdvancedNoiseTolerence(Addr4882_t addr, int tolerence)
+static void ke64__setDigitalFilterAdvancedNoiseTolerence(Addr4882_t addr, int tolerence)
 {
 	char cmd[64];
 	sprintf(cmd, "AVER:ADV:NTOL %d", tolerence);
 	gpib__command(addr, cmd);
 }
 
-double ke64__takeMeasurement(Addr4882_t addr)
+static double ke64__takeMeasurement(Addr4882_t addr)
 {
 	gpib__command(addr, "READ?");
 	
@@ -146,10 +146,6 @@ void ke64__setup(Addr4882_t addr)
 	ke64__enableDigitalFilter(addr, KE64__STATUS_ON);
 }
 
-void ke64__initialize(Addr4882_t addr)
-{
-}
-
 void ke64__measure(Addr4882_t addr, double* data, int* wasMeasured)
 {
 	ke64__setZeroCheck(addr, KE64__STATUS_OFF);
@@ -157,8 +153,4 @@ void ke64__measure(Addr4882_t addr, double* data, int* wasMeasured)
 	wasMeasured[0] = 0;
 	wasMeasured[1] = 1;
 	ke64__setZeroCheck(addr, KE64__STATUS_ON);
-}
-
-void ke64__cleanup(Addr4882_t addr)
-{
 }

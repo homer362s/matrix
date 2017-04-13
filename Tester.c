@@ -61,7 +61,8 @@ float getHighlightMax();
 
 
 // Global variables
-static int panelHandle = 0;
+static int mainPanel = 0;
+static int rPanel = 0;
 int currentTabHandle;
 Addr4882_t sourceAddress = 24;
 Addr4882_t measAddress = 14;
@@ -80,22 +81,23 @@ int main (int argc, char *argv[])
 	
 	/* initialize and load resources */
 	nullChk (InitCVIRTE (0, argv, 0));
-	errChk (panelHandle = LoadPanel (0, "Tester.uir", MAINPANEL));
+	errChk (mainPanel = LoadPanel (0, "Tester.uir", MAINPANEL));
+	rPanel = LoadPanel(0, "Tester.uir", R_PANEL);
 	GPIBScan();
 	COMScan();
 	SwitchMatrixConfig = (struct SwitchMatrixConfig_type *) malloc(sizeof (struct SwitchMatrixConfig_type));
 	
 	/* display the panel and run the user interface */
-	errChk (DisplayPanel (panelHandle));
-	GetPanelHandleFromTabPage(panelHandle, MAINPANEL_TABS, 0, &currentTabHandle);
+	errChk (DisplayPanel (mainPanel));
+	GetPanelHandleFromTabPage(rPanel, R_PANEL_TABS, 0, &currentTabHandle);
 	
 	// Set the default measurement devices and initialize
 	int sourceIndex = 0;
 	int measIndex = 0;
-	GetIndexFromValue(panelHandle, MAINPANEL_SOURCEDEVICERING, &sourceIndex, sourceDevice);
-	GetIndexFromValue(panelHandle, MAINPANEL_MEASDEVICERING, &measIndex, measDevice);
-	SetCtrlIndex(panelHandle, MAINPANEL_SOURCEDEVICERING, sourceIndex);
-	SetCtrlIndex(panelHandle, MAINPANEL_MEASDEVICERING, measIndex);
+	GetIndexFromValue(mainPanel, MAINPANEL_SOURCEDEVICERING, &sourceIndex, sourceDevice);
+	GetIndexFromValue(mainPanel, MAINPANEL_MEASDEVICERING, &measIndex, measDevice);
+	SetCtrlIndex(mainPanel, MAINPANEL_SOURCEDEVICERING, sourceIndex);
+	SetCtrlIndex(mainPanel, MAINPANEL_MEASDEVICERING, measIndex);
 	
 	switch (sourceDevice) {
 		case KEITHLEY2400:
@@ -120,18 +122,50 @@ int main (int argc, char *argv[])
 
 Error:
 	/* clean up */
-	if (panelHandle > 0)
-		DiscardPanel (panelHandle);
+	if (mainPanel > 0)
+		DiscardPanel (mainPanel);
 	return 0;
 }
 
-int CVICALLBACK panelCB (int panel, int event, void *callbackData, int eventData1, int eventData2)
+int CVICALLBACK mainPanel_CB (int panel, int event, void *callbackData, int eventData1, int eventData2)
 {
 	switch(event) {
 		case EVENT_CLOSE:
 			QuitUserInterface(0);
 	}
 
+	return 0;
+}
+
+int CVICALLBACK rPanel_CB (int panel, int event, void *callbackData, int eventData1, int eventData2)
+{
+	switch(event) {
+		case EVENT_CLOSE:
+			HidePanel(panel);
+	}
+
+	return 0;
+}
+
+int CVICALLBACK pPanel_CB (int panel, int event, void *callbackData, int eventData1, int eventData2)
+{
+	switch(event) {
+		case EVENT_CLOSE:
+			DiscardPanel(panel);
+	}  
+
+	return 0;
+}
+
+int CVICALLBACK showResistanceWindow_CB(int panel, int control, int event, void *callbackData, int eventData1, int eventData2)
+{
+	switch(event) {
+		case EVENT_COMMIT:
+			DisplayPanel(rPanel);
+			SetActivePanel(rPanel);
+			break;
+	}
+	
 	return 0;
 }
 
@@ -149,8 +183,8 @@ int CVICALLBACK DevScan_CB(int panel, int control, int event, void *callbackData
 void GPIBScan()
 {
 	// Delete all existing items in the dropdown menu
-	DeleteListItem(panelHandle, MAINPANEL_SOURCEADDRESSRING, 0, -1);
-	DeleteListItem(panelHandle, MAINPANEL_MEASADDRESSRING, 0, -1);
+	DeleteListItem(mainPanel, MAINPANEL_SOURCEADDRESSRING, 0, -1);
+	DeleteListItem(mainPanel, MAINPANEL_MEASADDRESSRING, 0, -1);
 
 	// Replace those items with the newly discovered ones
 	Addr4882_t AttachedDevices[30];
@@ -158,13 +192,13 @@ void GPIBScan()
 	int devCount = gpib__scanForDevices(AttachedDevices);
 	SetBreakOnLibraryErrors(oldErrorSetting);
 
-	InsertListItem(panelHandle, MAINPANEL_SOURCEADDRESSRING, 0, "", 0);
-	InsertListItem(panelHandle, MAINPANEL_MEASADDRESSRING, 0, "", 0);
+	InsertListItem(mainPanel, MAINPANEL_SOURCEADDRESSRING, 0, "", 0);
+	InsertListItem(mainPanel, MAINPANEL_MEASADDRESSRING, 0, "", 0);
 	char tmpstr[3];
 	for(int i = 0; i < devCount; i++) {
 		sprintf(tmpstr, "%d", AttachedDevices[i]);
-		InsertListItem(panelHandle, MAINPANEL_SOURCEADDRESSRING, i+1, tmpstr, AttachedDevices[i]);
-		InsertListItem(panelHandle, MAINPANEL_MEASADDRESSRING, i+1, tmpstr, AttachedDevices[i]);
+		InsertListItem(mainPanel, MAINPANEL_SOURCEADDRESSRING, i+1, tmpstr, AttachedDevices[i]);
+		InsertListItem(mainPanel, MAINPANEL_MEASADDRESSRING, i+1, tmpstr, AttachedDevices[i]);
 	}
 	sourceAddress = 0;
 	measAddress = 0;
@@ -174,7 +208,7 @@ void GPIBScan()
 void COMScan()
 {
 	// Delete all existing items in the dropdown menu
-	DeleteListItem(panelHandle, MAINPANEL_MATRIXADDRRING, 0, -1);
+	DeleteListItem(mainPanel, MAINPANEL_MATRIXADDRRING, 0, -1);
 	
 	// Discover some addresses
 	int maxAddr = 20;
@@ -191,11 +225,11 @@ void COMScan()
 	SetBreakOnLibraryErrors(oldErrorSetting);
 	
 	// Replace those items with the newly discovered ones
-	InsertListItem(panelHandle, MAINPANEL_MATRIXADDRRING, 0, "", 0);
+	InsertListItem(mainPanel, MAINPANEL_MATRIXADDRRING, 0, "", 0);
 	char tmpstr[6];
 	for (int i = 0; i < addrCount; i++) {
 		sprintf(tmpstr, "COM%d", addresses[i]);
-		InsertListItem(panelHandle, MAINPANEL_MATRIXADDRRING, i+1, tmpstr, addresses[i]);
+		InsertListItem(mainPanel, MAINPANEL_MATRIXADDRRING, i+1, tmpstr, addresses[i]);
 	}
 	
 	matrixAddress = 0;
@@ -206,7 +240,7 @@ int CVICALLBACK deviceChanged_CB(int panel, int control, int event, void *callba
 	int newDevice;
 	switch(event) {
 		case EVENT_COMMIT:
-			GetCtrlVal(panelHandle, control, &newDevice);
+			GetCtrlVal(mainPanel, control, &newDevice);
 			int addressControl = 0;
 			switch(control) {
 				case MAINPANEL_SOURCEDEVICERING:
@@ -233,7 +267,7 @@ int CVICALLBACK deviceChanged_CB(int panel, int control, int event, void *callba
 					break;
 			}
 			
-			SetCtrlIndex(panelHandle, addressControl, 0);
+			SetCtrlIndex(mainPanel, addressControl, 0);
 	}
 	return 0;
 }
@@ -243,7 +277,7 @@ int CVICALLBACK addressChanged_CB(int panel, int control, int event, void *callb
 	int value;
 	switch(event) {
 		case EVENT_COMMIT:
-			GetCtrlVal(panelHandle, control, &value);
+			GetCtrlVal(mainPanel, control, &value);
 			switch(control) {
 				case MAINPANEL_SOURCEADDRESSRING:
 					measurementSetup.source.addr = (Addr4882_t) value;
@@ -268,9 +302,9 @@ int CVICALLBACK toggleColors_CB(int panel, int control, int event, void *callbac
 	
 	switch (event) {
 		case EVENT_COMMIT:
-			GetCtrlVal(panelHandle, MAINPANEL_COLORSCHECKBOX, &isChecked);
-			SetCtrlAttribute(panelHandle, MAINPANEL_MINBOX, ATTR_DIMMED, !isChecked);
-			SetCtrlAttribute(panelHandle, MAINPANEL_MAXBOX, ATTR_DIMMED, !isChecked);
+			GetCtrlVal(rPanel, R_PANEL_COLORSCHECKBOX, &isChecked);
+			SetCtrlAttribute(rPanel, R_PANEL_MINBOX, ATTR_DIMMED, !isChecked);
+			SetCtrlAttribute(rPanel, R_PANEL_MAXBOX, ATTR_DIMMED, !isChecked);
 			updateHighlights();
 			break;
 	}
@@ -279,14 +313,14 @@ int CVICALLBACK toggleColors_CB(int panel, int control, int event, void *callbac
 
 void setProbeCardDisplay(int dimmed, char* label)
 {
-	SetCtrlAttribute(panelHandle, MAINPANEL_LOADPROBECARDBUTTON, ATTR_DIMMED, dimmed);
+	SetCtrlAttribute(mainPanel, MAINPANEL_LOADPROBECARDBUTTON, ATTR_DIMMED, dimmed);
 	
-	SetCtrlVal(panelHandle, MAINPANEL_PROBECARDNAME, label);
+	SetCtrlVal(mainPanel, MAINPANEL_PROBECARDNAME, label);
 	
 	if (!strcmp(label, "")) {
-		SetCtrlAttribute(panelHandle, MAINPANEL_RESETRELAYSBUTTON, ATTR_DIMMED, 1);
+		SetCtrlAttribute(mainPanel, MAINPANEL_RESETRELAYSBUTTON, ATTR_DIMMED, 1);
 	} else {
-		SetCtrlAttribute(panelHandle, MAINPANEL_RESETRELAYSBUTTON, ATTR_DIMMED, 0);
+		SetCtrlAttribute(mainPanel, MAINPANEL_RESETRELAYSBUTTON, ATTR_DIMMED, 0);
 	}
 }
 
@@ -316,12 +350,12 @@ int CVICALLBACK LoadProbeCard_CB(int panel, int control, int event, void *callba
 			setStatusBar("Resetting Relays");
 			resetAllRelays(SwitchMatrixConfig);
 			int count;
-			int ctrlArrayHandle = GetCtrlArrayFromResourceID(panelHandle, MAN_CON_ARRAY);
+			int ctrlArrayHandle = GetCtrlArrayFromResourceID(mainPanel, MAN_CON_ARRAY);
 
 			GetNumCtrlArrayItems(ctrlArrayHandle, &count);
 			for (int i=0; i<count; i++) {
 				int MenuHandle = GetCtrlArrayItem(ctrlArrayHandle, i);
-				SetCtrlIndex(panelHandle, MenuHandle, 0);
+				SetCtrlIndex(mainPanel, MenuHandle, 0);
 			}
 			setStatusDone();
 	}
@@ -345,10 +379,10 @@ int CVICALLBACK LoadLayout_CB(int panel, int control, int event, void *callbackD
 				
 				
 				// Update the UI
-				SetCtrlAttribute(panelHandle, MAINPANEL_STARTMEASBUTTON, ATTR_DIMMED, 0);
-				SetCtrlAttribute(panelHandle, MAINPANEL_STARTREMEASBUTTON, ATTR_DIMMED, 0);
-				SetCtrlAttribute(panelHandle, MAINPANEL_AUTOMEASDEVLIST, ATTR_DIMMED, 0);
-				SetCtrlAttribute(panelHandle, MAINPANEL_SINGLEAUTOMEASBUTTON, ATTR_DIMMED, 0);
+				SetCtrlAttribute(mainPanel, MAINPANEL_STARTMEASBUTTON, ATTR_DIMMED, 0);
+				SetCtrlAttribute(mainPanel, MAINPANEL_STARTREMEASBUTTON, ATTR_DIMMED, 0);
+				SetCtrlAttribute(mainPanel, MAINPANEL_AUTOMEASDEVLIST, ATTR_DIMMED, 0);
+				SetCtrlAttribute(mainPanel, MAINPANEL_SINGLEAUTOMEASBUTTON, ATTR_DIMMED, 0);
 				
 				// Get file name (without path)
 				char* fileName = pathName;
@@ -357,12 +391,12 @@ int CVICALLBACK LoadLayout_CB(int panel, int control, int event, void *callbackD
 					fileName = tmp + 1;
 					tmp = strchr(fileName, '\\');
 				}
-				SetCtrlVal(panelHandle, MAINPANEL_LAYOUTNAME, fileName);
+				SetCtrlVal(mainPanel, MAINPANEL_LAYOUTNAME, fileName);
 				
 				// Update the device list
-				DeleteListItem(panelHandle, MAINPANEL_AUTOMEASDEVLIST, 0, -1);
+				DeleteListItem(mainPanel, MAINPANEL_AUTOMEASDEVLIST, 0, -1);
 				for (int i = 0;i < layoutConfig->measurementCount;i++) {
-					InsertListItem(panelHandle, MAINPANEL_AUTOMEASDEVLIST, i, layoutConfig->measurements[i]->label, i);
+					InsertListItem(mainPanel, MAINPANEL_AUTOMEASDEVLIST, i, layoutConfig->measurements[i]->label, i);
 				}
 			}
 			break;
@@ -395,7 +429,7 @@ int CVICALLBACK ManConnectionChanged_CB(int panel, int control, int event, void 
 					break;
 			}
 			int pin;
-			GetCtrlIndex(panelHandle, control, &pin);
+			GetCtrlIndex(mainPanel, control, &pin);
 			
 			changeConnection(port, pin);
 	}
@@ -407,7 +441,7 @@ void updateManualControls()
 {
 	int count;
 	
-	int ctrlArrayHandle = GetCtrlArrayFromResourceID(panelHandle, MAN_CON_ARRAY);
+	int ctrlArrayHandle = GetCtrlArrayFromResourceID(mainPanel, MAN_CON_ARRAY);
 	
 	GetNumCtrlArrayItems(ctrlArrayHandle, &count);
 	char tmpstr[5];
@@ -415,15 +449,15 @@ void updateManualControls()
 		int MenuHandle = GetCtrlArrayItem(ctrlArrayHandle, i);
 		
 		// Clear the menu
-		DeleteListItem(panelHandle, MenuHandle, 0, -1);
+		DeleteListItem(mainPanel, MenuHandle, 0, -1);
 		
 		// Fill in the menu
 		for(int j = SwitchMatrixConfig->numProbePins+1;j > 1;j--) {
 			sprintf(tmpstr, "%d", j-1); 
-			InsertListItem(panelHandle, MenuHandle, 0, tmpstr, j); 
+			InsertListItem(mainPanel, MenuHandle, 0, tmpstr, j); 
 		} 
-		InsertListItem(panelHandle, MenuHandle, 0, "None", 0);
-		SetCtrlIndex(panelHandle, MenuHandle, 0);
+		InsertListItem(mainPanel, MenuHandle, 0, "None", 0);
+		SetCtrlIndex(mainPanel, MenuHandle, 0);
 	}
 }
 
@@ -433,7 +467,7 @@ int CVICALLBACK renameRow_CB(int panel, int control, int event, void *callbackDa
 		case EVENT_COMMIT:
 			int row = getSelectedRow();
 			char label[16];
-			GetCtrlVal(panelHandle, MAINPANEL_DEVIDBOX, label);
+			GetCtrlVal(rPanel, R_PANEL_DEVIDBOX, label);
 			SetTableRowAttribute(currentTabHandle, TABPANEL_1_MANUALTABLE, row, ATTR_LABEL_TEXT, label);
 			break;
 	}
@@ -526,7 +560,7 @@ void handleSingleMeasurement(int measurementType, int newRow, char* label)
 	
 	// Highlight the cell if its within the "good" range
 	int isChecked;
-	GetCtrlVal(panelHandle, MAINPANEL_COLORSCHECKBOX, &isChecked);
+	GetCtrlVal(rPanel, R_PANEL_COLORSCHECKBOX, &isChecked);
 	if (isChecked && resistance > getHighlightMin() && resistance < getHighlightMax()) {
 		SetTableCellAttribute(currentTabHandle, TABPANEL_1_MANUALTABLE, MakePoint(3,row), ATTR_TEXT_BGCOLOR, MakeColor(200,255,200));
 	}
@@ -541,7 +575,7 @@ int CVICALLBACK ManualMeasure_CB(int panel, int control, int event, void *callba
 	switch(event) {
 		case EVENT_COMMIT:
 			char label[16];
-			GetCtrlVal(panelHandle, MAINPANEL_DEVIDBOX, label);
+			GetCtrlVal(rPanel, R_PANEL_DEVIDBOX, label);
 			
 			switch(control) {
 				case MAINPANEL_REMEASURECURRENTBUTTO:
@@ -550,20 +584,14 @@ int CVICALLBACK ManualMeasure_CB(int panel, int control, int event, void *callba
 				case MAINPANEL_MEASURECURRENTBUTTON:
 					handleSingleMeasurement(MEASURE_CURRENT, 1, label);
 					break;
-				case MAINPANEL_REMEASUREVOLTAGEBUTTO:
-					handleSingleMeasurement(MEASURE_VOLTAGE, 0, label);
-					break;
-				case MAINPANEL_MEASUREVOLTAGEBUTTON:
-					handleSingleMeasurement(MEASURE_VOLTAGE,1, label);
-					break;
 			}
 			
 			// Increment the device ID if requested
 			int checked;
-			GetCtrlVal(panelHandle, MAINPANEL_AUTODEVCHECK, &checked);
+			GetCtrlVal(rPanel, R_PANEL_AUTODEVCHECK, &checked);
 			if (checked) {
 				incrementLabelName(label);
-				SetCtrlVal(panelHandle, MAINPANEL_DEVIDBOX, label);
+				SetCtrlVal(rPanel, R_PANEL_DEVIDBOX, label);
 			}
 	}
 	
@@ -573,7 +601,7 @@ int CVICALLBACK ManualMeasure_CB(int panel, int control, int event, void *callba
 float getVBias()
 {
 	char strval[64];
-	GetCtrlVal(panelHandle, MAINPANEL_VBIASBOX, strval);
+	GetCtrlVal(mainPanel, MAINPANEL_VBIASBOX, strval);
 	
 	return atof(strval);
 }
@@ -581,7 +609,7 @@ float getVBias()
 float getSourceCoeff()
 {
 	char strval[64];
-	GetCtrlVal(panelHandle, MAINPANEL_INPUTCOEFF, strval);
+	GetCtrlVal(mainPanel, MAINPANEL_INPUTCOEFF, strval);
 	
 	return atof(strval);
 }
@@ -589,7 +617,7 @@ float getSourceCoeff()
 float getMeasCoeff()
 {
 	char strval[64];
-	GetCtrlVal(panelHandle, MAINPANEL_MEASCOEFF, strval);
+	GetCtrlVal(mainPanel, MAINPANEL_MEASCOEFF, strval);
 	
 	return atof(strval);
 }
@@ -598,7 +626,7 @@ float getMeasCoeff()
 float getIBias()
 {
 	char strval[64];
-	GetCtrlVal(panelHandle, MAINPANEL_IBIASBOX, strval);
+	GetCtrlVal(mainPanel, MAINPANEL_IBIASBOX, strval);
 	
 	return atof(strval);
 }
@@ -626,12 +654,12 @@ int CVICALLBACK resetRelays_CB(int panel, int control, int event, void *callback
 			resetAllRelays(SwitchMatrixConfig);
 			
 			int count;
-			int ctrlArrayHandle = GetCtrlArrayFromResourceID(panelHandle, MAN_CON_ARRAY);
+			int ctrlArrayHandle = GetCtrlArrayFromResourceID(mainPanel, MAN_CON_ARRAY);
 
 			GetNumCtrlArrayItems(ctrlArrayHandle, &count);
 			for (int i=0; i<count; i++) {
 				int MenuHandle = GetCtrlArrayItem(ctrlArrayHandle, i);
-				SetCtrlIndex(panelHandle, MenuHandle, 0);
+				SetCtrlIndex(mainPanel, MenuHandle, 0);
 			}
 			
 			setStatusDone();
@@ -643,7 +671,7 @@ int CVICALLBACK resetRelays_CB(int panel, int control, int event, void *callback
 
 void setStatusBar(char* status)
 {
-	SetCtrlVal(panelHandle, MAINPANEL_STATUSBAR, status);
+	SetCtrlVal(mainPanel, MAINPANEL_STATUSBAR, status);
 }
 
 void setStatusDone()
@@ -655,7 +683,7 @@ void setStatusDone()
 int getCurrentTab()
 {
 	int currentTabIndex;
-	GetActiveTabPage(panelHandle, MAINPANEL_TABS, &currentTabIndex);
+	GetActiveTabPage(rPanel, R_PANEL_TABS, &currentTabIndex);
 	
 	return currentTabIndex;
 }
@@ -663,14 +691,14 @@ int getCurrentTab()
 int getTabCount()
 {
 	int tabCount;
-	GetNumTabPages(panelHandle, MAINPANEL_TABS, &tabCount);
+	GetNumTabPages(rPanel, R_PANEL_TABS, &tabCount);
 	
 	return tabCount;
 }
 
 void getNewFrameID(char* newID)
 {
-	GetCtrlVal(panelHandle, MAINPANEL_FRAMEIDBOX, newID);
+	GetCtrlVal(rPanel, R_PANEL_FRAMEIDBOX, newID);
 }
 
 int getSelectedRow()
@@ -685,11 +713,11 @@ void newFrame()
 	// Make the tab
 	char newLabel[15];
 	getNewFrameID(newLabel);
-	int newTabIndex = InsertTabPage(panelHandle, MAINPANEL_TABS, getTabCount(), newLabel);
-	SetActiveTabPage(panelHandle, MAINPANEL_TABS, newTabIndex);
+	int newTabIndex = InsertTabPage(rPanel, R_PANEL_TABS, getTabCount(), newLabel);
+	SetActiveTabPage(rPanel, R_PANEL_TABS, newTabIndex);
 
 	// Update the current tab handle
-	GetPanelHandleFromTabPage(panelHandle, MAINPANEL_TABS, getCurrentTab(), &currentTabHandle);
+	GetPanelHandleFromTabPage(rPanel, R_PANEL_TABS, getCurrentTab(), &currentTabHandle);
 
 	// Create the table in the new tab
 	int tableCtrlID = NewCtrl(currentTabHandle, CTRL_TABLE, 0, 0, 0);
@@ -713,12 +741,12 @@ void newFrame()
 	
 	// Update the next frame label if it is set to auto
 	int checked;
-	GetCtrlVal(panelHandle, MAINPANEL_AUTOFRAMECHECK, &checked);
+	GetCtrlVal(rPanel, R_PANEL_AUTOFRAMECHECK, &checked);
 	if (checked) {
 		char label[16];
-		GetCtrlVal(panelHandle, MAINPANEL_FRAMEIDBOX, label);
+		GetCtrlVal(rPanel, R_PANEL_FRAMEIDBOX, label);
 		incrementLabelName(label);
-		SetCtrlVal(panelHandle, MAINPANEL_FRAMEIDBOX, label);
+		SetCtrlVal(rPanel, R_PANEL_FRAMEIDBOX, label);
 	}
 }
 
@@ -771,11 +799,11 @@ int CVICALLBACK deleteFrame_CB(int panel, int control, int event, void *callback
 	switch (event) {
 		case EVENT_COMMIT:
 			int currentTab = getCurrentTab();
-			DeleteTabPage(panelHandle, MAINPANEL_TABS, currentTab, 1);
+			DeleteTabPage(panel, R_PANEL_TABS, currentTab, 1);
 			if (getTabCount() > 0)
 			{
-				SetActiveTabPage(panelHandle, MAINPANEL_TABS, currentTab == 0 ? 0 : currentTab - 1);
-				GetPanelHandleFromTabPage(panelHandle, MAINPANEL_TABS, getCurrentTab(), &currentTabHandle);
+				SetActiveTabPage(panel, R_PANEL_TABS, currentTab == 0 ? 0 : currentTab - 1);
+				GetPanelHandleFromTabPage(panel, R_PANEL_TABS, getCurrentTab(), &currentTabHandle);
 			} else {
 				currentTabHandle = -1;
 			}
@@ -791,7 +819,7 @@ int CVICALLBACK saveFrame_CB(int panel, int control, int event, void *callbackDa
 		case EVENT_COMMIT:
 			{
 				char defaultFilename[32];
-				GetTabPageAttribute(panelHandle, MAINPANEL_TABS, getCurrentTab(), ATTR_LABEL_TEXT, defaultFilename);
+				GetTabPageAttribute(panel, R_PANEL_TABS, getCurrentTab(), ATTR_LABEL_TEXT, defaultFilename);
 				sprintf(defaultFilename, "%s.dat", defaultFilename);
 				
 				if (FileSelectPopupEx ("%userprofile%", defaultFilename, "datafile", "Create a save file", VAL_SAVE_BUTTON, 0, 0, pathName) != VAL_NO_FILE_SELECTED)
@@ -855,12 +883,12 @@ int CVICALLBACK saveAllFrames_CB(int panel, int control, int event, void *callba
 					for(int currentTab=0;currentTab<numTabs;currentTab++)
 					{
 						int numTableRows;
-						GetPanelHandleFromTabPage(panelHandle, MAINPANEL_TABS, currentTab, &tabHandle);
+						GetPanelHandleFromTabPage(panel, R_PANEL_TABS, currentTab, &tabHandle);
 						GetNumTableRows(tabHandle, TABPANEL_1_MANUALTABLE, &numTableRows);
 						
 						char frameID[32];
 						char devID[32];
-						GetTabPageAttribute(panelHandle, MAINPANEL_TABS, currentTab, ATTR_LABEL_TEXT, frameID);
+						GetTabPageAttribute(panel, R_PANEL_TABS, currentTab, ATTR_LABEL_TEXT, frameID);
 
 						for(int y=1;y<=numTableRows;y++)
 						{
@@ -890,7 +918,7 @@ int CVICALLBACK renameFrame_CB(int panel, int control, int event, void *callback
 		case EVENT_COMMIT:
 			char newLabel[15];
 			getNewFrameID(newLabel);
-			SetTabPageAttribute(panelHandle, MAINPANEL_TABS, getCurrentTab(), ATTR_LABEL_TEXT, newLabel);
+			SetTabPageAttribute(panel, R_PANEL_TABS, getCurrentTab(), ATTR_LABEL_TEXT, newLabel);
 			break;
 	}
 	return 0;
@@ -902,7 +930,7 @@ int CVICALLBACK tabs_CB(int panel, int control, int event, void *callbackData, i
 	{
 		case EVENT_ACTIVE_TAB_CHANGE:
 			int oldErrorSetting = SetBreakOnLibraryErrors(0);
-			int status = GetPanelHandleFromTabPage(panelHandle, MAINPANEL_TABS, eventData2, &currentTabHandle);
+			int status = GetPanelHandleFromTabPage(panel, R_PANEL_TABS, eventData2, &currentTabHandle);
 			SetBreakOnLibraryErrors(oldErrorSetting);
 			
 			if (status < 0)
@@ -961,7 +989,7 @@ int CVICALLBACK singleAutoMeasure_CB(int panel, int control, int event, void *ca
 			
 			// Get the measurement index
 			int index;
-			GetCtrlIndex(panelHandle, MAINPANEL_AUTOMEASDEVLIST, &index);
+			GetCtrlIndex(mainPanel, MAINPANEL_AUTOMEASDEVLIST, &index);
 			
 			struct AutoMeasurement* meas = layoutConfig->measurements[index];
 			
@@ -992,12 +1020,12 @@ void updateHighlights() {
 	int rowCount;
 	double resistance;
 	for(int i = 0;i < getTabCount();i++) {
-		GetPanelHandleFromTabPage(panelHandle, MAINPANEL_TABS, i, &tabHandle);
+		GetPanelHandleFromTabPage(rPanel, R_PANEL_TABS, i, &tabHandle);
 		GetNumTableRows(tabHandle, TABPANEL_1_MANUALTABLE, &rowCount);
 		for(int j = 0;j < rowCount;j++) {
 			GetTableCellVal(tabHandle, TABPANEL_1_MANUALTABLE, MakePoint(3,j+1), &resistance);
 			int isChecked;
-			GetCtrlVal(panelHandle, MAINPANEL_COLORSCHECKBOX, &isChecked);
+			GetCtrlVal(rPanel, R_PANEL_COLORSCHECKBOX, &isChecked);
 			if (isChecked && resistance > min && resistance < max) {
 				SetTableCellAttribute(tabHandle, TABPANEL_1_MANUALTABLE, MakePoint(3,j+1), ATTR_TEXT_BGCOLOR, MakeColor(200,255,200));
 			} else {
@@ -1009,13 +1037,13 @@ void updateHighlights() {
 
 float getHighlightMin() {
 	char value[16];
-	GetCtrlVal(panelHandle, MAINPANEL_MINBOX, value);
+	GetCtrlVal(rPanel, R_PANEL_MINBOX, value);
 	return atof(value);
 }
 
 float getHighlightMax() {
 	char value[16];
-	GetCtrlVal(panelHandle, MAINPANEL_MAXBOX, value);
+	GetCtrlVal(rPanel, R_PANEL_MAXBOX, value);
 	return atof(value);
 }
 
@@ -1041,12 +1069,12 @@ int CVICALLBACK startAutoMeasure_CB(int panel, int control, int event, void *cal
 			setStatusBar("Resetting all relays");
 			resetAllRelays(SwitchMatrixConfig);
 			int count;
-			int ctrlArrayHandle = GetCtrlArrayFromResourceID(panelHandle, MAN_CON_ARRAY);
+			int ctrlArrayHandle = GetCtrlArrayFromResourceID(mainPanel, MAN_CON_ARRAY);
 
 			GetNumCtrlArrayItems(ctrlArrayHandle, &count);
 			for (int i=0; i<count; i++) {
 				int MenuHandle = GetCtrlArrayItem(ctrlArrayHandle, i);
-				SetCtrlIndex(panelHandle, MenuHandle, 0);
+				SetCtrlIndex(mainPanel, MenuHandle, 0);
 			}
 			
 			// Start the measurement
@@ -1078,5 +1106,15 @@ int CVICALLBACK startAutoMeasure_CB(int panel, int control, int event, void *cal
 	
 			setStatusDone();
 	}
+	return 0;
+}
+
+int CVICALLBACK ivChanged_CB(int panel, int control, int event, void *callbackData, int eventData1, int eventData2)
+{
+	switch(event) {
+		case EVENT_COMMIT:
+			break;
+	}
+	
 	return 0;
 }
