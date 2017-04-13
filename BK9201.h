@@ -22,6 +22,7 @@ static float bk92__measure(Addr4882_t addr, char* func);
 void bk92__setup(Addr4882_t addr);
 void bk92__initialize(Addr4882_t addr, float voltage, float current);
 void bk92__enable(Addr4882_t addr);
+void bk92__changeVoltage(Addr4882_t addr, float voltage);
 void bk92__disable(Addr4882_t addr);
 
 #endif  /* ndef __BK9201_H__ */

@@ -18,9 +18,21 @@ Prototype="void initializeMeasurement(struct MeasurementSetup setup);"
 Class="Function"
 Prototype="void enableSource(struct MeasurementSetup setup);"
 
+[enableMeasurement]
+Class="Function"
+Prototype="void enableMeasurement(struct MeasurementSetup setup);"
+
 [takeMeasurement]
 Class="Function"
 Prototype="void takeMeasurement(struct MeasurementSetup setup, double *data, int *wasMeasured);"
+
+[disableMeasurement]
+Class="Function"
+Prototype="void disableMeasurement(struct MeasurementSetup setup);"
+
+[changeVoltage]
+Class="Function"
+Prototype="void changeVoltage(struct MeasurementSetup setup, float voltage);"
 
 [disableSource]
 Class="Function"

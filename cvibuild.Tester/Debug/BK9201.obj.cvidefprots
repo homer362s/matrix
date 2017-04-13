@@ -10,6 +10,10 @@ Prototype="void bk92__initialize(short addr, float voltage, float current);"
 Class="Function"
 Prototype="void bk92__enable(short addr);"
 
+[bk92__changeVoltage]
+Class="Function"
+Prototype="void bk92__changeVoltage(short addr, float voltage);"
+
 [bk92__disable]
 Class="Function"
 Prototype="void bk92__disable(short addr);"

@@ -22,7 +22,9 @@ struct MeasurementDevice ke24__measurementDevice = {
 	.addr = 0,
 	.setup = NULL,
 	.initialize = NULL,
+	.enable = NULL,
 	.measure = &ke24__measure,
+	.disable = NULL,
 	.cleanup = NULL
 };
 

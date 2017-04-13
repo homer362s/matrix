@@ -40,6 +40,14 @@ void enableSource(struct MeasurementSetup setup)
 		(*enableFunc)(setup.source.addr);
 }
 
+// Turn on the measuring device
+void enableMeasurement(struct MeasurementSetup setup)
+{
+	void (*enableFunc)(Addr4882_t) = setup.measure.enable;
+	if (enableFunc)
+		(*enableFunc)(setup.measure.addr);
+}
+
 // Take a measurement
 void takeMeasurement(struct MeasurementSetup setup, double* data, int* wasMeasured)
 {
@@ -51,6 +59,22 @@ void takeMeasurement(struct MeasurementSetup setup, double* data, int* wasMeasur
 		wasMeasured[0] = 0;
 		wasMeasured[1] = 0;
 	}
+}
+
+// Turn off the measuring device
+void disableMeasurement(struct MeasurementSetup setup)
+{
+	void (*disableFunc)(Addr4882_t) = setup.measure.disable;
+	if (disableFunc)
+		(*disableFunc)(setup.measure.addr);
+}
+
+// Change the voltage while the power supply is on
+void changeVoltage(struct MeasurementSetup setup, float voltage)
+{
+	void (*changeVoltageFunc)(Addr4882_t,float) = setup.source.changeVoltage;
+	if (changeVoltageFunc)
+		(*changeVoltageFunc)(setup.source.addr, voltage);
 }
 
 // Disable the source immediately after a measurement

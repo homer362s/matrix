@@ -2,7 +2,15 @@
 Class="Function"
 Prototype="void ke64__setup(short addr);"
 
+[ke64__enable]
+Class="Function"
+Prototype="void ke64__enable(short addr);"
+
 [ke64__measure]
 Class="Function"
 Prototype="void ke64__measure(short addr, double *data, int *wasMeasured);"
+
+[ke64__disable]
+Class="Function"
+Prototype="void ke64__disable(short addr);"
 

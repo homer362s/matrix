@@ -74,6 +74,10 @@ Prototype="void takeCurrentMeasurement(struct MeasurementSetup setup, float volt
 Class="Function"
 Prototype="void handleSingleMeasurement(int measurementType, int newRow, char *label);"
 
+[handleSingleIV]
+Class="Function"
+Prototype="void handleSingleIV();"
+
 [ManualMeasure_CB]
 Class="Function"
 Prototype="int ManualMeasure_CB(int panel, int control, int event, void *callbackData, int eventData1, int eventData2);"
@@ -161,6 +165,10 @@ Prototype="int startAutoReMeasure_CB(int panel, int control, int event, void *ca
 [singleAutoMeasure_CB]
 Class="Function"
 Prototype="int singleAutoMeasure_CB(int panel, int control, int event, void *callbackData, int eventData1, int eventData2);"
+
+[singleIVMeasure_CB]
+Class="Function"
+Prototype="int singleIVMeasure_CB(int panel, int control, int event, void *callbackData, int eventData1, int eventData2);"
 
 [updateHighlights]
 Class="Function"

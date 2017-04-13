@@ -383,6 +383,7 @@ int CVICALLBACK LoadLayout_CB(int panel, int control, int event, void *callbackD
 				SetCtrlAttribute(mainPanel, MAINPANEL_STARTREMEASBUTTON, ATTR_DIMMED, 0);
 				SetCtrlAttribute(mainPanel, MAINPANEL_AUTOMEASDEVLIST, ATTR_DIMMED, 0);
 				SetCtrlAttribute(mainPanel, MAINPANEL_SINGLEAUTOMEASBUTTON, ATTR_DIMMED, 0);
+				SetCtrlAttribute(mainPanel, MAINPANEL_SINGLEIVMEASBUTTON, ATTR_DIMMED, 0);
 				
 				// Get file name (without path)
 				char* fileName = pathName;
@@ -495,7 +496,9 @@ void takeCurrentMeasurement(struct MeasurementSetup setup, float voltage, double
 	Delay(0.1);
 	
 	// Take the measurement
+	enableMeasurement(measurementSetup);
 	takeMeasurement(measurementSetup, data, wasMeasured);
+	disableMeasurement(measurementSetup);
 	
 	// Disable the source
 	disableSource(measurementSetup);
@@ -570,6 +573,90 @@ void handleSingleMeasurement(int measurementType, int newRow, char* label)
 	
 }
 
+void handleSingleIV()
+{
+	// Get the sweep conditions
+	char startS[16], stepS[16], countS[16]; 
+	float vStep, V;
+	unsigned int count;
+	
+	GetCtrlVal(mainPanel, MAINPANEL_VSTART, startS);
+	GetCtrlVal(mainPanel, MAINPANEL_VSTEP, stepS);
+	GetCtrlVal(mainPanel, MAINPANEL_VCOUNT, countS);
+	
+	V = atof(startS);
+	vStep = atof(stepS);
+	count = atoi(countS);
+	
+	// Allocate data arrays
+	double data[3];
+	int wasMeasured[2];
+	float* Vs = malloc(count * sizeof(float));
+	float* Is = malloc(count * sizeof(float));
+	
+	// Create a new window (aka "panel")
+	int thisPanel = LoadPanel(0, "Tester.uir", P_PANEL);
+	DisplayPanel(thisPanel);
+	
+	// Initialize the source
+	initializeSource(measurementSetup, V, 0);
+	
+	// Initialize the measurement
+	initializeMeasurement(measurementSetup);
+	
+	// Enable the source
+	enableSource(measurementSetup);
+	
+	// Enable the measurement
+	enableMeasurement(measurementSetup);
+	
+	// Delay for the source to settle
+	Delay(0.1);
+	
+	// Take the initial measurement
+	takeMeasurement(measurementSetup, data, wasMeasured);
+	Vs[0] = V;
+	Is[0] = data[1];
+	
+	// Create the plot
+	int thisPlot = PlotXY(thisPanel, P_PANEL_GRAPH, Vs, Is, 1, VAL_FLOAT, VAL_FLOAT, VAL_FAT_LINE, VAL_NO_POINT, VAL_SOLID, 1, VAL_RED);
+	
+	for(int i = 1;i < count;i++) {
+		// Step the voltage
+		V = V + vStep;
+		changeVoltage(measurementSetup, V);
+		
+		// Delay for source to settle
+		Delay(0.1);
+		
+		// Take the measurement
+		takeMeasurement(measurementSetup, data, wasMeasured);
+		Vs[i] = V;
+		Is[i] = data[1];
+		
+		// Update the plot
+		DeleteGraphPlot(thisPanel, P_PANEL_GRAPH, thisPlot, VAL_DELAYED_DRAW);
+		thisPlot = PlotXY(thisPanel, P_PANEL_GRAPH, Vs, Is, i+1, VAL_FLOAT, VAL_FLOAT, VAL_FAT_LINE, VAL_NO_POINT, VAL_SOLID, 1, VAL_RED);
+		RefreshGraph(thisPanel, P_PANEL_GRAPH);
+	}
+	
+	// Disable the measurement
+	disableMeasurement(measurementSetup);
+	
+	// Disable the source
+	disableSource(measurementSetup);
+	
+	// Measurement cleanup
+	cleanupMeasurement(measurementSetup);
+	
+	// Source cleanup
+	cleanupSource(measurementSetup);
+	
+	// Free the data arrays
+	free(Vs);
+	free(Is);
+}
+
 int CVICALLBACK ManualMeasure_CB(int panel, int control, int event, void *callbackData, int eventData1, int eventData2)
 {
 	switch(event) {
@@ -583,6 +670,9 @@ int CVICALLBACK ManualMeasure_CB(int panel, int control, int event, void *callba
 					break;
 				case MAINPANEL_MEASURECURRENTBUTTON:
 					handleSingleMeasurement(MEASURE_CURRENT, 1, label);
+					break;
+				case MAINPANEL_MEASUREIVBUTTON:
+					handleSingleIV();
 					break;
 			}
 			
@@ -1007,6 +1097,15 @@ int CVICALLBACK singleAutoMeasure_CB(int panel, int control, int event, void *ca
 			}
 			
 			setStatusDone();
+			break;
+	}
+	return 0;
+}
+
+int CVICALLBACK singleIVMeasure_CB(int panel, int control, int event, void *callbackData, int eventData1, int eventData2)
+{
+	switch (event) {
+		case EVENT_COMMIT:
 			break;
 	}
 	return 0;

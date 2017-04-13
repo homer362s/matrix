@@ -10,6 +10,7 @@ struct SourceDevice bk92__sourceDevice = {
 	.setup = &bk92__setup,
 	.initialize = &bk92__initialize,
 	.enable = &bk92__enable,
+	.changeVoltage = &bk92__changeVoltage,
 	.disable = &bk92__disable,
 	.cleanup = NULL
 };
@@ -65,6 +66,11 @@ void bk92__initialize(Addr4882_t addr, float voltage, float current)
 void bk92__enable(Addr4882_t addr)
 {
 	bk92__setOutput(addr, BK92__SOURCE_ON);
+}
+
+void bk92__changeVoltage(Addr4882_t addr, float voltage)
+{
+	bk92__setSourceAmplitude(addr, BK92__FUNC_VOLTAGE, voltage);
 }
 
 void bk92__disable(Addr4882_t addr)

@@ -9,7 +9,9 @@ struct MeasurementDevice ke64__measurementDevice = {
 	.addr = 0,
 	.setup = &ke64__setup,
 	.initialize = NULL,
+	.enable = &ke64__enable,
 	.measure = &ke64__measure,
+	.disable = &ke64__disable,
 	.cleanup = NULL
 };
 
@@ -146,11 +148,19 @@ void ke64__setup(Addr4882_t addr)
 	ke64__enableDigitalFilter(addr, KE64__STATUS_ON);
 }
 
-void ke64__measure(Addr4882_t addr, double* data, int* wasMeasured)
+void ke64__enable(Addr4882_t addr)
 {
 	ke64__setZeroCheck(addr, KE64__STATUS_OFF);
+}
+
+void ke64__measure(Addr4882_t addr, double* data, int* wasMeasured)
+{
 	data[1] = ke64__takeMeasurement(addr);
 	wasMeasured[0] = 0;
 	wasMeasured[1] = 1;
-	ke64__setZeroCheck(addr, KE64__STATUS_ON);
+}
+
+void ke64__disable(Addr4882_t addr)
+{
+	ke64__setZeroCheck(addr, KE64__STATUS_ON); 
 }

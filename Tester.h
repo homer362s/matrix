@@ -59,8 +59,8 @@
 #define  MAINPANEL_SPLITTER_3             44      /* control type: splitter, callback function: (none) */
 #define  MAINPANEL_SPLITTER_4             45      /* control type: splitter, callback function: (none) */
 #define  MAINPANEL_SPLITTER_2             46      /* control type: splitter, callback function: (none) */
-#define  MAINPANEL_SINGLEIVMEASBUTTON     47      /* control type: command, callback function: (none) */
-#define  MAINPANEL_MEASUREIVBUTTON        48      /* control type: command, callback function: (none) */
+#define  MAINPANEL_SINGLEIVMEASBUTTON     47      /* control type: command, callback function: singleIVMeasure_CB */
+#define  MAINPANEL_MEASUREIVBUTTON        48      /* control type: command, callback function: ManualMeasure_CB */
 #define  MAINPANEL_VCOUNT                 49      /* control type: string, callback function: ivChanged_CB */
 #define  MAINPANEL_VSTEP                  50      /* control type: string, callback function: ivChanged_CB */
 #define  MAINPANEL_VSTOP                  51      /* control type: string, callback function: ivChanged_CB */
@@ -130,6 +130,7 @@ int  CVICALLBACK saveAllFrames_CB(int panel, int control, int event, void *callb
 int  CVICALLBACK saveFrame_CB(int panel, int control, int event, void *callbackData, int eventData1, int eventData2);
 int  CVICALLBACK showResistanceWindow_CB(int panel, int control, int event, void *callbackData, int eventData1, int eventData2);
 int  CVICALLBACK singleAutoMeasure_CB(int panel, int control, int event, void *callbackData, int eventData1, int eventData2);
+int  CVICALLBACK singleIVMeasure_CB(int panel, int control, int event, void *callbackData, int eventData1, int eventData2);
 int  CVICALLBACK startAutoMeasure_CB(int panel, int control, int event, void *callbackData, int eventData1, int eventData2);
 int  CVICALLBACK startAutoReMeasure_CB(int panel, int control, int event, void *callbackData, int eventData1, int eventData2);
 int  CVICALLBACK tabs_CB(int panel, int control, int event, void *callbackData, int eventData1, int eventData2);
