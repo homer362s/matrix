@@ -2,105 +2,29 @@
 Class="Function"
 Prototype="int main(int argc, char **argv);"
 
-[panelCB]
+[changeConnection]
 Class="Function"
-Prototype="int panelCB(int panel, int event, void *callbackData, int eventData1, int eventData2);"
-
-[DevScan_CB]
-Class="Function"
-Prototype="int DevScan_CB(int panel, int control, int event, void *callbackData, int eventData1, int eventData2);"
-
-[GPIBScan]
-Class="Function"
-Prototype="void GPIBScan();"
+Prototype="void changeConnection(int port, int pin);"
 
 [COMScan]
 Class="Function"
 Prototype="void COMScan();"
 
-[deviceChanged_CB]
-Class="Function"
-Prototype="int deviceChanged_CB(int panel, int control, int event, void *callbackData, int eventData1, int eventData2);"
-
-[addressChanged_CB]
-Class="Function"
-Prototype="int addressChanged_CB(int panel, int control, int event, void *callbackData, int eventData1, int eventData2);"
-
-[toggleColors_CB]
-Class="Function"
-Prototype="int toggleColors_CB(int panel, int control, int event, void *callbackData, int eventData1, int eventData2);"
-
-[setProbeCardDisplay]
-Class="Function"
-Prototype="void setProbeCardDisplay(int dimmed, char *label);"
-
-[LoadProbeCard_CB]
-Class="Function"
-Prototype="int LoadProbeCard_CB(int panel, int control, int event, void *callbackData, int eventData1, int eventData2);"
-
-[LoadLayout_CB]
-Class="Function"
-Prototype="int LoadLayout_CB(int panel, int control, int event, void *callbackData, int eventData1, int eventData2);"
-
-[ManConnectionChanged_CB]
-Class="Function"
-Prototype="int ManConnectionChanged_CB(int panel, int control, int event, void *callbackData, int eventData1, int eventData2);"
-
-[updateManualControls]
-Class="Function"
-Prototype="void updateManualControls();"
-
-[renameRow_CB]
-Class="Function"
-Prototype="int renameRow_CB(int panel, int control, int event, void *callbackData, int eventData1, int eventData2);"
-
-[takeCurrentMeasurement]
-Class="Function"
-Prototype="void takeCurrentMeasurement(struct MeasurementSetup setup, float voltage, double *data, int *wasMeasured);"
-
-[handleSingleMeasurement]
-Class="Function"
-Prototype="void handleSingleMeasurement(int measurementType, int newRow, char *label);"
-
-[ManualMeasure_CB]
-Class="Function"
-Prototype="int ManualMeasure_CB(int panel, int control, int event, void *callbackData, int eventData1, int eventData2);"
-
-[getVBias]
-Class="Function"
-Prototype="float getVBias();"
-
-[getSourceCoeff]
-Class="Function"
-Prototype="float getSourceCoeff();"
-
-[getMeasCoeff]
-Class="Function"
-Prototype="float getMeasCoeff();"
-
-[changeConnection]
-Class="Function"
-Prototype="void changeConnection(int port, int pin);"
-
-[resetRelays_CB]
-Class="Function"
-Prototype="int resetRelays_CB(int panel, int control, int event, void *callbackData, int eventData1, int eventData2);"
-
-[setStatusBar]
-Class="Function"
-Prototype="void setStatusBar(char *status);"
-
-[setStatusDone]
-Class="Function"
-Prototype="void setStatusDone();"
-
 [getCurrentTab]
 Class="Function"
 Prototype="int getCurrentTab();"
 
-[getTabCount]
+[getHighlightMax]
 Class="Function"
-Prototype="int getTabCount();"
+Prototype="float getHighlightMax();"
+
+[getHighlightMin]
+Class="Function"
+Prototype="float getHighlightMin();"
+
+[getMeasCoeff]
+Class="Function"
+Prototype="float getMeasCoeff();"
 
 [getNewFrameID]
 Class="Function"
@@ -110,63 +34,139 @@ Prototype="void getNewFrameID(char *newID);"
 Class="Function"
 Prototype="int getSelectedRow();"
 
-[newFrame]
+[getSourceCoeff]
 Class="Function"
-Prototype="void newFrame();"
+Prototype="float getSourceCoeff();"
+
+[getTabCount]
+Class="Function"
+Prototype="int getTabCount();"
+
+[getVBias]
+Class="Function"
+Prototype="float getVBias();"
+
+[GPIBScan]
+Class="Function"
+Prototype="void GPIBScan();"
+
+[handleSingleMeasurement]
+Class="Function"
+Prototype="void handleSingleMeasurement(int measurementType, int newRow, char *label);"
 
 [incrementLabelName]
 Class="Function"
 Prototype="void incrementLabelName(char *label);"
 
-[newFrame_CB]
+[newFrame]
 Class="Function"
-Prototype="int newFrame_CB(int panel, int control, int event, void *callbackData, int eventData1, int eventData2);"
+Prototype="void newFrame();"
 
-[deleteFrame_CB]
+[setProbeCardDisplay]
 Class="Function"
-Prototype="int deleteFrame_CB(int panel, int control, int event, void *callbackData, int eventData1, int eventData2);"
+Prototype="void setProbeCardDisplay(int dimmed, char *label);"
 
-[saveFrame_CB]
+[setStatusBar]
 Class="Function"
-Prototype="int saveFrame_CB(int panel, int control, int event, void *callbackData, int eventData1, int eventData2);"
+Prototype="void setStatusBar(char *status);"
 
-[saveAllFrames_CB]
+[setStatusDone]
 Class="Function"
-Prototype="int saveAllFrames_CB(int panel, int control, int event, void *callbackData, int eventData1, int eventData2);"
+Prototype="void setStatusDone();"
 
-[renameFrame_CB]
+[takeCurrentMeasurement]
 Class="Function"
-Prototype="int renameFrame_CB(int panel, int control, int event, void *callbackData, int eventData1, int eventData2);"
-
-[tabs_CB]
-Class="Function"
-Prototype="int tabs_CB(int panel, int control, int event, void *callbackData, int eventData1, int eventData2);"
-
-[startAutoReMeasure_CB]
-Class="Function"
-Prototype="int startAutoReMeasure_CB(int panel, int control, int event, void *callbackData, int eventData1, int eventData2);"
-
-[singleAutoMeasure_CB]
-Class="Function"
-Prototype="int singleAutoMeasure_CB(int panel, int control, int event, void *callbackData, int eventData1, int eventData2);"
+Prototype="void takeCurrentMeasurement(struct MeasurementSetup setup, float voltage, double *data, int *wasMeasured);"
 
 [updateHighlights]
 Class="Function"
 Prototype="void updateHighlights();"
 
-[getHighlightMin]
+[updateManualControls]
 Class="Function"
-Prototype="float getHighlightMin();"
+Prototype="void updateManualControls();"
 
-[getHighlightMax]
+[addressChanged_CB]
 Class="Function"
-Prototype="float getHighlightMax();"
+Prototype="int addressChanged_CB(int panel, int control, int event, void *callbackData, int eventData1, int eventData2);"
 
-[updateHighlights_CB]
+[deleteFrame_CB]
 Class="Function"
-Prototype="int updateHighlights_CB(int panel, int control, int event, void *callbackData, int eventData1, int eventData2);"
+Prototype="int deleteFrame_CB(int panel, int control, int event, void *callbackData, int eventData1, int eventData2);"
+
+[deviceChanged_CB]
+Class="Function"
+Prototype="int deviceChanged_CB(int panel, int control, int event, void *callbackData, int eventData1, int eventData2);"
+
+[DevScan_CB]
+Class="Function"
+Prototype="int DevScan_CB(int panel, int control, int event, void *callbackData, int eventData1, int eventData2);"
+
+[LoadLayout_CB]
+Class="Function"
+Prototype="int LoadLayout_CB(int panel, int control, int event, void *callbackData, int eventData1, int eventData2);"
+
+[LoadProbeCard_CB]
+Class="Function"
+Prototype="int LoadProbeCard_CB(int panel, int control, int event, void *callbackData, int eventData1, int eventData2);"
+
+[mainPanel_CB]
+Class="Function"
+Prototype="int mainPanel_CB(int panel, int event, void *callbackData, int eventData1, int eventData2);"
+
+[ManConnectionChanged_CB]
+Class="Function"
+Prototype="int ManConnectionChanged_CB(int panel, int control, int event, void *callbackData, int eventData1, int eventData2);"
+
+[ManualMeasure_CB]
+Class="Function"
+Prototype="int ManualMeasure_CB(int panel, int control, int event, void *callbackData, int eventData1, int eventData2);"
+
+[newFrame_CB]
+Class="Function"
+Prototype="int newFrame_CB(int panel, int control, int event, void *callbackData, int eventData1, int eventData2);"
+
+[renameFrame_CB]
+Class="Function"
+Prototype="int renameFrame_CB(int panel, int control, int event, void *callbackData, int eventData1, int eventData2);"
+
+[renameRow_CB]
+Class="Function"
+Prototype="int renameRow_CB(int panel, int control, int event, void *callbackData, int eventData1, int eventData2);"
+
+[resetRelays_CB]
+Class="Function"
+Prototype="int resetRelays_CB(int panel, int control, int event, void *callbackData, int eventData1, int eventData2);"
+
+[saveAllFrames_CB]
+Class="Function"
+Prototype="int saveAllFrames_CB(int panel, int control, int event, void *callbackData, int eventData1, int eventData2);"
+
+[saveFrame_CB]
+Class="Function"
+Prototype="int saveFrame_CB(int panel, int control, int event, void *callbackData, int eventData1, int eventData2);"
+
+[singleAutoMeasure_CB]
+Class="Function"
+Prototype="int singleAutoMeasure_CB(int panel, int control, int event, void *callbackData, int eventData1, int eventData2);"
 
 [startAutoMeasure_CB]
 Class="Function"
 Prototype="int startAutoMeasure_CB(int panel, int control, int event, void *callbackData, int eventData1, int eventData2);"
+
+[startAutoReMeasure_CB]
+Class="Function"
+Prototype="int startAutoReMeasure_CB(int panel, int control, int event, void *callbackData, int eventData1, int eventData2);"
+
+[tabs_CB]
+Class="Function"
+Prototype="int tabs_CB(int panel, int control, int event, void *callbackData, int eventData1, int eventData2);"
+
+[toggleColors_CB]
+Class="Function"
+Prototype="int toggleColors_CB(int panel, int control, int event, void *callbackData, int eventData1, int eventData2);"
+
+[updateHighlights_CB]
+Class="Function"
+Prototype="int updateHighlights_CB(int panel, int control, int event, void *callbackData, int eventData1, int eventData2);"
 

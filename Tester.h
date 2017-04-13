@@ -13,7 +13,7 @@
 
      /* Panels and Controls: */
 
-#define  MAINPANEL                        1       /* callback function: panelCB */
+#define  MAINPANEL                        1       /* callback function: mainPanel_CB */
 #define  MAINPANEL_MAN_CON5_RING          2       /* control type: ring, callback function: ManConnectionChanged_CB */
 #define  MAINPANEL_MAN_CON4_RING          3       /* control type: ring, callback function: ManConnectionChanged_CB */
 #define  MAINPANEL_MAN_CON3_RING          4       /* control type: ring, callback function: ManConnectionChanged_CB */
@@ -91,10 +91,10 @@ int  CVICALLBACK deviceChanged_CB(int panel, int control, int event, void *callb
 int  CVICALLBACK DevScan_CB(int panel, int control, int event, void *callbackData, int eventData1, int eventData2);
 int  CVICALLBACK LoadLayout_CB(int panel, int control, int event, void *callbackData, int eventData1, int eventData2);
 int  CVICALLBACK LoadProbeCard_CB(int panel, int control, int event, void *callbackData, int eventData1, int eventData2);
+int  CVICALLBACK mainPanel_CB(int panel, int event, void *callbackData, int eventData1, int eventData2);
 int  CVICALLBACK ManConnectionChanged_CB(int panel, int control, int event, void *callbackData, int eventData1, int eventData2);
 int  CVICALLBACK ManualMeasure_CB(int panel, int control, int event, void *callbackData, int eventData1, int eventData2);
 int  CVICALLBACK newFrame_CB(int panel, int control, int event, void *callbackData, int eventData1, int eventData2);
-int  CVICALLBACK panelCB(int panel, int event, void *callbackData, int eventData1, int eventData2);
 int  CVICALLBACK renameFrame_CB(int panel, int control, int event, void *callbackData, int eventData1, int eventData2);
 int  CVICALLBACK renameRow_CB(int panel, int control, int event, void *callbackData, int eventData1, int eventData2);
 int  CVICALLBACK resetRelays_CB(int panel, int control, int event, void *callbackData, int eventData1, int eventData2);
