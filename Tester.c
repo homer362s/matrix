@@ -61,6 +61,7 @@ void setStatusDone();
 void takeCurrentMeasurement(struct MeasurementSetup setup, float voltage, double* data, int* wasMeasured);  
 void updateHighlights(); 
 void updateManualControls(); 
+void updateMeasurementDimming();
 
 
 // Global variables
@@ -95,10 +96,10 @@ int main (int argc, char *argv[])
 	// Set the default measurement devices and initialize
 	int sourceIndex = 0;
 	int measIndex = 0;
-	GetIndexFromValue(panelHandle, MAINPANEL_SOURCEDEVICERING, &sourceIndex, sourceDevice);
-	GetIndexFromValue(panelHandle, MAINPANEL_MEASDEVICERING, &measIndex, measDevice);
-	SetCtrlIndex(panelHandle, MAINPANEL_SOURCEDEVICERING, sourceIndex);
-	SetCtrlIndex(panelHandle, MAINPANEL_MEASDEVICERING, measIndex);
+	GetIndexFromValue(panelHandle, MAINPANEL_SOURCEDEVRING, &sourceIndex, sourceDevice);
+	GetIndexFromValue(panelHandle, MAINPANEL_MEASDEVRING, &measIndex, measDevice);
+	SetCtrlIndex(panelHandle, MAINPANEL_SOURCEDEVRING, sourceIndex);
+	SetCtrlIndex(panelHandle, MAINPANEL_MEASDEVRING, measIndex);
 	
 	switch (sourceDevice) {
 		case KEITHLEY2400:
@@ -128,7 +129,7 @@ Error:
 	return 0;
 }
 
-// Normal Functions
+// Helper Functions
 // Chance the connection for the selected port from whatever it currently is to the specified probe pin 
 void changeConnection(int port, int pin) {
 	// Disconnect this port from any pins it is currently connected to
@@ -240,8 +241,8 @@ float getVBias()
 void GPIBScan()
 {
 	// Delete all existing items in the dropdown menu
-	DeleteListItem(panelHandle, MAINPANEL_SOURCEADDRESSRING, 0, -1);
-	DeleteListItem(panelHandle, MAINPANEL_MEASADDRESSRING, 0, -1);
+	DeleteListItem(panelHandle, MAINPANEL_SOURCEADDRRING, 0, -1);
+	DeleteListItem(panelHandle, MAINPANEL_MEASADDRRING, 0, -1);
 
 	// Replace those items with the newly discovered ones
 	Addr4882_t AttachedDevices[30];
@@ -249,13 +250,13 @@ void GPIBScan()
 	int devCount = gpib__scanForDevices(AttachedDevices);
 	SetBreakOnLibraryErrors(oldErrorSetting);
 
-	InsertListItem(panelHandle, MAINPANEL_SOURCEADDRESSRING, 0, "", 0);
-	InsertListItem(panelHandle, MAINPANEL_MEASADDRESSRING, 0, "", 0);
+	InsertListItem(panelHandle, MAINPANEL_SOURCEADDRRING, 0, "", 0);
+	InsertListItem(panelHandle, MAINPANEL_MEASADDRRING, 0, "", 0);
 	char tmpstr[3];
 	for(int i = 0; i < devCount; i++) {
 		sprintf(tmpstr, "%d", AttachedDevices[i]);
-		InsertListItem(panelHandle, MAINPANEL_SOURCEADDRESSRING, i+1, tmpstr, AttachedDevices[i]);
-		InsertListItem(panelHandle, MAINPANEL_MEASADDRESSRING, i+1, tmpstr, AttachedDevices[i]);
+		InsertListItem(panelHandle, MAINPANEL_SOURCEADDRRING, i+1, tmpstr, AttachedDevices[i]);
+		InsertListItem(panelHandle, MAINPANEL_MEASADDRRING, i+1, tmpstr, AttachedDevices[i]);
 	}
 	sourceAddress = 0;
 	measAddress = 0;
@@ -503,6 +504,29 @@ void updateManualControls()
 	}
 }
 
+// In order to make a measurement we must have selected a device and address for both a source and a measurement device
+void updateMeasurementDimming()
+{
+	int a,b,c,d,e;
+	char layoutName[256];
+	GetCtrlIndex(panelHandle, MAINPANEL_SOURCEDEVRING, &a);
+	GetCtrlIndex(panelHandle, MAINPANEL_MEASDEVRING, &b);
+	GetCtrlIndex(panelHandle, MAINPANEL_SOURCEADDRRING, &c);
+	GetCtrlIndex(panelHandle, MAINPANEL_MEASADDRRING, &d);
+	GetCtrlVal(panelHandle, MAINPANEL_LAYOUTNAME, layoutName);
+	GetCtrlIndex(panelHandle, MAINPANEL_MATRIXADDRRING, &e);
+	
+	int manualDimmed = a && b && c && d ? 0 : 1;
+	int autoDimmed = (strcmp(layoutName, "None") == 0) || !e;
+	
+	
+	SetCtrlAttribute(panelHandle, MAINPANEL_STARTMEASBUTTON, ATTR_DIMMED, manualDimmed || autoDimmed);
+	SetCtrlAttribute(panelHandle, MAINPANEL_STARTREMEASBUTTON, ATTR_DIMMED, manualDimmed || autoDimmed);
+	SetCtrlAttribute(panelHandle, MAINPANEL_AUTOMEASDEVLIST, ATTR_DIMMED, manualDimmed || autoDimmed);
+	SetCtrlAttribute(panelHandle, MAINPANEL_SINGLEAUTOMEASBUTTON, ATTR_DIMMED, manualDimmed || autoDimmed);
+	SetCtrlAttribute(panelHandle, MAINPANEL_REMEASURECURRENTBUTTO, ATTR_DIMMED, manualDimmed);
+	SetCtrlAttribute(panelHandle, MAINPANEL_MEASURECURRENTBUTTON, ATTR_DIMMED, manualDimmed);
+}
 
 // Callback Functions
 int CVICALLBACK addressChanged_CB(int panel, int control, int event, void *callbackData, int eventData1, int eventData2)
@@ -512,18 +536,22 @@ int CVICALLBACK addressChanged_CB(int panel, int control, int event, void *callb
 		case EVENT_COMMIT:
 			GetCtrlVal(panelHandle, control, &value);
 			switch(control) {
-				case MAINPANEL_SOURCEADDRESSRING:
+				case MAINPANEL_SOURCEADDRRING:
 					measurementSetup.source.addr = (Addr4882_t) value;
-					setupSource(measurementSetup);
+					if (value)
+						setupSource(measurementSetup);
 					break;
-				case MAINPANEL_MEASADDRESSRING:
+				case MAINPANEL_MEASADDRRING:
 					measurementSetup.measure.addr = (Addr4882_t) value;
-					setupMeasurement(measurementSetup);
+					if (value)
+						setupMeasurement(measurementSetup);
 					break;
 				case MAINPANEL_MATRIXADDRRING:
 					matrixAddress = value;
 					setProbeCardDisplay(!value, "");
 			}
+			
+			updateMeasurementDimming();
 			break;
 	}
 	return 0;
@@ -555,7 +583,7 @@ int CVICALLBACK deviceChanged_CB(int panel, int control, int event, void *callba
 			GetCtrlVal(panelHandle, control, &newDevice);
 			int addressControl = 0;
 			switch(control) {
-				case MAINPANEL_SOURCEDEVICERING:
+				case MAINPANEL_SOURCEDEVRING:
 					switch (newDevice) {
 						case KEITHLEY2400:
 							measurementSetup.source = ke24__sourceDevice;
@@ -564,9 +592,9 @@ int CVICALLBACK deviceChanged_CB(int panel, int control, int event, void *callba
 							measurementSetup.source = bk92__sourceDevice;
 							break;
 					}
-					addressControl = MAINPANEL_SOURCEADDRESSRING;
+					addressControl = MAINPANEL_SOURCEADDRRING;
 					break;
-				case MAINPANEL_MEASDEVICERING:
+				case MAINPANEL_MEASDEVRING:
 					switch (newDevice) {
 						case KEITHLEY2400:
 							measurementSetup.measure = ke24__measurementDevice;
@@ -575,11 +603,13 @@ int CVICALLBACK deviceChanged_CB(int panel, int control, int event, void *callba
 							measurementSetup.measure = ke64__measurementDevice;
 							break;
 					}
-					addressControl = MAINPANEL_MEASADDRESSRING;
+					addressControl = MAINPANEL_MEASADDRRING;
 					break;
 			}
 			
 			SetCtrlIndex(panelHandle, addressControl, 0);
+			updateMeasurementDimming();
+			break;
 	}
 	return 0;
 }
@@ -609,13 +639,6 @@ int CVICALLBACK LoadLayout_CB(int panel, int control, int event, void *callbackD
 				// Read the file
 				layoutConfig = parseLayoutFile(pathName);
 				
-				
-				// Update the UI
-				SetCtrlAttribute(panelHandle, MAINPANEL_STARTMEASBUTTON, ATTR_DIMMED, 0);
-				SetCtrlAttribute(panelHandle, MAINPANEL_STARTREMEASBUTTON, ATTR_DIMMED, 0);
-				SetCtrlAttribute(panelHandle, MAINPANEL_AUTOMEASDEVLIST, ATTR_DIMMED, 0);
-				SetCtrlAttribute(panelHandle, MAINPANEL_SINGLEAUTOMEASBUTTON, ATTR_DIMMED, 0);
-				
 				// Get file name (without path)
 				char* fileName = pathName;
 				char* tmp = pathName;
@@ -631,6 +654,8 @@ int CVICALLBACK LoadLayout_CB(int panel, int control, int event, void *callbackD
 					InsertListItem(panelHandle, MAINPANEL_AUTOMEASDEVLIST, i, layoutConfig->measurements[i]->label, i);
 				}
 			}
+			
+			updateMeasurementDimming();
 			break;
 	}
 	return 0;

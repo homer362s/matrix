@@ -27,10 +27,10 @@
 #define  MAINPANEL_IBIASBOX               12      /* control type: string, callback function: (none) */
 #define  MAINPANEL_MEASURECURRENTBUTTON   13      /* control type: command, callback function: ManualMeasure_CB */
 #define  MAINPANEL_VBIASBOX               14      /* control type: string, callback function: (none) */
-#define  MAINPANEL_MEASADDRESSRING        15      /* control type: ring, callback function: addressChanged_CB */
-#define  MAINPANEL_MEASDEVICERING         16      /* control type: ring, callback function: deviceChanged_CB */
-#define  MAINPANEL_SOURCEADDRESSRING      17      /* control type: ring, callback function: addressChanged_CB */
-#define  MAINPANEL_SOURCEDEVICERING       18      /* control type: ring, callback function: deviceChanged_CB */
+#define  MAINPANEL_MEASADDRRING           15      /* control type: ring, callback function: addressChanged_CB */
+#define  MAINPANEL_MEASDEVRING            16      /* control type: ring, callback function: deviceChanged_CB */
+#define  MAINPANEL_SOURCEADDRRING         17      /* control type: ring, callback function: addressChanged_CB */
+#define  MAINPANEL_SOURCEDEVRING          18      /* control type: ring, callback function: deviceChanged_CB */
 #define  MAINPANEL_GPIBSCANBUTTON         19      /* control type: command, callback function: DevScan_CB */
 #define  MAINPANEL_LOADLAYOUTBUTTON       20      /* control type: command, callback function: LoadLayout_CB */
 #define  MAINPANEL_LOADPROBECARDBUTTON    21      /* control type: command, callback function: LoadProbeCard_CB */

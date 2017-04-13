@@ -86,6 +86,10 @@ Prototype="void updateHighlights();"
 Class="Function"
 Prototype="void updateManualControls();"
 
+[updateMeasurementDimming]
+Class="Function"
+Prototype="void updateMeasurementDimming();"
+
 [addressChanged_CB]
 Class="Function"
 Prototype="int addressChanged_CB(int panel, int control, int event, void *callbackData, int eventData1, int eventData2);"
