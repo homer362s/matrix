@@ -23,6 +23,5 @@ void bk92__setup(Addr4882_t addr);
 void bk92__initialize(Addr4882_t addr, float voltage, float current);
 void bk92__enable(Addr4882_t addr);
 void bk92__disable(Addr4882_t addr);
-void bk92__cleanup(Addr4882_t addr);
 
 #endif  /* ndef __BK9201_H__ */

@@ -30,7 +30,3 @@ Prototype="void bk92__enable(short addr);"
 Class="Function"
 Prototype="void bk92__disable(short addr);"
 
-[bk92__cleanup]
-Class="Function"
-Prototype="void bk92__cleanup(short addr);"
-

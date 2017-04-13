@@ -10,20 +10,20 @@
 struct SourceDevice ke24__sourceDevice = {
 	.name = "Keithley 2400",
 	.addr = 0,
-	.setup = &ke24__setupSource,
+	.setup = NULL,
 	.initialize = &ke24__initializeSource,
 	.enable = &ke24__enable,
 	.disable = &ke24__disable,
-	.cleanup = &ke24__cleanupSource
+	.cleanup = NULL
 };
 
 struct MeasurementDevice ke24__measurementDevice = {
 	.name = "Keithley 2400",
 	.addr = 0,
-	.setup = &ke24__setupMeasurement,
-	.initialize = &ke24__initializeMeasurement,
+	.setup = NULL,
+	.initialize = NULL,
 	.measure = &ke24__measure,
-	.cleanup = &ke24__cleanupMeasurement
+	.cleanup = NULL
 };
 
 void ke24__setSourceFunc(Addr4882_t addr, char* func) {
@@ -160,24 +160,12 @@ double ke24__takeMeasurement(Addr4882_t addr)
 }
 
 // The required interface functions
-void ke24__setupSource(Addr4882_t addr)
-{
-}
-
-void ke24__setupMeasurement(Addr4882_t addr)
-{
-}
-
 void ke24__initializeSource(Addr4882_t addr, float voltage, float current)
 {
 	ke24__setSourceDelay(addr,1);
 	ke24__setOutputAuto(addr,KE24__AUTO_ON);
 	ke24__initializeVSource(addr);
 	ke24__setSourceAmplitude(addr, KE24__FUNC_VOLTAGE, voltage);
-}
-
-void ke24__initializeMeasurement(Addr4882_t addr)
-{
 }
 
 void ke24__enable(Addr4882_t addr)
@@ -195,11 +183,4 @@ void ke24__measure(Addr4882_t addr, double* data, int* wasMeasured)
 void ke24__disable(Addr4882_t addr)
 {
 	ke24__setOutput(addr, KE24__SOURCE_OFF);
-}
-void ke24__cleanupSource(Addr4882_t addr)
-{
-}
-
-void ke24__cleanupMeasurement(Addr4882_t addr)
-{
 }

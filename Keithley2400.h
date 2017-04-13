@@ -43,15 +43,10 @@ void ke24__initializeISource(Addr4882_t addr);
 double ke24__takeMeasurement(Addr4882_t addr);
 
 // The required interface functions
-void ke24__setupSource(Addr4882_t addr);
-void ke24__setupMeasurement(Addr4882_t addr);
 void ke24__initializeSource(Addr4882_t addr, float voltage, float current);
-void ke24__initializeMeasurement(Addr4882_t addr);
 void ke24__enable(Addr4882_t addr);
 void ke24__measure(Addr4882_t addr, double*, int*);
 void ke24__disable(Addr4882_t addr);
-void ke24__cleanupSource(Addr4882_t addr);
-void ke24__cleanupMeasurement(Addr4882_t addr);
 
 
 #endif  /* ndef __Keithley2400_H__ */

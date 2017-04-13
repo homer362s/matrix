@@ -31,8 +31,6 @@ void ke64__setDigitalFilterAdvancedNoiseTolerence(Addr4882_t addr, int tolerence
 
 // The required interface functions
 void ke64__setup(Addr4882_t addr);
-void ke64__initialize(Addr4882_t addr);
 void ke64__measure(Addr4882_t addr, double* data, int* wasMeasured);
-void ke64__cleanup(Addr4882_t addr);
 
 #endif  /* ndef __Keithley6485_H__ */

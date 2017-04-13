@@ -58,15 +58,7 @@ Prototype="double ke64__takeMeasurement(short addr);"
 Class="Function"
 Prototype="void ke64__setup(short addr);"
 
-[ke64__initialize]
-Class="Function"
-Prototype="void ke64__initialize(short addr);"
-
 [ke64__measure]
 Class="Function"
 Prototype="void ke64__measure(short addr, double *data, int *wasMeasured);"
-
-[ke64__cleanup]
-Class="Function"
-Prototype="void ke64__cleanup(short addr);"
 

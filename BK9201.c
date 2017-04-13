@@ -11,7 +11,7 @@ struct SourceDevice bk92__sourceDevice = {
 	.initialize = &bk92__initialize,
 	.enable = &bk92__enable,
 	.disable = &bk92__disable,
-	.cleanup = &bk92__cleanup
+	.cleanup = NULL
 };
 
 // Low level functions
@@ -70,8 +70,4 @@ void bk92__enable(Addr4882_t addr)
 void bk92__disable(Addr4882_t addr)
 {
 	bk92__setOutput(addr, BK92__SOURCE_OFF);
-}
-
-void bk92__cleanup(Addr4882_t addr)
-{
 }
