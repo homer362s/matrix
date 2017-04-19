@@ -1,5 +1,13 @@
 #include "MeasurementSetup.h"
 
+struct SourceDevice NullSource = {
+	.name = ""
+};
+
+struct MeasurementDevice NullMeas = {
+	.name = ""
+};
+
 // Setup of the source device happens when the source address is chosen
 void setupSource(struct MeasurementSetup setup)
 {

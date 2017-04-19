@@ -7,6 +7,7 @@
 
 struct SourceDevice bk92__sourceDevice = {
 	.name = "BK Precision 9201",
+	.idn = "B&K Precision, 9201",
 	.addr = 0,
 	.setup = &bk92__setup,
 	.initialize = &bk92__initialize,

@@ -85,8 +85,6 @@ int main (int argc, char *argv[])
 	/* initialize and load resources */
 	nullChk (InitCVIRTE (0, argv, 0));
 	errChk (panelHandle = LoadPanel (0, "Tester.uir", MAINPANEL));
-	GPIBScan();
-	COMScan();
 	SwitchMatrixConfig = (struct SwitchMatrixConfig_type *) malloc(sizeof (struct SwitchMatrixConfig_type));
 	
 	/* display the panel and run the user interface */
@@ -118,6 +116,9 @@ int main (int argc, char *argv[])
 			measurementSetup.measure = ke64__measurementDevice;
 			break;
 	}
+	
+	GPIBScan();
+	COMScan();
 	
 	errChk (RunUserInterface ());
 
@@ -245,18 +246,34 @@ void GPIBScan()
 	DeleteListItem(panelHandle, MAINPANEL_MEASADDRRING, 0, -1);
 
 	// Replace those items with the newly discovered ones
-	Addr4882_t AttachedDevices[30];
+	Addr4882_t SourceDevices[30], MeasDevices[30];
 	int oldErrorSetting = SetBreakOnLibraryErrors(0);
-	int devCount = gpib__scanForDevices(AttachedDevices);
+	int sourceCount, measCount;
+	if (strcmp(measurementSetup.source.name, "") == 0) {
+		sourceCount = 0;
+	}
+	else {
+		sourceCount = gpib__scanForSpecificDevice(SourceDevices, measurementSetup.source.idn);
+	}
+	
+	if (strcmp(measurementSetup.measure.name, "") == 0) {
+		measCount = 0;
+	}
+	else {
+		measCount = gpib__scanForSpecificDevice(MeasDevices, measurementSetup.measure.idn);
+	}
 	SetBreakOnLibraryErrors(oldErrorSetting);
 
 	InsertListItem(panelHandle, MAINPANEL_SOURCEADDRRING, 0, "", 0);
 	InsertListItem(panelHandle, MAINPANEL_MEASADDRRING, 0, "", 0);
 	char tmpstr[3];
-	for(int i = 0; i < devCount; i++) {
-		sprintf(tmpstr, "%d", AttachedDevices[i]);
-		InsertListItem(panelHandle, MAINPANEL_SOURCEADDRRING, i+1, tmpstr, AttachedDevices[i]);
-		InsertListItem(panelHandle, MAINPANEL_MEASADDRRING, i+1, tmpstr, AttachedDevices[i]);
+	for(int i = 0; i < sourceCount; i++) {
+		sprintf(tmpstr, "%d", SourceDevices[i]);
+		InsertListItem(panelHandle, MAINPANEL_SOURCEADDRRING, i+1, tmpstr, SourceDevices[i]);
+	}
+	for(int i = 0;i < measCount; i++) {
+		sprintf(tmpstr, "%d", MeasDevices[i]);
+		InsertListItem(panelHandle, MAINPANEL_MEASADDRRING, i+1, tmpstr, MeasDevices[i]);
 	}
 	sourceAddress = 0;
 	measAddress = 0;
@@ -591,6 +608,8 @@ int CVICALLBACK deviceChanged_CB(int panel, int control, int event, void *callba
 						case BK9201:
 							measurementSetup.source = bk92__sourceDevice;
 							break;
+						default:
+							measurementSetup.source = NullSource;
 					}
 					addressControl = MAINPANEL_SOURCEADDRRING;
 					break;
@@ -602,6 +621,8 @@ int CVICALLBACK deviceChanged_CB(int panel, int control, int event, void *callba
 						case KEITHLEY6485:
 							measurementSetup.measure = ke64__measurementDevice;
 							break;
+						default:
+							measurementSetup.measure = NullMeasure;
 					}
 					addressControl = MAINPANEL_MEASADDRRING;
 					break;
@@ -609,6 +630,7 @@ int CVICALLBACK deviceChanged_CB(int panel, int control, int event, void *callba
 			
 			SetCtrlIndex(panelHandle, addressControl, 0);
 			updateMeasurementDimming();
+			GPIBScan();
 			break;
 	}
 	return 0;

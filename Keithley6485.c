@@ -7,6 +7,7 @@
 
 struct MeasurementDevice ke64__measurementDevice = {
 	.name = "Keithley 6485",
+	.idn = "KEITHLEY INSTRUMENTS INC.,MODEL 6485",
 	.addr = 0,
 	.setup = &ke64__setup,
 	.initialize = NULL,

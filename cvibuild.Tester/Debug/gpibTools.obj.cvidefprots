@@ -10,6 +10,10 @@ Prototype="void gpib__enableRemote(short addr);"
 Class="Function"
 Prototype="int gpib__receive(short addr, char *msg, int length);"
 
+[gpib__identify]
+Class="Function"
+Prototype="int gpib__identify(short addr, char *name);"
+
 [gpib__reset]
 Class="Function"
 Prototype="void gpib__reset(short addr);"
@@ -17,4 +21,8 @@ Prototype="void gpib__reset(short addr);"
 [gpib__scanForDevices]
 Class="Function"
 Prototype="int gpib__scanForDevices(short *ListenerList);"
+
+[gpib__scanForSpecificDevice]
+Class="Function"
+Prototype="int gpib__scanForSpecificDevice(short *FilteredList, char *idn);"
 

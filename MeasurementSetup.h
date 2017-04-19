@@ -5,6 +5,7 @@
 
 struct SourceDevice{
 	char name[64];
+	char idn[64];
 	Addr4882_t addr;
 	void (*setup)(Addr4882_t);
 	void (*initialize)(Addr4882_t, float, float);
@@ -15,6 +16,7 @@ struct SourceDevice{
 
 struct MeasurementDevice {
 	char name[64];
+	char idn[64];
 	Addr4882_t addr;
 	void (*setup)(Addr4882_t);
 	void (*initialize)(Addr4882_t);
@@ -26,6 +28,9 @@ struct MeasurementSetup {
 	struct SourceDevice source;
 	struct MeasurementDevice measure;
 };
+
+struct SourceDevice NullSource;
+struct MeasurementDevice NullMeasure;
 
 void setupSource(struct MeasurementSetup setup);
 void setupMeasurement(struct MeasurementSetup setup) ;

@@ -9,6 +9,7 @@
 
 struct SourceDevice ke24__sourceDevice = {
 	.name = "Keithley 2400",
+	.idn = "",
 	.addr = 0,
 	.setup = NULL,
 	.initialize = &ke24__initializeSource,
@@ -19,6 +20,7 @@ struct SourceDevice ke24__sourceDevice = {
 
 struct MeasurementDevice ke24__measurementDevice = {
 	.name = "Keithley 2400",
+	.idn = "",
 	.addr = 0,
 	.setup = NULL,
 	.initialize = NULL,
