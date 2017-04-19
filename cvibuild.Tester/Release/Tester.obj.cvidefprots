@@ -94,10 +94,6 @@ Prototype="void updateMeasurementDimming();"
 Class="Function"
 Prototype="int addressChanged_CB(int panel, int control, int event, void *callbackData, int eventData1, int eventData2);"
 
-[AutoConnect_CB]
-Class="Function"
-Prototype="int AutoConnect_CB(int panel, int control, int event, void *callbackData, int eventData1, int eventData2);"
-
 [deleteFrame_CB]
 Class="Function"
 Prototype="int deleteFrame_CB(int panel, int control, int event, void *callbackData, int eventData1, int eventData2);"

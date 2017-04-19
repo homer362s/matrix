@@ -88,7 +88,6 @@ int main (int argc, char *argv[])
 	SwitchMatrixConfig = (struct SwitchMatrixConfig_type *) malloc(sizeof (struct SwitchMatrixConfig_type));
 	
 	/* display the panel and run the user interface */
-	errChk (DisplayPanel (panelHandle));
 	GetPanelHandleFromTabPage(panelHandle, MAINPANEL_TABS, 0, &currentTabHandle);
 	
 	// Set the default measurement devices and initialize
@@ -119,6 +118,12 @@ int main (int argc, char *argv[])
 	
 	GPIBScan();
 	COMScan();
+	
+	// Update the build version
+	SetCtrlVal(panelHandle, MAINPANEL_PRODUCTVERSION, _TARGET_PRODUCT_VERSION_);
+	
+	// Display the panel
+	errChk (DisplayPanel (panelHandle));
 	
 	errChk (RunUserInterface ());
 
@@ -541,6 +546,9 @@ void updateMeasurementDimming()
 	SetCtrlAttribute(panelHandle, MAINPANEL_STARTREMEASBUTTON, ATTR_DIMMED, manualDimmed || autoDimmed);
 	SetCtrlAttribute(panelHandle, MAINPANEL_AUTOMEASDEVLIST, ATTR_DIMMED, manualDimmed || autoDimmed);
 	SetCtrlAttribute(panelHandle, MAINPANEL_SINGLEAUTOMEASBUTTON, ATTR_DIMMED, manualDimmed || autoDimmed);
+	SetCtrlAttribute(panelHandle, MAINPANEL_AUTOCONNBUTTON, ATTR_DIMMED, manualDimmed || autoDimmed);
+	SetCtrlAttribute(panelHandle, MAINPANEL_AUTODISCONNBUTTON, ATTR_DIMMED, manualDimmed || autoDimmed);
+	SetCtrlAttribute(panelHandle, MAINPANEL_AUTOCONNLED, ATTR_DIMMED, manualDimmed || autoDimmed);
 	SetCtrlAttribute(panelHandle, MAINPANEL_REMEASURECURRENTBUTTO, ATTR_DIMMED, manualDimmed);
 	SetCtrlAttribute(panelHandle, MAINPANEL_MEASURECURRENTBUTTON, ATTR_DIMMED, manualDimmed);
 }
@@ -569,6 +577,15 @@ int CVICALLBACK addressChanged_CB(int panel, int control, int event, void *callb
 			}
 			
 			updateMeasurementDimming();
+			break;
+	}
+	return 0;
+}
+
+int CVICALLBACK AutoConnect_CB(int panel, int control, int event, void *callbackData, int eventData1, int eventData2)
+{
+	switch (event) {
+		case EVENT_COMMIT:
 			break;
 	}
 	return 0;
@@ -778,12 +795,6 @@ int CVICALLBACK ManualMeasure_CB(int panel, int control, int event, void *callba
 					break;
 				case MAINPANEL_MEASURECURRENTBUTTON:
 					handleSingleMeasurement(MEASURE_CURRENT, 1, label);
-					break;
-				case MAINPANEL_REMEASUREVOLTAGEBUTTO:
-					handleSingleMeasurement(MEASURE_VOLTAGE, 0, label);
-					break;
-				case MAINPANEL_MEASUREVOLTAGEBUTTON:
-					handleSingleMeasurement(MEASURE_VOLTAGE,1, label);
 					break;
 			}
 			

@@ -1,0 +1,11 @@
+[ALIAS]
+IDH_Tester_html_main_file=Tester.html
+
+[MAP]
+#define IDH_Tester_html_main_file 1
+
+[FILES]
+Tester.html
+Tester_files\Alphabetical Function Index.html
+Tester_files\Hierarchical Function Index.html
+Tester_files\htmlhelp.css

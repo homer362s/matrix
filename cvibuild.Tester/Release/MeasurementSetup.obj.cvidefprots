@@ -1,0 +1,36 @@
+[setupSource]
+Class="Function"
+Prototype="void setupSource(struct MeasurementSetup setup);"
+
+[setupMeasurement]
+Class="Function"
+Prototype="void setupMeasurement(struct MeasurementSetup setup);"
+
+[initializeSource]
+Class="Function"
+Prototype="void initializeSource(struct MeasurementSetup setup, float voltage, float current);"
+
+[initializeMeasurement]
+Class="Function"
+Prototype="void initializeMeasurement(struct MeasurementSetup setup);"
+
+[enableSource]
+Class="Function"
+Prototype="void enableSource(struct MeasurementSetup setup);"
+
+[takeMeasurement]
+Class="Function"
+Prototype="void takeMeasurement(struct MeasurementSetup setup, double *data, int *wasMeasured);"
+
+[disableSource]
+Class="Function"
+Prototype="void disableSource(struct MeasurementSetup setup);"
+
+[cleanupMeasurement]
+Class="Function"
+Prototype="void cleanupMeasurement(struct MeasurementSetup setup);"
+
+[cleanupSource]
+Class="Function"
+Prototype="void cleanupSource(struct MeasurementSetup setup);"
+

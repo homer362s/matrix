@@ -1,0 +1,28 @@
+[parseLayoutFile]
+Class="Function"
+Prototype="struct AutoConfig *parseLayoutFile(char *filename);"
+
+[addConnection]
+Class="Function"
+Prototype="void addConnection(struct AutoMeasurement *meas, int input, int pin);"
+
+[newMeasurement]
+Class="Function"
+Prototype="struct AutoMeasurement *newMeasurement(char *label);"
+
+[addMeasurement]
+Class="Function"
+Prototype="void addMeasurement(struct AutoConfig *config, struct AutoMeasurement *measurement);"
+
+[newAutoConfig]
+Class="Function"
+Prototype="struct AutoConfig *newAutoConfig();"
+
+[freeConfigContents]
+Class="Function"
+Prototype="void freeConfigContents(struct AutoConfig *config);"
+
+[freeConfig]
+Class="Function"
+Prototype="void freeConfig(struct AutoConfig *config);"
+

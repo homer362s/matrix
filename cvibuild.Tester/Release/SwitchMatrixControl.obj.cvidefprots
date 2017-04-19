@@ -1,0 +1,32 @@
+[initSwitchMatrix]
+Class="Function"
+Prototype="int initSwitchMatrix(int port, struct SwitchMatrixConfig_type *SwitchMatrixConfig, char *ProbeCardConfig);"
+
+[switchMatrix]
+Class="Function"
+Prototype="int switchMatrix(int inputNumber, int pinNumber, int action, struct SwitchMatrixConfig_type *SwitchMatrixConfig);"
+
+[quickReset]
+Class="Function"
+Prototype="void quickReset(struct SwitchMatrixConfig_type *SwitchMatrixConfig);"
+
+[resetUsedRelays]
+Class="Function"
+Prototype="int resetUsedRelays(struct SwitchMatrixConfig_type *SwitchMatrixConfig);"
+
+[resetAllRelays]
+Class="Function"
+Prototype="int resetAllRelays(struct SwitchMatrixConfig_type *SwitchMatrixConfig);"
+
+[relayUpdate]
+Class="Function"
+Prototype="int relayUpdate(int boardNumber, int relayNumber, int action);"
+
+[fileread]
+Class="Function"
+Prototype="char *fileread(char *name, char *access);"
+
+[getInputNew]
+Class="Function"
+Prototype="int getInputNew(char *FileInput, int *pointer, char **line);"
+

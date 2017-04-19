@@ -1,0 +1,97 @@
+HDRS = 	"c:\\program files (x86)\\national instruments\\cvi2015\\toolslib\\activex\\word"
+	"c:\\program files (x86)\\national instruments\\cvi2015\\toolslib\\activex\\excel"
+	"c:\\program files (x86)\\national instruments\\cvi2015\\toolslib\\custctrl"
+	"c:\\program files (x86)\\national instruments\\cvi2015\\toolslib\\custctrl\\custsupp"
+	"c:\\program files (x86)\\national instruments\\cvi2015\\toolslib\\cvirtsup"
+	"c:\\program files (x86)\\national instruments\\cvi2015\\toolslib\\datasock"
+	"c:\\program files (x86)\\national instruments\\cvi2015\\toolslib\\daqUtil"
+	"c:\\program files (x86)\\national instruments\\cvi2015\\toolslib\\printing"
+	"c:\\program files (x86)\\national instruments\\cvi2015\\toolslib\\toolbox"
+	"c:\\program files (x86)\\national instruments\\cvi2015\\toolslib\\reportgen"
+	"c:\\program files (x86)\\national instruments\\cvi2015\\toolslib\\localui"
+	"c:\\program files (x86)\\national instruments\\cvi2015\\instr"
+	"C:\\Program Files (x86)\\National Instruments\\Shared\\CVI\\toolslib\\custctrl"
+	"C:\\Program Files (x86)\\National Instruments\\Shared\\CVI\\toolslib\\custctrl\\custsupp"
+	"C:\\Program Files (x86)\\National Instruments\\Shared\\CVI\\instr"
+	"C:\\ProgramData\\National Instruments\\CVI2015\\instr"
+	"c:\\program files (x86)\\national instruments\\cvi2015\\include"
+	"C:\\Program Files (x86)\\National Instruments\\Shared\\CVI\\include"
+	"C:\\ProgramData\\National Instruments\\CVI2015\\include"
+	"C:\\ProgramData\\National Instruments\\CVI\\include"
+	"c:\\program files (x86)\\national instruments\\cvi2015\\include\\ansi"
+	"c:\\program files (x86)\\national instruments\\cvi2015\\include\\clang\\3.3"
+	"C:\\Program Files (x86)\\IVI Foundation\\IVI\\Include"
+	"C:\\Program Files (x86)\\IVI Foundation\\VISA\\winnt\\include"
+	"C:\\Program Files (x86)\\National Instruments\\Shared\\MSDTRedistributables\\SDKHeaderFiles\\8.1"
+	"c:\\Program Files (x86)\\National Instruments\\CVI2015\\bin"
+	"c:\\ProgramData\\National Instruments\\CVI2015\\bin"
+	"c:\\Program Files (x86)\\National Instruments\\Shared\\CVI\\Bin"
+	;
+include Jamfile_instr ;
+LOCATE on "autoConfigParse.c" = "c:\\Users\\user\\Desktop\\switch matrix wip" ;
+LOCATE on "autoConfigParse.h" = "c:\\Users\\user\\Desktop\\switch matrix wip" ;
+LOCATE on "BK9201.c" = "c:\\Users\\user\\Desktop\\switch matrix wip" ;
+LOCATE on "BK9201.h" = "c:\\Users\\user\\Desktop\\switch matrix wip" ;
+LOCATE on "gpibTools.c" = "c:\\Users\\user\\Desktop\\switch matrix wip" ;
+LOCATE on "gpibTools.h" = "c:\\Users\\user\\Desktop\\switch matrix wip" ;
+LOCATE on "Keithley2400.c" = "c:\\Users\\user\\Desktop\\switch matrix wip" ;
+LOCATE on "Keithley2400.h" = "c:\\Users\\user\\Desktop\\switch matrix wip" ;
+LOCATE on "Keithley6485.c" = "c:\\Users\\user\\Desktop\\switch matrix wip" ;
+LOCATE on "Keithley6485.h" = "c:\\Users\\user\\Desktop\\switch matrix wip" ;
+LOCATE on "MeasurementSetup.c" = "c:\\Users\\user\\Desktop\\switch matrix wip" ;
+LOCATE on "MeasurementSetup.h" = "c:\\Users\\user\\Desktop\\switch matrix wip" ;
+LOCATE on "SCPIDevice.c" = "c:\\Users\\user\\Desktop\\switch matrix wip" ;
+LOCATE on "SCPIDevice.h" = "c:\\Users\\user\\Desktop\\switch matrix wip" ;
+LOCATE on "SwitchMatrixControl.c" = "c:\\Users\\user\\Desktop\\switch matrix wip" ;
+LOCATE on "SwitchMatrixControl.h" = "c:\\Users\\user\\Desktop\\switch matrix wip" ;
+LOCATE on "Tester.c" = "c:\\Users\\user\\Desktop\\switch matrix wip" ;
+Object "c:\\Users\\user\\Desktop\\switch matrix wip\\cvibuild.Tester\\Release\\autoConfigParse.obj" : "c:\\Users\\user\\Desktop\\switch matrix wip\\autoConfigParse.c" ;
+FILENUM on "c:\\Users\\user\\Desktop\\switch matrix wip\\cvibuild.Tester\\Release\\autoConfigParse.obj" = 1 ;
+DEFPROTS on "c:\\Users\\user\\Desktop\\switch matrix wip\\cvibuild.Tester\\Release\\autoConfigParse.obj" = "c:\\Users\\user\\Desktop\\switch matrix wip\\cvibuild.Tester\\Release\\autoConfigParse.obj.cvidefprots" ;
+OUTFILE on "c:\\Users\\user\\Desktop\\switch matrix wip\\cvibuild.Tester\\Release\\autoConfigParse.obj" = "c:\\Users\\user\\Desktop\\switch matrix wip\\cvibuild.Tester\\Release\\autoConfigParse.obj.out" ;
+PrjObjects += "c:\\Users\\user\\Desktop\\switch matrix wip\\cvibuild.Tester\\Release\\autoConfigParse.obj" ;
+Object "c:\\Users\\user\\Desktop\\switch matrix wip\\cvibuild.Tester\\Release\\BK9201.obj" : "c:\\Users\\user\\Desktop\\switch matrix wip\\BK9201.c" ;
+FILENUM on "c:\\Users\\user\\Desktop\\switch matrix wip\\cvibuild.Tester\\Release\\BK9201.obj" = 2 ;
+DEFPROTS on "c:\\Users\\user\\Desktop\\switch matrix wip\\cvibuild.Tester\\Release\\BK9201.obj" = "c:\\Users\\user\\Desktop\\switch matrix wip\\cvibuild.Tester\\Release\\BK9201.obj.cvidefprots" ;
+OUTFILE on "c:\\Users\\user\\Desktop\\switch matrix wip\\cvibuild.Tester\\Release\\BK9201.obj" = "c:\\Users\\user\\Desktop\\switch matrix wip\\cvibuild.Tester\\Release\\BK9201.obj.out" ;
+PrjObjects += "c:\\Users\\user\\Desktop\\switch matrix wip\\cvibuild.Tester\\Release\\BK9201.obj" ;
+Object "c:\\Users\\user\\Desktop\\switch matrix wip\\cvibuild.Tester\\Release\\gpibTools.obj" : "c:\\Users\\user\\Desktop\\switch matrix wip\\gpibTools.c" ;
+FILENUM on "c:\\Users\\user\\Desktop\\switch matrix wip\\cvibuild.Tester\\Release\\gpibTools.obj" = 3 ;
+DEFPROTS on "c:\\Users\\user\\Desktop\\switch matrix wip\\cvibuild.Tester\\Release\\gpibTools.obj" = "c:\\Users\\user\\Desktop\\switch matrix wip\\cvibuild.Tester\\Release\\gpibTools.obj.cvidefprots" ;
+OUTFILE on "c:\\Users\\user\\Desktop\\switch matrix wip\\cvibuild.Tester\\Release\\gpibTools.obj" = "c:\\Users\\user\\Desktop\\switch matrix wip\\cvibuild.Tester\\Release\\gpibTools.obj.out" ;
+PrjObjects += "c:\\Users\\user\\Desktop\\switch matrix wip\\cvibuild.Tester\\Release\\gpibTools.obj" ;
+Object "c:\\Users\\user\\Desktop\\switch matrix wip\\cvibuild.Tester\\Release\\Keithley2400.obj" : "c:\\Users\\user\\Desktop\\switch matrix wip\\Keithley2400.c" ;
+FILENUM on "c:\\Users\\user\\Desktop\\switch matrix wip\\cvibuild.Tester\\Release\\Keithley2400.obj" = 4 ;
+DEFPROTS on "c:\\Users\\user\\Desktop\\switch matrix wip\\cvibuild.Tester\\Release\\Keithley2400.obj" = "c:\\Users\\user\\Desktop\\switch matrix wip\\cvibuild.Tester\\Release\\Keithley2400.obj.cvidefprots" ;
+OUTFILE on "c:\\Users\\user\\Desktop\\switch matrix wip\\cvibuild.Tester\\Release\\Keithley2400.obj" = "c:\\Users\\user\\Desktop\\switch matrix wip\\cvibuild.Tester\\Release\\Keithley2400.obj.out" ;
+PrjObjects += "c:\\Users\\user\\Desktop\\switch matrix wip\\cvibuild.Tester\\Release\\Keithley2400.obj" ;
+Object "c:\\Users\\user\\Desktop\\switch matrix wip\\cvibuild.Tester\\Release\\Keithley6485.obj" : "c:\\Users\\user\\Desktop\\switch matrix wip\\Keithley6485.c" ;
+FILENUM on "c:\\Users\\user\\Desktop\\switch matrix wip\\cvibuild.Tester\\Release\\Keithley6485.obj" = 5 ;
+DEFPROTS on "c:\\Users\\user\\Desktop\\switch matrix wip\\cvibuild.Tester\\Release\\Keithley6485.obj" = "c:\\Users\\user\\Desktop\\switch matrix wip\\cvibuild.Tester\\Release\\Keithley6485.obj.cvidefprots" ;
+OUTFILE on "c:\\Users\\user\\Desktop\\switch matrix wip\\cvibuild.Tester\\Release\\Keithley6485.obj" = "c:\\Users\\user\\Desktop\\switch matrix wip\\cvibuild.Tester\\Release\\Keithley6485.obj.out" ;
+PrjObjects += "c:\\Users\\user\\Desktop\\switch matrix wip\\cvibuild.Tester\\Release\\Keithley6485.obj" ;
+Object "c:\\Users\\user\\Desktop\\switch matrix wip\\cvibuild.Tester\\Release\\MeasurementSetup.obj" : "c:\\Users\\user\\Desktop\\switch matrix wip\\MeasurementSetup.c" ;
+FILENUM on "c:\\Users\\user\\Desktop\\switch matrix wip\\cvibuild.Tester\\Release\\MeasurementSetup.obj" = 6 ;
+DEFPROTS on "c:\\Users\\user\\Desktop\\switch matrix wip\\cvibuild.Tester\\Release\\MeasurementSetup.obj" = "c:\\Users\\user\\Desktop\\switch matrix wip\\cvibuild.Tester\\Release\\MeasurementSetup.obj.cvidefprots" ;
+OUTFILE on "c:\\Users\\user\\Desktop\\switch matrix wip\\cvibuild.Tester\\Release\\MeasurementSetup.obj" = "c:\\Users\\user\\Desktop\\switch matrix wip\\cvibuild.Tester\\Release\\MeasurementSetup.obj.out" ;
+PrjObjects += "c:\\Users\\user\\Desktop\\switch matrix wip\\cvibuild.Tester\\Release\\MeasurementSetup.obj" ;
+Object "c:\\Users\\user\\Desktop\\switch matrix wip\\cvibuild.Tester\\Release\\SCPIDevice.obj" : "c:\\Users\\user\\Desktop\\switch matrix wip\\SCPIDevice.c" ;
+FILENUM on "c:\\Users\\user\\Desktop\\switch matrix wip\\cvibuild.Tester\\Release\\SCPIDevice.obj" = 7 ;
+DEFPROTS on "c:\\Users\\user\\Desktop\\switch matrix wip\\cvibuild.Tester\\Release\\SCPIDevice.obj" = "c:\\Users\\user\\Desktop\\switch matrix wip\\cvibuild.Tester\\Release\\SCPIDevice.obj.cvidefprots" ;
+OUTFILE on "c:\\Users\\user\\Desktop\\switch matrix wip\\cvibuild.Tester\\Release\\SCPIDevice.obj" = "c:\\Users\\user\\Desktop\\switch matrix wip\\cvibuild.Tester\\Release\\SCPIDevice.obj.out" ;
+PrjObjects += "c:\\Users\\user\\Desktop\\switch matrix wip\\cvibuild.Tester\\Release\\SCPIDevice.obj" ;
+Object "c:\\Users\\user\\Desktop\\switch matrix wip\\cvibuild.Tester\\Release\\SwitchMatrixControl.obj" : "c:\\Users\\user\\Desktop\\switch matrix wip\\SwitchMatrixControl.c" ;
+FILENUM on "c:\\Users\\user\\Desktop\\switch matrix wip\\cvibuild.Tester\\Release\\SwitchMatrixControl.obj" = 8 ;
+DEFPROTS on "c:\\Users\\user\\Desktop\\switch matrix wip\\cvibuild.Tester\\Release\\SwitchMatrixControl.obj" = "c:\\Users\\user\\Desktop\\switch matrix wip\\cvibuild.Tester\\Release\\SwitchMatrixControl.obj.cvidefprots" ;
+OUTFILE on "c:\\Users\\user\\Desktop\\switch matrix wip\\cvibuild.Tester\\Release\\SwitchMatrixControl.obj" = "c:\\Users\\user\\Desktop\\switch matrix wip\\cvibuild.Tester\\Release\\SwitchMatrixControl.obj.out" ;
+PrjObjects += "c:\\Users\\user\\Desktop\\switch matrix wip\\cvibuild.Tester\\Release\\SwitchMatrixControl.obj" ;
+Object "c:\\Users\\user\\Desktop\\switch matrix wip\\cvibuild.Tester\\Release\\Tester.obj" : "c:\\Users\\user\\Desktop\\switch matrix wip\\Tester.c" ;
+FILENUM on "c:\\Users\\user\\Desktop\\switch matrix wip\\cvibuild.Tester\\Release\\Tester.obj" = 9 ;
+DEFPROTS on "c:\\Users\\user\\Desktop\\switch matrix wip\\cvibuild.Tester\\Release\\Tester.obj" = "c:\\Users\\user\\Desktop\\switch matrix wip\\cvibuild.Tester\\Release\\Tester.obj.cvidefprots" ;
+OUTFILE on "c:\\Users\\user\\Desktop\\switch matrix wip\\cvibuild.Tester\\Release\\Tester.obj" = "c:\\Users\\user\\Desktop\\switch matrix wip\\cvibuild.Tester\\Release\\Tester.obj.out" ;
+PrjObjects += "c:\\Users\\user\\Desktop\\switch matrix wip\\cvibuild.Tester\\Release\\Tester.obj" ;
+Object "c:\\Users\\user\\Desktop\\switch matrix wip\\cvibuild.Tester\\Release\\resources.res" : "c:\\Users\\user\\Desktop\\switch matrix wip\\cvibuild.Tester\\Release\\resources.in.rc" ;
+MainFromObjects "c:\\Users\\user\\Desktop\\switch matrix wip\\cvibuild.Tester\\Release\\Tester.exe" : $(PrjObjects) $(InstrObjects) ;
+Depends "c:\\Users\\user\\Desktop\\switch matrix wip\\cvibuild.Tester\\Release\\Tester.exe" : "c:\\Users\\user\\Desktop\\switch matrix wip\\cvibuild.Tester\\Release\\link_options.txt" ;
+Depends "c:\\Users\\user\\Desktop\\switch matrix wip\\cvibuild.Tester\\Release\\Tester.exe" : "c:\\Users\\user\\Desktop\\switch matrix wip\\cvibuild.Tester\\Release\\resources.res" ;
+Depends all : "c:\\Users\\user\\Desktop\\switch matrix wip\\cvibuild.Tester\\Release\\Tester.exe" ;
