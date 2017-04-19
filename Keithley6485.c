@@ -1,5 +1,6 @@
 #include <ansi_c.h>
 #include <gpib.h>
+#include <math.h>
 #include "gpibTools.h"
 #include "Keithley6485.h"
 #include "MeasurementSetup.h"
@@ -118,7 +119,9 @@ double ke64__takeMeasurement(Addr4882_t addr)
 	gpib__command(addr, "READ?");
 	
 	char msg[64];
-	gpib__receive(addr, msg, 64);
+	int err = gpib__receive(addr, msg, 64); 
+	if (err != 0)
+		return INFINITY;
 	
 	char reading[14];		// Measured current in amps. Overflow is sent as +9.9E37, NAN is sent as 9.91E37
 	char units[2];			// Always amps (A)

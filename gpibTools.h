@@ -4,7 +4,7 @@
 
 void gpib__command(Addr4882_t addr, char* cmd);
 void gpib__enableRemote(Addr4882_t addr);
-void gpib__receive(Addr4882_t addr, char* msg, int length);
+int gpib__receive(Addr4882_t addr, char* msg, int length);
 void gpib__reset(Addr4882_t addr);
 int gpib__scanForDevices(Addr4882_t* ListenerList);
 

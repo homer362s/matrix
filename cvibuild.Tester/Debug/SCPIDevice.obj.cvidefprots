@@ -1,0 +1,8 @@
+[scpi__setOutput]
+Class="Function"
+Prototype="void scpi__setOutput(short addr, int status);"
+
+[scpi__setSourceAmplitude]
+Class="Function"
+Prototype="void scpi__setSourceAmplitude(short addr, char *func, float amplitude);"
+

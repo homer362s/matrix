@@ -1,0 +1,7 @@
+# Device Label, Input1:Pin1[,Input2:Pin2[,Input3:Pin3[...]]]
+SJ1, 1:5, 2:6
+SJ2, 1:7, 2:8
+SJ3, 1:9, 2:8
+SJ4, 1:1, 2:10
+SJ5, 1:2, 2:3
+SJ6, 1:4, 2:3

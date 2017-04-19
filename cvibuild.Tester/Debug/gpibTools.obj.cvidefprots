@@ -8,7 +8,7 @@ Prototype="void gpib__enableRemote(short addr);"
 
 [gpib__receive]
 Class="Function"
-Prototype="void gpib__receive(short addr, char *msg, int length);"
+Prototype="int gpib__receive(short addr, char *msg, int length);"
 
 [gpib__reset]
 Class="Function"

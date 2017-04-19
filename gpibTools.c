@@ -1,3 +1,4 @@
+#include <utility.h>
 #include <gpib.h>
 #include <formatio.h>
 
@@ -12,8 +13,12 @@ void gpib__enableRemote(Addr4882_t addr) {
 	EnableRemote(0, addrList);
 }
 
-void gpib__receive(Addr4882_t addr, char* msg, int length) {
+int gpib__receive(Addr4882_t addr, char* msg, int length) {
+	int oldValue = SetBreakOnLibraryErrors(0);
 	Receive(0, addr, msg, length, STOPend);
+	SetBreakOnLibraryErrors(oldValue);
+	
+	return iberr;
 }
 
 

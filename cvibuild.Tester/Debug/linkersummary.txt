@@ -4,6 +4,7 @@ gpibTools.obj
 Keithley2400.obj
 Keithley6485.obj
 MeasurementSetup.obj
+SCPIDevice.obj
 SwitchMatrixControl.obj
 Tester.obj
 cvi.lib

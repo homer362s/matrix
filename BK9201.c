@@ -3,6 +3,7 @@
 #include "gpibTools.h"
 #include "MeasurementSetup.h"
 #include "BK9201.h"
+#include "SCPIDevice.h"
 
 struct SourceDevice bk92__sourceDevice = {
 	.name = "BK Precision 9201",
@@ -24,16 +25,12 @@ void bk92__systemRemote(Addr4882_t addr, char* status)
 
 void bk92__setOutput(Addr4882_t addr, int status)
 {
-	char cmd[64];
-	sprintf(cmd, "OUTP %d", status);
-	gpib__command(addr, cmd);
+	scpi__setOutput(addr, status);
 }
 
 void bk92__setSourceAmplitude(Addr4882_t addr, char* func, float amplitude)
 {
-	char cmd[64];
-	sprintf(cmd, "%s %f", func, amplitude);
-	gpib__command(addr, cmd);
+	scpi__setSourceAmplitude(addr, func, amplitude);
 }
 
 float bk92__measure(Addr4882_t addr, char* func)
