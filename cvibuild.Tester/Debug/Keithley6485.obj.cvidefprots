@@ -26,9 +26,17 @@ Prototype="void ke64__setRate(short addr, float cycles);"
 Class="Function"
 Prototype="void ke64__setMedianRank(short addr, int rank);"
 
+[ke64__getMedianRank]
+Class="Function"
+Prototype="int ke64__getMedianRank(short addr);"
+
 [ke64__enableMedianFilter]
 Class="Function"
 Prototype="void ke64__enableMedianFilter(short addr, char *state);"
+
+[ke64__isMedianFilterEnabled]
+Class="Function"
+Prototype="int ke64__isMedianFilterEnabled(short addr);"
 
 [ke64__setDigitalFilterControl]
 Class="Function"
@@ -38,9 +46,17 @@ Prototype="void ke64__setDigitalFilterControl(short addr, char *filterControl);"
 Class="Function"
 Prototype="void ke64__setDigitalFilterCount(short addr, int count);"
 
+[ke64__getDigitalFilterCount]
+Class="Function"
+Prototype="int ke64__getDigitalFilterCount(short addr);"
+
 [ke64__enableDigitalFilter]
 Class="Function"
 Prototype="void ke64__enableDigitalFilter(short addr, char *state);"
+
+[ke64__isDigitalFilterEnabled]
+Class="Function"
+Prototype="int ke64__isDigitalFilterEnabled(short addr);"
 
 [ke64__enableDigitalFilterAdvanced]
 Class="Function"
@@ -54,6 +70,26 @@ Prototype="void ke64__setDigitalFilterAdvancedNoiseTolerence(short addr, int tol
 Class="Function"
 Prototype="double ke64__takeMeasurement(short addr);"
 
+[ke64__configPanel_CB]
+Class="Function"
+Prototype="int ke64__configPanel_CB(int panel, int event, void *callbackData, int eventData1, int eventData2);"
+
+[ke64__digitalCount_CB]
+Class="Function"
+Prototype="int ke64__digitalCount_CB(int panel, int control, int event, void *callbackData, int eventData1, int eventData2);"
+
+[ke64__medianRank_CB]
+Class="Function"
+Prototype="int ke64__medianRank_CB(int panel, int control, int event, void *callbackData, int eventData1, int eventData2);"
+
+[ke64__toggleDigitalFilter_CB]
+Class="Function"
+Prototype="int ke64__toggleDigitalFilter_CB(int panel, int control, int event, void *callbackData, int eventData1, int eventData2);"
+
+[ke64__toggleMedianFilter_CB]
+Class="Function"
+Prototype="int ke64__toggleMedianFilter_CB(int panel, int control, int event, void *callbackData, int eventData1, int eventData2);"
+
 [ke64__setup]
 Class="Function"
 Prototype="void ke64__setup(short addr);"
@@ -61,4 +97,8 @@ Prototype="void ke64__setup(short addr);"
 [ke64__measure]
 Class="Function"
 Prototype="void ke64__measure(short addr, double *data, int *wasMeasured);"
+
+[ke64__config]
+Class="Function"
+Prototype="void ke64__config(short addr);"
 

@@ -22,15 +22,19 @@ double ke64__takeMeasurement(Addr4882_t addr);
 
 // Filters
 void ke64__setMedianRank(Addr4882_t addr, int rank);
+int ke64__getMedianRank(Addr4882_t addr);
 void ke64__enableMedianFilter(Addr4882_t addr, char* state);
 void ke64__setDigitalFilterControl(Addr4882_t addr, char* filterControl);
 void ke64__setDigitalFilterCount(Addr4882_t addr, int count);
+int ke74__getDigitalFilterCount(Addr4882_t addr);
 void ke64__enableDigitalFilter(Addr4882_t addr, char* state);
+int ke64__isDigitalFilterEnabled(Addr4882_t addr);
 void ke64__enableDigitalFilterAdvanced(Addr4882_t addr, char* state);
 void ke64__setDigitalFilterAdvancedNoiseTolerence(Addr4882_t addr, int tolerence);
 
 // The required interface functions
 void ke64__setup(Addr4882_t addr);
 void ke64__measure(Addr4882_t addr, double* data, int* wasMeasured);
+void ke64__config(Addr4882_t addr);
 
 #endif  /* ndef __Keithley6485_H__ */

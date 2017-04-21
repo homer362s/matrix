@@ -1,10 +1,16 @@
 #include <ansi_c.h>
 #include <gpib.h>
 #include <math.h>
+#include <userint.h>
 #include "gpibTools.h"
 #include "Keithley6485.h"
 #include "MeasurementSetup.h"
+#include "Keithley6485Config.h"
 
+// Config variables
+int configHandle = 0;
+
+// Measurement device setup
 struct MeasurementDevice ke64__measurementDevice = {
 	.name = "Keithley 6485",
 	.idn = "KEITHLEY INSTRUMENTS INC.,MODEL 6485",
@@ -12,9 +18,11 @@ struct MeasurementDevice ke64__measurementDevice = {
 	.setup = &ke64__setup,
 	.initialize = NULL,
 	.measure = &ke64__measure,
-	.cleanup = NULL
+	.cleanup = NULL,
+	.config = &ke64__config
 };
 
+// Low level functions
 void ke64__setZeroCheck(Addr4882_t addr, char* status) 
 {
 	char cmd[64];
@@ -70,11 +78,26 @@ void ke64__setMedianRank(Addr4882_t addr, int rank)
 	gpib__command(addr, cmd);
 }
 
+int ke64__getMedianRank(Addr4882_t addr)
+{
+	gpib__command(addr, "MED:RANK?");
+	char msg[128];
+	gpib__receive(addr, msg, 127);
+	return atoi(msg);
+}
+
 void ke64__enableMedianFilter(Addr4882_t addr, char* state)
 {
 	char cmd[64];
 	sprintf(cmd, "MED %s", state);
 	gpib__command(addr, cmd);
+}
+int ke64__isMedianFilterEnabled(Addr4882_t addr)
+{
+	gpib__command(addr, "MED?");
+	char msg[128];
+	gpib__receive(addr, msg, 127);
+	return atoi(msg);
 }
 
 // Digital filters average multiple readings
@@ -93,11 +116,27 @@ void ke64__setDigitalFilterCount(Addr4882_t addr, int count)
 	gpib__command(addr, cmd);
 }
 
+int ke64__getDigitalFilterCount(Addr4882_t addr)
+{
+	gpib__command(addr, "AVER:COUN?");
+	char msg[128];
+	gpib__receive(addr, msg, 127);
+	return atoi(msg);
+}
+
 void ke64__enableDigitalFilter(Addr4882_t addr, char* state)
 {
 	char cmd[64];
 	sprintf(cmd, "AVER %s", state);
 	gpib__command(addr, cmd);
+}
+
+int ke64__isDigitalFilterEnabled(Addr4882_t addr)
+{
+	gpib__command(addr, "AVER?");
+	char msg[128];
+	gpib__receive(addr, msg, 127);
+	return atoi(msg);
 }
 
 void ke64__enableDigitalFilterAdvanced(Addr4882_t addr, char* state)
@@ -137,6 +176,54 @@ double ke64__takeMeasurement(Addr4882_t addr)
 	return atof(reading);
 }
 
+// Configuration callbacks
+int CVICALLBACK ke64__configPanel_CB(int panel, int event, void *callbackData, int eventData1, int eventData2)
+{
+	switch(event) {
+		case EVENT_CLOSE:
+			HidePanel(configHandle);
+	}
+
+	return 0;
+}
+
+int CVICALLBACK ke64__digitalCount_CB(int panel, int control, int event, void *callbackData, int eventData1, int eventData2)
+{
+	switch (event) {
+		case EVENT_COMMIT:
+			break;
+	}
+	return 0;
+}
+
+int CVICALLBACK ke64__medianRank_CB(int panel, int control, int event, void *callbackData, int eventData1, int eventData2)
+{
+	switch (event) {
+		case EVENT_COMMIT:
+			break;
+	}
+	
+	return 0;
+}
+
+int CVICALLBACK ke64__toggleDigitalFilter_CB(int panel, int control, int event, void *callbackData, int eventData1, int eventData2)
+{
+	switch (event) {
+		case EVENT_COMMIT:
+			break;
+	}
+	return 0;
+}
+
+int CVICALLBACK ke64__toggleMedianFilter_CB(int panel, int control, int event, void *callbackData, int eventData1, int eventData2)
+{
+	switch (event) {
+		case EVENT_COMMIT:
+			break;
+	}
+	return 0;
+}
+
 // The required interface functions
 void ke64__setup(Addr4882_t addr)
 {
@@ -157,4 +244,23 @@ void ke64__measure(Addr4882_t addr, double* data, int* wasMeasured)
 	wasMeasured[0] = 0;
 	wasMeasured[1] = 1;
 	ke64__setZeroCheck(addr, KE64__STATUS_ON);
+}
+
+void ke64__config(Addr4882_t addr)
+{
+	// Create the panel
+	if (!configHandle)
+		configHandle = LoadPanel(0, "Keithley6485Config.uir", CONFIG);
+	
+	// Populate the panel
+	char tmpStr[32];
+	SetCtrlVal(configHandle, CONFIG_MEDIANFILTERENABLE, ke64__isMedianFilterEnabled(addr));
+	sprintf(tmpStr, "%d", ke64__getMedianRank(addr));
+	SetCtrlVal(configHandle, CONFIG_MEDIANRANK, tmpStr);
+	SetCtrlVal(configHandle, CONFIG_DIGITALFILTERENABLE, ke64__isDigitalFilterEnabled(addr));
+	sprintf(tmpStr, "%d", ke64__getDigitalFilterCount(addr));
+	SetCtrlVal(configHandle, CONFIG_DIGITALCOUNT, tmpStr);
+	
+	// Show the panel
+	DisplayPanel(configHandle);
 }

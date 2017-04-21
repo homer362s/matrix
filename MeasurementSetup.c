@@ -85,3 +85,17 @@ void cleanupSource(struct MeasurementSetup setup)
 		(*cleanupFunc)(setup.source.addr);
 }
 
+void configSource(struct MeasurementSetup setup)
+{
+	void (*configFunc)(Addr4882_t) = setup.source.config;
+	if (configFunc)
+		(*configFunc)(setup.source.addr);
+}
+
+void configMeasurement(struct MeasurementSetup setup)
+{
+	void (*configFunc)(Addr4882_t) = setup.measure.config;
+	if (configFunc)
+		(*configFunc)(setup.measure.addr);
+}
+

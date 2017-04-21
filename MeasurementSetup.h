@@ -12,6 +12,7 @@ struct SourceDevice{
 	void (*enable)(Addr4882_t);
 	void (*disable)(Addr4882_t);
 	void (*cleanup)(Addr4882_t);
+	void (*config)(Addr4882_t);
 };
 
 struct MeasurementDevice {
@@ -22,6 +23,7 @@ struct MeasurementDevice {
 	void (*initialize)(Addr4882_t);
 	void (*measure)(Addr4882_t, double*, int*);
 	void (*cleanup)(Addr4882_t);
+	void (*config)(Addr4882_t);
 };
 
 struct MeasurementSetup {
@@ -41,5 +43,7 @@ void takeMeasurement(struct MeasurementSetup setup, double* data, int* wasMeasur
 void disableSource(struct MeasurementSetup);
 void cleanupMeasurement(struct MeasurementSetup);
 void cleanupSource(struct MeasurementSetup);
+void configSource(struct MeasurementSetup setup);
+void configMeasurement(struct MeasurementSetup setup);
 
 #endif  /* ndef __MeasurementSetup_H__ */

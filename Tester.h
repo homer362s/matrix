@@ -69,8 +69,10 @@
 #define  MAINPANEL_AUTODISCONNBUTTON      54      /* control type: command, callback function: AutoConnect_CB */
 #define  MAINPANEL_AUTOCONNBUTTON         55      /* control type: command, callback function: AutoConnect_CB */
 #define  MAINPANEL_AUTOCONNLED            56      /* control type: LED, callback function: (none) */
-#define  MAINPANEL_DECORATION_3           57      /* control type: deco, callback function: (none) */
-#define  MAINPANEL_DECORATION_8           58      /* control type: deco, callback function: (none) */
+#define  MAINPANEL_MEASCONFIGBUTTON       57      /* control type: command, callback function: configTool_CB */
+#define  MAINPANEL_SOURCONFIGBUTTON       58      /* control type: command, callback function: configTool_CB */
+#define  MAINPANEL_DECORATION_3           59      /* control type: deco, callback function: (none) */
+#define  MAINPANEL_DECORATION_8           60      /* control type: deco, callback function: (none) */
 
      /* tab page panel controls */
 #define  TABPANEL_1_MANUALTABLE           2       /* control type: table, callback function: (none) */
@@ -89,6 +91,7 @@
 
 int  CVICALLBACK addressChanged_CB(int panel, int control, int event, void *callbackData, int eventData1, int eventData2);
 int  CVICALLBACK AutoConnect_CB(int panel, int control, int event, void *callbackData, int eventData1, int eventData2);
+int  CVICALLBACK configTool_CB(int panel, int control, int event, void *callbackData, int eventData1, int eventData2);
 int  CVICALLBACK deleteFrame_CB(int panel, int control, int event, void *callbackData, int eventData1, int eventData2);
 int  CVICALLBACK deviceChanged_CB(int panel, int control, int event, void *callbackData, int eventData1, int eventData2);
 int  CVICALLBACK DevScan_CB(int panel, int control, int event, void *callbackData, int eventData1, int eventData2);

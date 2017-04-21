@@ -34,3 +34,11 @@ Prototype="void cleanupMeasurement(struct MeasurementSetup setup);"
 Class="Function"
 Prototype="void cleanupSource(struct MeasurementSetup setup);"
 
+[configSource]
+Class="Function"
+Prototype="void configSource(struct MeasurementSetup setup);"
+
+[configMeasurement]
+Class="Function"
+Prototype="void configMeasurement(struct MeasurementSetup setup);"
+

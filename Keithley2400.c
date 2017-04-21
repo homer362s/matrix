@@ -15,7 +15,8 @@ struct SourceDevice ke24__sourceDevice = {
 	.initialize = &ke24__initializeSource,
 	.enable = &ke24__enable,
 	.disable = &ke24__disable,
-	.cleanup = NULL
+	.cleanup = NULL,
+	.config = NULL
 };
 
 struct MeasurementDevice ke24__measurementDevice = {
@@ -25,7 +26,8 @@ struct MeasurementDevice ke24__measurementDevice = {
 	.setup = NULL,
 	.initialize = NULL,
 	.measure = &ke24__measure,
-	.cleanup = NULL
+	.cleanup = NULL,
+	.config = NULL
 };
 
 void ke24__setSourceFunc(Addr4882_t addr, char* func) {

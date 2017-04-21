@@ -591,6 +591,23 @@ int CVICALLBACK AutoConnect_CB(int panel, int control, int event, void *callback
 	return 0;
 }
 
+int CVICALLBACK configTool_CB(int panel, int control, int event, void *callbackData, int eventData1, int eventData2)
+{
+	switch(event) {
+		case EVENT_COMMIT:
+			switch (control) {
+				case MAINPANEL_SOURCONFIGBUTTON:
+					configSource(measurementSetup);
+					break;
+				case MAINPANEL_MEASCONFIGBUTTON:
+					configMeasurement(measurementSetup);
+					break;
+			}
+			break;
+	}
+	return 0;
+}
+
 int CVICALLBACK deleteFrame_CB(int panel, int control, int event, void *callbackData, int eventData1, int eventData2)
 {
 	switch (event) {

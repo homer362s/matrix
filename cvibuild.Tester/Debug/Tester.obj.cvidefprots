@@ -98,6 +98,10 @@ Prototype="int addressChanged_CB(int panel, int control, int event, void *callba
 Class="Function"
 Prototype="int AutoConnect_CB(int panel, int control, int event, void *callbackData, int eventData1, int eventData2);"
 
+[configTool_CB]
+Class="Function"
+Prototype="int configTool_CB(int panel, int control, int event, void *callbackData, int eventData1, int eventData2);"
+
 [deleteFrame_CB]
 Class="Function"
 Prototype="int deleteFrame_CB(int panel, int control, int event, void *callbackData, int eventData1, int eventData2);"
