@@ -538,7 +538,7 @@ void updateMeasurementDimming()
 	GetCtrlVal(panelHandle, MAINPANEL_LAYOUTNAME, layoutName);
 	GetCtrlIndex(panelHandle, MAINPANEL_MATRIXADDRRING, &e);
 	
-	int manualDimmed = a && b && c && d ? 0 : 1;
+	int manualDimmed = !(a && b && c && d);
 	int autoDimmed = (strcmp(layoutName, "None") == 0) || !e;
 	
 	
@@ -551,6 +551,8 @@ void updateMeasurementDimming()
 	SetCtrlAttribute(panelHandle, MAINPANEL_AUTOCONNLED, ATTR_DIMMED, manualDimmed || autoDimmed);
 	SetCtrlAttribute(panelHandle, MAINPANEL_REMEASURECURRENTBUTTO, ATTR_DIMMED, manualDimmed);
 	SetCtrlAttribute(panelHandle, MAINPANEL_MEASURECURRENTBUTTON, ATTR_DIMMED, manualDimmed);
+	SetCtrlAttribute(panelHandle, MAINPANEL_SOURCONFIGBUTTON, ATTR_DIMMED, !(a && c && measurementSetup.source.config));
+	SetCtrlAttribute(panelHandle, MAINPANEL_MEASCONFIGBUTTON, ATTR_DIMMED, !(b && d && measurementSetup.measure.config));
 }
 
 // Callback Functions

@@ -1,10 +1,10 @@
 [ke64__setZeroCheck]
 Class="Function"
-Prototype="void ke64__setZeroCheck(short addr, char *status);"
+Prototype="void ke64__setZeroCheck(short addr, int status);"
 
 [ke64__setZeroCorr]
 Class="Function"
-Prototype="void ke64__setZeroCorr(short addr, char *status);"
+Prototype="void ke64__setZeroCorr(short addr, int status);"
 
 [ke64__setRange]
 Class="Function"
@@ -12,7 +12,7 @@ Prototype="void ke64__setRange(short addr, float range);"
 
 [ke64__setRangeAuto]
 Class="Function"
-Prototype="void ke64__setRangeAuto(short addr, char *status);"
+Prototype="void ke64__setRangeAuto(short addr, int status);"
 
 [ke64__zeroCorrect]
 Class="Function"
@@ -21,6 +21,10 @@ Prototype="void ke64__zeroCorrect(short addr);"
 [ke64__setRate]
 Class="Function"
 Prototype="void ke64__setRate(short addr, float cycles);"
+
+[ke64__getRate]
+Class="Function"
+Prototype="float ke64__getRate(short addr);"
 
 [ke64__setMedianRank]
 Class="Function"
@@ -32,7 +36,7 @@ Prototype="int ke64__getMedianRank(short addr);"
 
 [ke64__enableMedianFilter]
 Class="Function"
-Prototype="void ke64__enableMedianFilter(short addr, char *state);"
+Prototype="void ke64__enableMedianFilter(short addr, int state);"
 
 [ke64__isMedianFilterEnabled]
 Class="Function"
@@ -41,6 +45,10 @@ Prototype="int ke64__isMedianFilterEnabled(short addr);"
 [ke64__setDigitalFilterControl]
 Class="Function"
 Prototype="void ke64__setDigitalFilterControl(short addr, char *filterControl);"
+
+[ke64__getDigitalFilterControl]
+Class="Function"
+Prototype="int ke64__getDigitalFilterControl(short addr);"
 
 [ke64__setDigitalFilterCount]
 Class="Function"
@@ -52,7 +60,7 @@ Prototype="int ke64__getDigitalFilterCount(short addr);"
 
 [ke64__enableDigitalFilter]
 Class="Function"
-Prototype="void ke64__enableDigitalFilter(short addr, char *state);"
+Prototype="void ke64__enableDigitalFilter(short addr, int state);"
 
 [ke64__isDigitalFilterEnabled]
 Class="Function"
@@ -60,7 +68,7 @@ Prototype="int ke64__isDigitalFilterEnabled(short addr);"
 
 [ke64__enableDigitalFilterAdvanced]
 Class="Function"
-Prototype="void ke64__enableDigitalFilterAdvanced(short addr, char *state);"
+Prototype="void ke64__enableDigitalFilterAdvanced(short addr, int state);"
 
 [ke64__setDigitalFilterAdvancedNoiseTolerence]
 Class="Function"
@@ -78,9 +86,17 @@ Prototype="int ke64__configPanel_CB(int panel, int event, void *callbackData, in
 Class="Function"
 Prototype="int ke64__digitalCount_CB(int panel, int control, int event, void *callbackData, int eventData1, int eventData2);"
 
+[ke64__digitalFilterControl_CB]
+Class="Function"
+Prototype="int ke64__digitalFilterControl_CB(int panel, int control, int event, void *callbackData, int eventData1, int eventData2);"
+
 [ke64__medianRank_CB]
 Class="Function"
 Prototype="int ke64__medianRank_CB(int panel, int control, int event, void *callbackData, int eventData1, int eventData2);"
+
+[ke64__nplc_CB]
+Class="Function"
+Prototype="int ke64__nplc_CB(int panel, int control, int event, void *callbackData, int eventData1, int eventData2);"
 
 [ke64__toggleDigitalFilter_CB]
 Class="Function"

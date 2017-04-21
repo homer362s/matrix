@@ -48,23 +48,23 @@ Batch Build Debug = False
 [File 0001]
 Path = "/c/Users/user/Desktop/switch matrix wip/Tester.uir"
 File Type = "User Interface Resource"
-Disk Date = 3575637909
+Disk Date = 3575651127
 In Projects = "1,"
 Window Top = 32
 Window Left = 10
 Window Height = 271
 Window Width = 523
-Window Z-Order = 8
+Window Z-Order = 7
 
 [File 0002]
 Path = "/c/Users/user/Desktop/switch matrix wip/Tester.c"
 File Type = "CSource"
-Disk Date = 3575639463
+Disk Date = 3575651509
 In Projects = "1,"
 Window Top = 62
 Window Left = 26
-Window Z-Order = 7
-Source Window State = "1,758,766,766,0,2,2,0,0,68,0,482,0,0,0,25,731,0,758,18,349,619,1,13,"
+Window Z-Order = 6
+Source Window State = "1,540,540,540,42,50,42,0,0,68,0,482,0,0,0,25,532,0,562,70,349,619,1,13,"
 
 [File 0003]
 Path = "/c/Users/user/Desktop/switch matrix wip/Keithley2400.c"
@@ -73,7 +73,7 @@ Disk Date = 3575544087
 In Projects = "1,"
 Window Top = 242
 Window Left = 122
-Window Z-Order = 11
+Window Z-Order = 5
 Source Window State = "1,9,18,18,0,4,4,0,0,76,0,8,0,8,0,25,18,0,29,18,349,683,1,0,"
 
 [File 0004]
@@ -83,7 +83,7 @@ Disk Date = 3574961325
 In Projects = "1,"
 Window Top = 272
 Window Left = 138
-Window Z-Order = 5
+Window Z-Order = 3
 Source Window State = "1,45,46,46,0,45,45,0,0,76,0,3,0,46,0,25,7,0,44,35,349,683,1,14,"
 
 [File 0005]
@@ -93,28 +93,28 @@ Disk Date = 3575481483
 In Projects = "1,"
 Window Top = 92
 Window Left = 42
-Window Z-Order = 6
-Source Window State = "1,63,63,63,0,11,11,0,0,76,0,2,0,4,0,25,0,0,7,4,349,683,1,0,"
+Window Z-Order = 11
+Source Window State = "1,63,63,63,0,11,11,0,0,76,0,2,0,4,0,25,0,0,25,25,349,683,1,0,"
 
 [File 0006]
 Path = "/c/Users/user/Desktop/switch matrix wip/Keithley6485.c"
 File Type = "CSource"
-Disk Date = 3575641294
+Disk Date = 3575653583
 In Projects = "1,"
 Window Top = 152
 Window Left = 74
-Window Z-Order = 1
-Source Window State = "1,199,199,199,28,33,28,0,0,172,0,8,0,8,0,55,170,0,196,1,349,715,1,0,"
+Window Z-Order = 2
+Source Window State = "1,291,291,291,59,63,63,0,0,80,0,8,0,8,0,25,269,0,291,63,349,715,1,0,"
 
 [File 0007]
 Path = "/c/Users/user/Desktop/switch matrix wip/Keithley6485.h"
 File Type = "Include"
-Disk Date = 3575641150
+Disk Date = 3575648321
 In Projects = "1,"
 Window Top = 182
 Window Left = 90
-Window Z-Order = 3
-Source Window State = "1,30,30,30,0,4,4,0,0,80,0,0,0,0,0,25,13,0,30,50,349,715,1,13,"
+Window Z-Order = 4
+Source Window State = "1,4,4,4,24,28,24,0,0,80,0,0,0,0,0,25,0,0,4,25,349,715,1,13,"
 
 [File 0008]
 Path = "/c/Users/user/Desktop/switch matrix wip/BK9201.c"
@@ -123,7 +123,7 @@ Disk Date = 3575476667
 In Projects = "1,"
 Window Top = 32
 Window Left = 10
-Window Z-Order = 14
+Window Z-Order = 12
 Source Window State = "1,31,33,33,4,29,29,0,0,80,0,1,0,1,0,25,0,0,9,31,349,715,1,0,"
 
 [File 0009]
@@ -133,7 +133,7 @@ Disk Date = 3574961243
 In Projects = "1,"
 Window Top = 62
 Window Left = 26
-Window Z-Order = 15
+Window Z-Order = 8
 Source Window State = "1,6,10,10,0,33,33,0,0,80,0,0,0,0,0,25,0,0,6,35,349,715,1,0,"
 
 [File 0010]
@@ -143,7 +143,7 @@ Disk Date = 3575639744
 In Projects = "1,"
 Window Top = 182
 Window Left = 90
-Window Z-Order = 10
+Window Z-Order = 9
 Source Window State = "1,45,48,48,49,1,1,0,0,80,0,0,0,0,0,25,0,0,25,29,349,715,1,0,"
 
 [File 0011]
@@ -153,7 +153,7 @@ Disk Date = 3575639800
 In Projects = "1,"
 Window Top = 92
 Window Left = 42
-Window Z-Order = 9
+Window Z-Order = 10
 Source Window State = "1,98,98,98,22,23,23,0,0,80,0,0,0,0,0,25,47,0,98,40,349,715,1,0,"
 
 [File 0012]
@@ -163,7 +163,7 @@ Disk Date = 3575480532
 In Projects = "1,"
 Window Top = 122
 Window Left = 58
-Window Z-Order = 12
+Window Z-Order = 14
 Source Window State = "1,6,6,6,0,4,4,0,0,76,0,0,0,0,0,25,0,0,4,0,349,683,1,0,"
 
 [File 0013]
@@ -173,7 +173,7 @@ Disk Date = 3575473334
 In Projects = "1,"
 Window Top = 32
 Window Left = 10
-Window Z-Order = 13
+Window Z-Order = 15
 Source Window State = "1,2,9,9,0,76,76,0,0,80,0,2,0,2,0,25,0,0,3,22,349,715,1,0,"
 
 [File 0014]
@@ -225,13 +225,13 @@ Source Window State = "1,24,24,24,4,10,10,0,0,0,0,0,0,0,0,0,14,0,38,68,349,683,1
 [File 0019]
 Path = "/c/Users/user/Desktop/switch matrix wip/Keithley6485Config.uir"
 File Type = "User Interface Resource"
-Disk Date = 3575641088
+Disk Date = 3575653621
 In Projects = "1,"
 Window Top = 152
 Window Left = 74
 Window Height = 349
 Window Width = 715
-Window Z-Order = 2
+Window Z-Order = 1
 
 [File 0020]
 Path = "/c/Program Files (x86)/National Instruments/CVI2015/include/ansi/stdlib.h"
@@ -240,7 +240,7 @@ Disk Date = 3562639200
 In Projects = ""
 Window Top = 152
 Window Left = 74
-Window Z-Order = 4
+Window Z-Order = 13
 Source Window State = "1,0,0,0,0,0,0,0,0,80,0,0,0,0,0,25,72,0,84,30,349,715,1,0,"
 
 [Tab Order]
