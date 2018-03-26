@@ -24,7 +24,7 @@ BEGIN
             VALUE "FileDescription", "Tester (Debug x86)\0"
             VALUE "FileVersion", "1.0\0"
             VALUE "InternalName", "Tester\0"
-            VALUE "LegalCopyright", "Copyright ©  2017\0"
+            VALUE "LegalCopyright", "Copyright ©  2018\0"
             VALUE "OriginalFilename", "Tester.exe\0"
             VALUE "ProductName", " Tester\0"
             VALUE "ProductVersion", "1.0\0"

@@ -1,0 +1,56 @@
+[initSwitchMatrix]
+Class="Function"
+Prototype="int initSwitchMatrix(struct SwitchMatrixConfig2_type *SwitchMatrixConfig2, char *ProbeCardConfig);"
+
+[switchMatrix]
+Class="Function"
+Prototype="void switchMatrix(struct SwitchMatrixConfig2_type *SwitchMatrixConfig2, int inputNumber, int pinNumber, int action);"
+
+[setRelaysBBM]
+Class="Function"
+Prototype="void setRelaysBBM(int boardAddress, int rowAddress, int *setMask);"
+
+[setRelaysMBB]
+Class="Function"
+Prototype="void setRelaysMBB(int boardAddress, int rowAddress, int *setMask);"
+
+[convertRowMask]
+Class="Function"
+Prototype="unsigned char convertRowMask(int *rowMask);"
+
+[changeRelays]
+Class="Function"
+Prototype="void changeRelays(int boardAddress, int rowAddress, int *rowMask, int clockBit);"
+
+[closeRelay]
+Class="Function"
+Prototype="void closeRelay(int boardAddress, int rowAddress, int rowIndex);"
+
+[closeRelays]
+Class="Function"
+Prototype="void closeRelays(int boardAddress, int rowAddress, int *rowMask);"
+
+[openRelay]
+Class="Function"
+Prototype="void openRelay(int boardAddress, int rowAddress, int rowIndex);"
+
+[openRelays]
+Class="Function"
+Prototype="void openRelays(int boardAddress, int rowAddress, int *rowMask);"
+
+[quickReset]
+Class="Function"
+Prototype="void quickReset(struct SwitchMatrixConfig2_type *SwitchMatrixConfig2);"
+
+[fullReset]
+Class="Function"
+Prototype="void fullReset(struct SwitchMatrixConfig2_type *SwitchMatrixConfig2);"
+
+[fileread]
+Class="Function"
+Prototype="char *fileread(char *name, char *access);"
+
+[getInputNew]
+Class="Function"
+Prototype="int getInputNew(char *FileInput, int *pointer, char **line);"
+

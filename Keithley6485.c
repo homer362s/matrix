@@ -350,6 +350,7 @@ void ke64__setup(Addr4882_t addr)
 	// Reset the tool so we know what we have
 	gpib__reset(addr);
 	ke64__zeroCorrect(addr);
+	ke64__setZeroCheck(addr, KE64__STATUS_OFF); 
 	
 	// These seem like reasonable defaults
 	ke64__setRate(addr, KE64__RATE_MED);
@@ -362,11 +363,11 @@ void ke64__setup(Addr4882_t addr)
 
 void ke64__measure(Addr4882_t addr, double* data, int* wasMeasured)
 {
-	ke64__setZeroCheck(addr, KE64__STATUS_OFF);
+	//ke64__setZeroCheck(addr, KE64__STATUS_OFF);
 	data[1] = ke64__takeMeasurement(addr);
 	wasMeasured[0] = 0;
 	wasMeasured[1] = 1;
-	ke64__setZeroCheck(addr, KE64__STATUS_ON);
+	//ke64__setZeroCheck(addr, KE64__STATUS_ON);
 }
 
 void ke64__config(Addr4882_t addr)

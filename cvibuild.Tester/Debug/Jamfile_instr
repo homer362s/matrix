@@ -5,12 +5,14 @@ Depends "c:\\Users\\user\\Desktop\\switch matrix wip\\cvibuild.Tester\\Debug\\Te
 Depends "c:\\Users\\user\\Desktop\\switch matrix wip\\cvibuild.Tester\\Debug\\Tester.exe" : "c:\\Users\\user\\Desktop\\switch matrix wip\\cvibuild.Tester\\Debug\\Keithley6485.obj" ;
 Depends "c:\\Users\\user\\Desktop\\switch matrix wip\\cvibuild.Tester\\Debug\\Tester.exe" : "c:\\Users\\user\\Desktop\\switch matrix wip\\cvibuild.Tester\\Debug\\MeasurementSetup.obj" ;
 Depends "c:\\Users\\user\\Desktop\\switch matrix wip\\cvibuild.Tester\\Debug\\Tester.exe" : "c:\\Users\\user\\Desktop\\switch matrix wip\\cvibuild.Tester\\Debug\\SCPIDevice.obj" ;
-Depends "c:\\Users\\user\\Desktop\\switch matrix wip\\cvibuild.Tester\\Debug\\Tester.exe" : "c:\\Users\\user\\Desktop\\switch matrix wip\\cvibuild.Tester\\Debug\\SwitchMatrixControl.obj" ;
+Depends "c:\\Users\\user\\Desktop\\switch matrix wip\\cvibuild.Tester\\Debug\\Tester.exe" : "c:\\Users\\user\\Desktop\\switch matrix wip\\cvibuild.Tester\\Debug\\SwitchMatrixControl2.obj" ;
 Depends "c:\\Users\\user\\Desktop\\switch matrix wip\\cvibuild.Tester\\Debug\\Tester.exe" : "c:\\Users\\user\\Desktop\\switch matrix wip\\cvibuild.Tester\\Debug\\Tester.obj" ;
 Depends "c:\\Users\\user\\Desktop\\switch matrix wip\\cvibuild.Tester\\Debug\\Tester.exe" : "C:\\Program Files (x86)\\Windows Kits\\8.1\\Lib\\winv6.3\\um\\x86\\advapi32.lib" ;
 NoCare "C:\\Program Files (x86)\\Windows Kits\\8.1\\Lib\\winv6.3\\um\\x86\\advapi32.lib" ;
 Depends "c:\\Users\\user\\Desktop\\switch matrix wip\\cvibuild.Tester\\Debug\\Tester.exe" : "c:\\ProgramData\\National Instruments\\CVI2015\\bin\\msvc\\analysis.lib" ;
 NoCare "c:\\ProgramData\\National Instruments\\CVI2015\\bin\\msvc\\analysis.lib" ;
+Depends "c:\\Users\\user\\Desktop\\switch matrix wip\\cvibuild.Tester\\Debug\\Tester.exe" : "c:\\Users\\Public\\Documents\\Measurement Computing\\DAQ\\C\\cbw32.lib" ;
+NoCare "c:\\Users\\Public\\Documents\\Measurement Computing\\DAQ\\C\\cbw32.lib" ;
 Depends "c:\\Users\\user\\Desktop\\switch matrix wip\\cvibuild.Tester\\Debug\\Tester.exe" : "c:\\Program Files (x86)\\National Instruments\\CVI2015\\bin\\msvc\\cviauto.lib" ;
 NoCare "c:\\Program Files (x86)\\National Instruments\\CVI2015\\bin\\msvc\\cviauto.lib" ;
 Depends "c:\\Users\\user\\Desktop\\switch matrix wip\\cvibuild.Tester\\Debug\\Tester.exe" : "c:\\Program Files (x86)\\National Instruments\\CVI2015\\bin\\msvc\\cvidotnet.lib" ;

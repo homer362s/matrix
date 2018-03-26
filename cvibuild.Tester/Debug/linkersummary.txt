@@ -5,11 +5,12 @@ Keithley2400.obj
 Keithley6485.obj
 MeasurementSetup.obj
 SCPIDevice.obj
-SwitchMatrixControl.obj
+SwitchMatrixControl2.obj
 Tester.obj
 cvi.lib
 gpib.lib
 cvistart.lib
+cbw32.lib
 kernel32.lib
 user32.lib
 EXE Symbol Module

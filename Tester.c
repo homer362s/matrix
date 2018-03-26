@@ -20,7 +20,7 @@
 #include <gpib.h>
 #include "Tester.h"
 #include "toolbox.h"
-#include "SwitchMatrixControl.h"
+#include "SwitchMatrixControl2.h"
 #include "Keithley2400.h"
 #include "Keithley6485.h"
 #include "BK9201.h"
@@ -73,7 +73,7 @@ int matrixAddress = 0;
 int sourceDevice = BK9201;
 int measDevice = KEITHLEY6485;
 
-struct SwitchMatrixConfig_type *SwitchMatrixConfig;
+struct SwitchMatrixConfig2_type *SwitchMatrixConfig;
 struct AutoConfig* layoutConfig = NULL;
 struct MeasurementSetup measurementSetup;
 
@@ -85,7 +85,7 @@ int main (int argc, char *argv[])
 	/* initialize and load resources */
 	nullChk (InitCVIRTE (0, argv, 0));
 	errChk (panelHandle = LoadPanel (0, "Tester.uir", MAINPANEL));
-	SwitchMatrixConfig = (struct SwitchMatrixConfig_type *) malloc(sizeof (struct SwitchMatrixConfig_type));
+	SwitchMatrixConfig = (struct SwitchMatrixConfig2_type *) malloc(sizeof (struct SwitchMatrixConfig2_type));
 	
 	/* display the panel and run the user interface */
 	GetPanelHandleFromTabPage(panelHandle, MAINPANEL_TABS, 0, &currentTabHandle);
@@ -141,13 +141,13 @@ void changeConnection(int port, int pin) {
 	// Disconnect this port from any pins it is currently connected to
 	for (int i = 0;i < MaxRelays;i++) {
 		if (SwitchMatrixConfig->Connections[port-1][i]) {
-			switchMatrix(port, i+1, DisConnect, SwitchMatrixConfig);
+			switchMatrix(SwitchMatrixConfig, port, i+1, DisConnect);
 		}
 	}
 	
 	// Connect the new pin
 	if (pin)
-		switchMatrix(port, pin, Connect, SwitchMatrixConfig);
+		switchMatrix(SwitchMatrixConfig, port, pin, Connect);
 }
 
 void COMScan()
@@ -726,7 +726,9 @@ int CVICALLBACK LoadProbeCard_CB(int panel, int control, int event, void *callba
 			char pathName[512];
 			int success = FileSelectPopupEx("", "*.csv", "*.csv;*.*", "Select A Probe Card", VAL_LOAD_BUTTON, 0, 0, pathName);
 			if (success) {
-				initSwitchMatrix(6, SwitchMatrixConfig, pathName);
+				int port;
+				GetCtrlVal(panelHandle, MAINPANEL_MATRIXADDRRING, &port);
+				initSwitchMatrix(SwitchMatrixConfig, pathName);
 	
 				// Update the manual controls to reflect the available options
 				updateManualControls();
@@ -743,7 +745,7 @@ int CVICALLBACK LoadProbeCard_CB(int panel, int control, int event, void *callba
 			
 			// Reset all relays
 			setStatusBar("Resetting Relays");
-			resetAllRelays(SwitchMatrixConfig);
+			fullReset(SwitchMatrixConfig);
 			int count;
 			int ctrlArrayHandle = GetCtrlArrayFromResourceID(panelHandle, MAN_CON_ARRAY);
 
@@ -869,7 +871,7 @@ int CVICALLBACK resetRelays_CB(int panel, int control, int event, void *callback
 	switch(event) {
 		case EVENT_COMMIT:
 			setStatusBar("Resetting Relays");
-			resetAllRelays(SwitchMatrixConfig);
+			fullReset(SwitchMatrixConfig);
 			
 			int count;
 			int ctrlArrayHandle = GetCtrlArrayFromResourceID(panelHandle, MAN_CON_ARRAY);
@@ -1004,7 +1006,7 @@ int CVICALLBACK singleAutoMeasure_CB(int panel, int control, int event, void *ca
 			
 			// Connect the required relays
 			for (int i = 0;i < meas->connectionCount;i++) {
-				switchMatrix(meas->connections[i].input, meas->connections[i].pin, Connect, SwitchMatrixConfig);
+				switchMatrix(SwitchMatrixConfig, meas->connections[i].input, meas->connections[i].pin, Connect);
 			}
 			
 			// Take measurement
@@ -1012,7 +1014,7 @@ int CVICALLBACK singleAutoMeasure_CB(int panel, int control, int event, void *ca
 			
 			// Disconnect the relays
 			for (int i = 0;i < meas->connectionCount;i++) {
-				switchMatrix(meas->connections[i].input, meas->connections[i].pin, DisConnect, SwitchMatrixConfig);
+				switchMatrix(SwitchMatrixConfig, meas->connections[i].input, meas->connections[i].pin, DisConnect);
 			}
 			
 			setStatusDone();
@@ -1031,7 +1033,7 @@ int CVICALLBACK startAutoMeasure_CB(int panel, int control, int event, void *cal
 			
 			// Reset the relays
 			setStatusBar("Resetting all relays");
-			resetAllRelays(SwitchMatrixConfig);
+			fullReset(SwitchMatrixConfig);
 			int count;
 			int ctrlArrayHandle = GetCtrlArrayFromResourceID(panelHandle, MAN_CON_ARRAY);
 
@@ -1049,7 +1051,7 @@ int CVICALLBACK startAutoMeasure_CB(int panel, int control, int event, void *cal
 				// Make the needed connections
 				for (int j = 0;j < layoutConfig->measurements[i]->connectionCount;j++) {
 					struct AutoConnection conn = layoutConfig->measurements[i]->connections[j];
-					switchMatrix(conn.input, conn.pin, Connect, SwitchMatrixConfig);
+					switchMatrix(SwitchMatrixConfig, conn.input, conn.pin, Connect);
 				}
 				
 				// Delay to make sure all the relays finish connecting
@@ -1064,7 +1066,7 @@ int CVICALLBACK startAutoMeasure_CB(int panel, int control, int event, void *cal
 				// Clear the connections
 				for (int j = 0;j < layoutConfig->measurements[i]->connectionCount;j++) {
 					struct AutoConnection conn = layoutConfig->measurements[i]->connections[j];
-					switchMatrix(conn.input, conn.pin, DisConnect, SwitchMatrixConfig);
+					switchMatrix(SwitchMatrixConfig, conn.input, conn.pin, DisConnect);
 				}
 			}
 	
@@ -1092,7 +1094,7 @@ int CVICALLBACK startAutoReMeasure_CB(int panel, int control, int event, void *c
 			
 			// Connect the required relays
 			for (int i = 0;i < meas->connectionCount;i++) {
-				switchMatrix(meas->connections[i].input, meas->connections[i].pin, Connect, SwitchMatrixConfig);
+				switchMatrix(SwitchMatrixConfig, meas->connections[i].input, meas->connections[i].pin, Connect);
 			}
 			
 			// Take measurement
@@ -1100,7 +1102,7 @@ int CVICALLBACK startAutoReMeasure_CB(int panel, int control, int event, void *c
 			
 			// Disconnect the relays
 			for (int i = 0;i < meas->connectionCount;i++) {
-				switchMatrix(meas->connections[i].input, meas->connections[i].pin, DisConnect, SwitchMatrixConfig);
+				switchMatrix(SwitchMatrixConfig, meas->connections[i].input, meas->connections[i].pin, DisConnect);
 			}
 			
 			setStatusDone();

@@ -154,7 +154,7 @@ int switchMatrix(int inputNumber, int pinNumber, int action, struct SwitchMatrix
     if (!error){
         SwitchMatrixConfig->RelayStatus[pinNumber-1].boardAddress = SwitchMatrixConfig->BoardAddresses[inputNumber-1];
         SwitchMatrixConfig->RelayStatus[pinNumber-1].relayAddress = SwitchMatrixConfig->ProbeCard[pinNumber-1];
-        SwitchMatrixConfig->RelayStatus[pinNumber-1].status = action; //store card adress, relay address, and relay status
+        SwitchMatrixConfig->RelayStatus[pinNumber-1].status = action; //store card address, relay address, and relay status
 		SwitchMatrixConfig->Connections[inputNumber-1][pinNumber-1] = action;
     }
     return 0;
