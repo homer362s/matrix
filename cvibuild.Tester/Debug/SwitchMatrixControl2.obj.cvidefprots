@@ -46,6 +46,10 @@ Prototype="void quickReset(struct SwitchMatrixConfig2_type *SwitchMatrixConfig2)
 Class="Function"
 Prototype="void fullReset(struct SwitchMatrixConfig2_type *SwitchMatrixConfig2);"
 
+[paranoidReset]
+Class="Function"
+Prototype="void paranoidReset(struct SwitchMatrixConfig2_type *SwitchMatrixConfig2);"
+
 [fileread]
 Class="Function"
 Prototype="char *fileread(char *name, char *access);"

@@ -312,16 +312,14 @@ void fullReset(struct SwitchMatrixConfig2_type *SwitchMatrixConfig2)
 		{0, 0, 0, 0, 0, 0, 1, 1}
 		};
 	
-	// TODO: THIS IS WRONG. IT ONLY RESETS ONE ROW. CHANGE BEFORE USING
-    //for (int i=0; i<SwitchMatrixConfig2->numBoards; i++) {								//loop through connected boards
-	int i = 1;
+    for (int i=0; i<SwitchMatrixConfig2->numBoards; i++) {								//loop through connected boards
         for (int j=0; j<8; j++){														//loop through rows
 			for (int k=0;k<4;k++) {
 				openRelays(SwitchMatrixConfig2->BoardAddresses[i], j, relayMask[k]);		//Disconnect row of relays
 				Delay(MULTITIME);
 			}
         }
-    //}
+    }
 	
     for (int i=0; i<MaxRelays; i++) {  						//Initialize relay status array to the unused values
 		for (int j = 0;j < MaxInputs;j++) {
@@ -331,6 +329,84 @@ void fullReset(struct SwitchMatrixConfig2_type *SwitchMatrixConfig2)
 }
 
 
+// This reset assumes nothing about the state of the flip flops
+void paranoidReset(struct SwitchMatrixConfig2_type *SwitchMatrixConfig2)
+{
+	// Open all relays
+	//printf("Resetting all relays\n");
+	//int allRelaysMask[8] = {1, 1, 1, 1, 1, 1, 1, 1};
+	int relayMask[4][8] = {
+		{1, 1, 0, 0, 0, 0, 0, 0},
+		{0, 0, 1, 1, 0, 0, 0, 0},
+		{0, 0, 0, 0, 1, 1, 0, 0},
+		{0, 0, 0, 0, 0, 0, 1, 1}
+		};
+
+	for (int i=0; i<SwitchMatrixConfig2->numBoards; i++) {								//loop through connected boards
+		int boardAddress = SwitchMatrixConfig2->BoardAddresses[i];
+	    for (int rowAddress=0; rowAddress<8; rowAddress++){								//loop through rows
+			for (int k=0;k<4;k++) {
+				int *rowMask = relayMask[k];
+			
+				uint8_t rowMaskNumber = convertRowMask(rowMask);
+				
+				printf("Resetting relays (paranoid)...\n");
+
+				printf("Board Address: %d\n", boardAddress);
+				printf("Row Address: %d\n", rowAddress);
+				printf("Row Mask %d\n", rowMaskNumber);
+
+				//Address the board and row		
+				cbDOut(GPIOBOARD, BOARDPORT, boardAddress);
+				cbDOut(GPIOBOARD, ROWPORT, rowAddress);
+
+
+				// Set "set" flip flops low
+				cbDOut(GPIOBOARD, STATUSPORT, 0);
+				Delay(ADDRESSTIME);
+
+				//flip clock
+				cbDOut(GPIOBOARD, CLOCKPORT, CLOSECLOCK);
+				Delay(CLOCKTIME);
+				cbDOut(GPIOBOARD, CLOCKPORT, 0);
+				
+				// Switching Delay
+				Delay(SWITCHINGTIME - CLOCKTIME);
+				
+				// Set "reset" flip flop high
+				// Flag flip flops to change
+				cbDOut(GPIOBOARD, STATUSPORT, rowMaskNumber);
+				Delay(ADDRESSTIME);
+
+				//Turn on masked flip flops
+				cbDOut(GPIOBOARD, CLOCKPORT, OPENCLOCK);
+				Delay(CLOCKTIME);
+				cbDOut(GPIOBOARD, CLOCKPORT, 0);
+				
+				// Switching Delay
+				Delay(SWITCHINGTIME - CLOCKTIME);
+				
+				// Set "reset" flip flop low
+				cbDOut(GPIOBOARD, STATUSPORT, 0);
+				Delay(ADDRESSTIME);
+
+				//flip clock
+				cbDOut(GPIOBOARD, CLOCKPORT, OPENCLOCK);
+				Delay(CLOCKTIME);
+				cbDOut(GPIOBOARD, CLOCKPORT, 0);
+				
+				// Delay
+				Delay(MULTITIME);
+			}
+	    }
+	}
+
+	for (int i=0; i<MaxRelays; i++) {  						//Initialize relay status array to the unused values
+		for (int j = 0;j < MaxInputs;j++) {
+			SwitchMatrixConfig2->Connections[j][i] = DisConnect;
+		}
+	}
+}
 
 
 

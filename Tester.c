@@ -745,7 +745,8 @@ int CVICALLBACK LoadProbeCard_CB(int panel, int control, int event, void *callba
 			
 			// Reset all relays
 			setStatusBar("Resetting Relays");
-			fullReset(SwitchMatrixConfig);
+			//fullReset(SwitchMatrixConfig);
+			paranoidReset(SwitchMatrixConfig);
 			int count;
 			int ctrlArrayHandle = GetCtrlArrayFromResourceID(panelHandle, MAN_CON_ARRAY);
 

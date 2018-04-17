@@ -40,6 +40,7 @@ struct SwitchMatrixConfig2_type{
 //Function prototypes
 int initSwitchMatrix (struct SwitchMatrixConfig2_type *SwitchMatrixConfig2, char ProbeCardConfig[]);
 void switchMatrix(struct SwitchMatrixConfig2_type *SwitchMatrixConfig2, int inputNumber, int pinNumber, int action);
+void paranoidReset(struct SwitchMatrixConfig2_type *SwitchMatrixConfig2);
 void fullReset(struct SwitchMatrixConfig2_type *SwitchMatrixConfig2);
 void quickReset(struct SwitchMatrixConfig2_type *SwitchMatrixConfig2);
 void setRelaysBBM(int boardNumber, int rowAddress, int *rowStatus);
